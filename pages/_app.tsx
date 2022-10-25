@@ -1,4 +1,3 @@
-import '../styles/globals.css';
 import { css, Global } from '@emotion/react';
 import { AppProps } from 'next/app';
 import Layout from '../components/Layout';
@@ -13,31 +12,56 @@ function MyApp({ Component, pageProps }: AppProps) {
           *::after {
             box-sizing: border-box;
           }
-
           @font-face {
-            font-family: 'Lato';
-            src: url('../asset/Lato/Lato-Black.ttf');
-            src: url('../asset/Lato/Lato-BlackItalic.ttf');
-            src: url('../asset/Lato/Lato-Bold.ttf');
-            src: url('../asset/Lato/Lato-BoldItalic.ttf');
-            src: url('../asset/Lato/Lato-Italic.ttf');
-            src: url('../asset/Lato/Lato-Light.ttf');
-            src: url('../asset/Lato/Lato-LightItalic.ttf');
-            src: url('../asset/Lato/Lato-Regular.ttf');
-            src: url('../asset/Lato/Lato-Thin.ttf');
-            src: url('../asset/Lato/Lato-ThinItalic.ttf');
+            font-family: 'Lato-Regular';
+            src: url('../fonts/Lato/Lato-Regular.ttf') format('truetype');
+          }
+          @font-face {
+            font-family: 'Lato-Italic';
+            src: url('../fonts/Lato/Lato-Italic.ttf') format('truetype');
+          }
+          @font-face {
+            font-family: 'Lato-Bold';
+            src: url('../fonts/Lato/Lato-Bold.ttf') format('truetype');
+          }
+          @font-face {
+            font-family: 'Lato-BoldItalic';
+            src: url('../fonts/Lato/Lato-BoldItalic.ttf') format('truetype');
+          }
+          @font-face {
+            font-family: 'Lato-Thin';
+            src: url('../fonts/Lato/Lato-Thin.ttf') format('truetype');
+          }
+          @font-face {
+            font-family: 'Lato-ThinItalic';
+            src: url('../fonts/Lato/Lato-ThinItalic.ttf') format('truetype');
           }
 
           body {
-            margin: 0 48px 0 48px;
             height: 100vh;
             background-color: #ffffff;
+            font-family: 'Lato-Regular', sans-serif;
             font-size: 16px;
+            margin: 0;
+          }
+
+          h1 {
+            font-size: 2.25rem;
+            margin: 0.75rem 0 0 0;
+            font-family: 'Lato-Bold', sans-serif;
+            color: #000000;
+          }
+
+          h2 {
+            font-size: 1.25rem;
+            margin: 1.5rem 0 0 0;
+            font-family: 'Lato-Italic', sans-serif;
+            color: #3a4337;
           }
         `}
       />
       <Layout>
-        <Component {...pageProps} />;
+        <Component {...pageProps} />
       </Layout>
     </>
   );
