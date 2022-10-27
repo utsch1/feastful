@@ -41,7 +41,7 @@ const dropdownContent = css`
   min-width: 10rem;
   padding: 1rem;
   z-index: 1;
-  right: 3rem;
+  right: 0.1rem;
   border: 1px solid #000;
 
   > hr {
