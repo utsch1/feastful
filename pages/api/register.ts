@@ -1,12 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getUserByEmail } from '../../database/users';
 
 export type RegisterResponseBody =
-  | {
-      errors: { message: string }[];
-    }
+  | { errors: { message: string }[] }
   | { user: { email: string } };
 
-export default function handler(
+export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse<RegisterResponseBody>,
 ) {
@@ -23,12 +22,17 @@ export default function handler(
         .json({ errors: [{ message: 'email or password not provided' }] });
     }
     // 2. we check if the user already exists
+    const user = await getUserByEmail(request.body.email);
 
-    // 3. we hash the password
+    if (user) {
+      return response
+        .status(401)
+        .json({ errors: [{ message: 'email is already taken' }] });
+    }
 
-    // 4. sql query to create the record
+    console.log(user);
 
-    response.status(200).json({ user: { email: 'Ute' } });
+    response.status(200).json({ user: { email: 'ute' } });
   } else {
     response.status(401).json({ errors: [{ message: 'Method not allowed' }] });
   }

@@ -6,7 +6,7 @@ export type User = {
   passwordHash: string;
 };
 
-async function getUserByEmail(email: string) {
+export async function getUserByEmail(email: string) {
   if (!email) return undefined;
 
   const [user] = await sql<User[]>`
