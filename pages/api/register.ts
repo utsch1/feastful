@@ -1,5 +1,6 @@
+import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getUserByEmail } from '../../database/users';
+import { createUser, getUserByEmail } from '../../database/users';
 
 export type RegisterResponseBody =
   | { errors: { message: string }[] }
@@ -21,7 +22,7 @@ export default async function handler(
         .status(400)
         .json({ errors: [{ message: 'email or password not provided' }] });
     }
-    // 2. we check if the user already exists
+    // 2. check if the user already exists
     const user = await getUserByEmail(request.body.email);
 
     if (user) {
@@ -30,9 +31,17 @@ export default async function handler(
         .json({ errors: [{ message: 'email is already taken' }] });
     }
 
-    console.log(user);
+    // 3. hash the password
+    const passwordHash = await bcrypt.hash(request.body.password, 12);
 
-    response.status(200).json({ user: { email: 'ute' } });
+    // 4. sql query to create the record
+    const userWithoutPassword = await createUser(
+      request.body.email,
+      passwordHash,
+    );
+
+    // response
+    response.status(200).json({ user: { email: userWithoutPassword.email } });
   } else {
     response.status(401).json({ errors: [{ message: 'Method not allowed' }] });
   }

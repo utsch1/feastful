@@ -19,3 +19,17 @@ export async function getUserByEmail(email: string) {
   `;
   return user;
 }
+
+export async function createUser(email: string, password_hash: string) {
+  const [userWithoutPassword] = await sql<{ id: number; email: string }[]>`
+  INSERT INTO users
+    (email, password_hash)
+  VALUES
+    (${email}, ${password_hash})
+  RETURNING
+    id,
+    email
+  `;
+
+  return userWithoutPassword!;
+}
