@@ -1,5 +1,7 @@
+import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { createSession } from '../../database/sessions';
 import { getUserWithPasswordHashByEmail } from '../../database/users';
 
 export type LoginResponseBody =
@@ -44,6 +46,13 @@ export default async function handler(
     }
 
     // 4. create session and token
+    const session = await createSession(
+      user.id,
+      crypto.randomBytes(80).toString('base64'),
+    );
+
+    console.log(session);
+
     // const userWithoutPassword = await createUser(
     //   request.body.email,
     //   isValidPassword,

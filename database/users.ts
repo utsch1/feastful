@@ -22,7 +22,7 @@ export async function getUserByEmail(email: string) {
 }
 
 export async function getUserById(id: number) {
-  const [animal] = await sql<User[]>`
+  const [user] = await sql<User[]>`
     SELECT
       *
     FROM
@@ -30,7 +30,7 @@ export async function getUserById(id: number) {
     WHERE
       id = ${id}
   `;
-  return animal;
+  return user;
 }
 
 export async function createUser(email: string, password_hash: string) {
