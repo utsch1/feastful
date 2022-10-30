@@ -9,9 +9,10 @@ export type User = {
 export async function getUserByEmail(email: string) {
   if (!email) return undefined;
 
-  const [user] = await sql<User[]>`
+  const [user] = await sql<{ id: number; email: string }[]>`
     SELECT
-      *
+      id,
+      email
     FROM
       users
     WHERE
@@ -32,4 +33,18 @@ export async function createUser(email: string, password_hash: string) {
   `;
 
   return userWithoutPassword!;
+}
+
+export async function getUserWithPasswordHashByEmail(email: string) {
+  if (!email) return undefined;
+
+  const [user] = await sql<User[]>`
+    SELECT
+      *
+    FROM
+      users
+    WHERE
+      users.email = ${email}
+  `;
+  return user;
 }

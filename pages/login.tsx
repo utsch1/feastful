@@ -1,40 +1,23 @@
 import Head from 'next/head';
 import { useState } from 'react';
-import { RegisterResponseBody } from './api/register';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // async function loginHandler() {
-  //   const loginResponse = await fetch('/api/login', {
-  //     method: 'POST',
-  //     headers: {
-  //       'content-type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       email,
-  //       password,
-  //     }),
-  //   });
-  //   const loginResponseBody = (await loginResponse.json()) as LoginResponseBody;
-  // }
-
-  async function registerHandler() {
-    const registerResponse = await fetch('/api/register', {
+  async function loginHandler() {
+    const loginResponse = await fetch('/api/login', {
+      // POST to create a new session
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        email: email,
+        email,
         password,
       }),
     });
-    const registerResponseBody =
-      (await registerResponse.json()) as RegisterResponseBody;
-
-    console.log(registerResponseBody);
+    const loginResponseBody = (await loginResponse.json()) as LoginResponseBody;
   }
 
   return (
@@ -46,7 +29,7 @@ export default function Login() {
 
       <h1>Login</h1>
 
-      {/* <label>
+      <label>
         E-Mail
         <input
           type="email"
@@ -56,12 +39,13 @@ export default function Login() {
           }}
           required
         />
-      </label> */}
-      {/* <br />
+      </label>
+      <br />
       <br />
       <label>
         Password
         <input
+          type="password"
           value={password}
           onChange={(event) => {
             setPassword(event.currentTarget.value);
@@ -75,36 +59,7 @@ export default function Login() {
         }}
       >
         Login
-      </button> */}
-
-      {/* <h1>Register</h1>
-      <label>
-        E-Mail
-        <input
-          value={email}
-          onChange={(event) => {
-            setEmail(event.currentTarget.value);
-          }}
-        />
-      </label>
-      <br />
-      <br />
-      <label>
-        Password
-        <input
-          value={password}
-          onChange={(event) => {
-            setPassword(event.currentTarget.value);
-          }}
-        />
-      </label>
-      <button
-        onClick={async () => {
-          await registerHandler();
-        }}
-      >
-        Register
-      </button> */}
+      </button>
     </div>
   );
 }

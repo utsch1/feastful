@@ -45,6 +45,7 @@ export default function Register() {
       <label>
         Password
         <input
+          type="password"
           value={password}
           onChange={(event) => {
             setPassword(event.currentTarget.value);
