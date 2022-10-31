@@ -15,7 +15,6 @@ export default function UserProfile(props: Props) {
           <meta name="description" content="User not found" />
         </Head>
         <h1>404 - User not found</h1>
-        Better luck next time
       </>
     );
   }
@@ -26,11 +25,16 @@ export default function UserProfile(props: Props) {
         <title>Personal Information</title>
         <meta name="description" content="Biography of the person" />
       </Head>
-      <h1>Hi, {props.user.email}</h1>
+      <h2>Hi, {props.user.email}</h2>
+      <h1>Your account overview</h1>
+      <h3>Your cooking classes</h3>
       <p>
         {props.user.id} {props.user.email}
       </p>
-      <hr />
+      <h3>Personal information</h3>
+      <p>
+        {props.user.id} {props.user.email}
+      </p>
     </>
   );
 }

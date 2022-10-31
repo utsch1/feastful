@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import { User } from '../database/users';
 import Footer from './Footer';
 import Header from './Header';
 
@@ -8,7 +9,7 @@ type ChildrenProps = {
 };
 
 type Props = {
-  user: any | undefined;
+  user?: User;
 };
 
 const mainStyles = css`
@@ -18,7 +19,7 @@ const mainStyles = css`
   padding-top: 5rem;
 `;
 
-export default function Layout(props: ChildrenProps & Props) {
+export default function Layout(props: Props & ChildrenProps) {
   return (
     <>
       <Head>

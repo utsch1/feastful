@@ -2,12 +2,13 @@ import { css, Global } from '@emotion/react';
 import { AppProps } from 'next/app';
 import { useCallback, useEffect, useState } from 'react';
 import Layout from '../components/Layout';
+import { User } from '../database/users';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<User>();
 
   const refreshUserProfile = useCallback(async () => {
-    const profileResponse = await fetch('/api/profile');
+    const profileResponse = await fetch('/api/user');
     const profileResponseBody = await profileResponse.json();
 
     if ('errors' in profileResponseBody) {
@@ -59,7 +60,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             height: 100vh;
             background-color: #ffffff;
             font-family: 'Lato-Regular', sans-serif;
-            font-size: 16px;
+            font-size: 14px;
             margin: 0;
           }
 

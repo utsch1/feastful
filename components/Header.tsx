@@ -1,6 +1,11 @@
 import { css } from '@emotion/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { User } from '../database/users';
+
+type Props = {
+  user?: User;
+};
 
 const navigationStyles = css`
   width: 100%;
@@ -52,7 +57,7 @@ const dropdownContent = css`
   text-align: center;
 
   > hr {
-    border: 1px solid #000;
+    border: 0.5px solid #000;
   }
 
   > div > a {
@@ -61,7 +66,7 @@ const dropdownContent = css`
   }
 `;
 
-export default function Header() {
+export default function Header(props: Props) {
   return (
     <header>
       <nav css={navigationStyles}>
@@ -81,21 +86,25 @@ export default function Header() {
             height="21"
           />
           <div css={dropdownContent}>
-            <div>
-              <Link href="/account">
-                <a>ACCOUNT</a>
-              </Link>
-            </div>
-            <hr />
-            <div>
-              <Link href="/login">
-                <a>LOGIN / REGISTER</a>
-              </Link>
-            </div>
-            <hr />
-            <div>
-              <a href="/logout">LOGOUT</a>
-            </div>
+            {props.user ? (
+              <>
+                <div>
+                  <Link href="/account">
+                    <a>ACCOUNT</a>
+                  </Link>
+                </div>
+                <hr />
+                <div>
+                  <a href="/logout">LOGOUT</a>
+                </div>
+              </>
+            ) : (
+              <div>
+                <Link href="/login">
+                  <a>LOGIN / REGISTER</a>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>
