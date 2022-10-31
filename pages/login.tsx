@@ -1,10 +1,16 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { getValidSessionByToken } from '../database/sessions';
 import { LoginResponseBody } from './api/login';
 
-export default function Login() {
+type Props = {
+  refreshUserProfile: () => Promise<void>;
+};
+
+export default function Login(props: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
@@ -37,10 +43,15 @@ export default function Login() {
       // (because this is untrusted user input)
       /^\/[a-zA-Z0-9-?=/]*$/.test(returnTo)
     ) {
+      // refresh the user on state
+      await props.refreshUserProfile();
       return await router.push(returnTo);
     }
 
-    await router.push(`/profile/${loginResponseBody.user.id}`);
+    // refresh the user on state
+    await props.refreshUserProfile();
+    // redirect user to user profile
+    await router.push(`/account`);
   }
 
   return (
@@ -99,4 +110,22 @@ export default function Login() {
       </button>
     </div>
   );
+}
+
+// to not be able to log in twice
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const token = context.req.cookies.sessionToken;
+
+  if (token && (await getValidSessionByToken(token))) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }

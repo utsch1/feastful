@@ -75,15 +75,19 @@ export default function Header() {
           />
           <div css={dropdownContent}>
             <div>
-              <Link href="/register">
-                <a>REGISTER</a>
+              <Link href="/account">
+                <a>ACCOUNT</a>
               </Link>
             </div>
             <hr />
             <div>
-              <Link href="/logout">
-                <a>LOGOUT</a>
+              <Link href="/register">
+                <a>LOGIN / REGISTER</a>
               </Link>
+            </div>
+            <hr />
+            <div>
+              <a href="/logout">LOGOUT</a>
             </div>
           </div>
         </div>

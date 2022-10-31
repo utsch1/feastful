@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createSession } from '../../database/sessions';
 import { getUserWithPasswordHashByEmail } from '../../database/users';
+import { createSerializedRegisterSessionTokenCookie } from '../../utils/cookies';
 
 export type LoginResponseBody =
   | { errors: { message: string }[] }
@@ -45,13 +46,15 @@ export default async function handler(
         .json({ errors: [{ message: 'password is invalid' }] });
     }
 
-    // 4. create session and token
+    // 4. create session token & serialize a cookie with the token
     const session = await createSession(
       user.id,
       crypto.randomBytes(80).toString('base64'),
     );
 
-    console.log(session);
+    const serializedCookie = createSerializedRegisterSessionTokenCookie(
+      session.token,
+    );
 
     // const userWithoutPassword = await createUser(
     //   request.body.email,
@@ -59,7 +62,10 @@ export default async function handler(
     // );
 
     // response
-    response.status(200).json({ user: { email: user.email } });
+    response
+      .status(200)
+      .setHeader('Set-Cookie', serializedCookie)
+      .json({ user: { email: user.email } });
   } else {
     response.status(401).json({ errors: [{ message: 'Method not allowed' }] });
   }
