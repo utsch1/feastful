@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { getValidSessionByToken } from '../database/sessions';
 import { LoginResponseBody } from './api/login';
+import { RegisterResponseBody } from './api/register';
 
 type Props = {
   refreshUserProfile: () => Promise<void>;
@@ -13,9 +14,48 @@ type Props = {
 export default function Login(props: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<{ message: string }[]>([]);
+  const [errorsLogin, setErrorsLogin] = useState<{ message: string }[]>([]);
+  const [errorsRegistration, setErrorsRegistration] = useState<
+    { message: string }[]
+  >([]);
   const router = useRouter();
 
+  // registration handler
+  async function registerHandler() {
+    const registerResponse = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password,
+      }),
+    });
+    const registerResponseBody =
+      (await registerResponse.json()) as RegisterResponseBody;
+
+    if ('errors' in registerResponseBody) {
+      setErrorsRegistration(registerResponseBody.errors);
+      console.log(registerResponseBody.errors);
+    }
+    const returnTo = router.query.returnTo;
+    if (
+      returnTo &&
+      !Array.isArray(returnTo) && // Security: Validate returnTo parameter against valid path
+      // (because this is untrusted user input)
+      /^\/[a-zA-Z0-9-?=/]*$/.test(returnTo)
+    ) {
+      return await router.push(returnTo);
+    }
+
+    // refresh the user on state
+    await props.refreshUserProfile();
+    // redirect user to user profile
+    await router.push(`/account`);
+  }
+
+  // login handler
   async function loginHandler() {
     const loginResponse = await fetch('/api/login', {
       // POST to create a new session
@@ -31,8 +71,8 @@ export default function Login(props: Props) {
     const loginResponseBody = (await loginResponse.json()) as LoginResponseBody;
 
     if ('errors' in loginResponseBody) {
-      setErrors(loginResponseBody.errors);
-      console.log(loginResponseBody.errors);
+      setErrorsLogin(loginResponseBody.errors);
+      return console.log(loginResponseBody.errors);
     }
 
     const returnTo = router.query.returnTo;
@@ -58,11 +98,11 @@ export default function Login(props: Props) {
     <div>
       <Head>
         <title>Login / Register</title>
-        <meta name="description" content="Login or registration" />
+        <meta name="description" content="Login or register" />
       </Head>
 
       <h1>Login</h1>
-      {errors.map((error) => {
+      {errorsLogin.map((error) => {
         return (
           <p
             css={css`
@@ -76,38 +116,89 @@ export default function Login(props: Props) {
           </p>
         );
       })}
+      <form>
+        <label>
+          E-Mail
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => {
+              setEmail(event.currentTarget.value);
+            }}
+            required
+          />
+        </label>
+        <br />
+        <br />
+        <label>
+          Password
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.currentTarget.value);
+            }}
+            required
+          />
+        </label>
+        <button
+          onClick={async () => {
+            await loginHandler();
+          }}
+        >
+          Login
+        </button>
+      </form>
+      <br />
+      <br />
+      <br />
+      <br />
 
-      <label>
-        E-Mail
-        <input
-          type="email"
-          value={email}
-          onChange={(event) => {
-            setEmail(event.currentTarget.value);
+      <h1>Register</h1>
+      {errorsRegistration.map((error) => {
+        return (
+          <p
+            css={css`
+              background-color: red;
+              color: white;
+              padding: 5px;
+            `}
+            key={error.message}
+          >
+            ERROR: {error.message}
+          </p>
+        );
+      })}
+      <form>
+        <label>
+          E-Mail
+          <input
+            value={email}
+            onChange={(event) => {
+              setEmail(event.currentTarget.value);
+            }}
+          />
+        </label>
+        <br />
+        <br />
+        <label>
+          Password
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.currentTarget.value);
+            }}
+          />
+        </label>
+        <button
+          onClick={async () => {
+            await registerHandler();
           }}
-          required
-        />
-      </label>
-      <br />
-      <br />
-      <label>
-        Password
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => {
-            setPassword(event.currentTarget.value);
-          }}
-          required
-        />
-      </label>
-      <button
-        onClick={() => {
-          loginHandler();
-        }}
-      >
-        Login
-      </button>
+        >
+          Register
+        </button>
+      </form>
     </div>
   );
 }

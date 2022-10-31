@@ -16,6 +16,7 @@ const navigationStyles = css`
 
   > div {
     align-self: center;
+    flex: 1;
   }
 
   > div > a {
@@ -24,10 +25,15 @@ const navigationStyles = css`
   }
 `;
 
+const logo = css`
+  text-align: center;
+`;
+
 const dropdown = css`
   position: relative;
   display: block;
   cursor: pointer;
+  text-align: end;
 
   :hover > div {
     display: block;
@@ -38,11 +44,12 @@ const dropdownContent = css`
   display: none;
   position: absolute;
   background-color: #e7dcda;
-  min-width: 10rem;
+  min-width: 12rem;
   padding: 1rem;
   z-index: 1;
   right: 0.1rem;
   border: 1px solid #000;
+  text-align: center;
 
   > hr {
     border: 1px solid #000;
@@ -63,7 +70,7 @@ export default function Header() {
             <a data-test-id="experiences">EXPERIENCES</a>
           </Link>
         </div>
-        <div>
+        <div css={logo}>
           <Image src="/logo.png" alt="Feastful" width="150" height="21" />
         </div>
         <div css={dropdown}>
@@ -81,7 +88,7 @@ export default function Header() {
             </div>
             <hr />
             <div>
-              <Link href="/register">
+              <Link href="/login">
                 <a>LOGIN / REGISTER</a>
               </Link>
             </div>

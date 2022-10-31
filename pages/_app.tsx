@@ -78,12 +78,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
         `}
       />
-      <Layout>
-        <Component
-          {...pageProps}
-          refreshUserProfile={refreshUserProfile}
-          user={user}
-        />
+      <Layout user={user}>
+        <Component {...pageProps} refreshUserProfile={refreshUserProfile} />
       </Layout>
     </>
   );
