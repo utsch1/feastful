@@ -1,7 +1,7 @@
 export async function up(sql) {
   await sql`
     CREATE TABLE languages (
-      id integer PRIMARY KEY,
+      id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       language varchar(20) NOT NULL
     )
   `;

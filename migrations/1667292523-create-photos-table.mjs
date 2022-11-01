@@ -1,7 +1,7 @@
 export async function up(sql) {
   await sql`
     CREATE TABLE photos (
-      id integer PRIMARY KEY,
+      id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       photo_url varchar(110) NOT NULL,
       experiences_id integer REFERENCES experiences (id) NOT NULL
     )

@@ -1,7 +1,7 @@
 export async function up(sql) {
   await sql`
     CREATE TABLE experiences (
-      id integer PRIMARY KEY,
+      id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       user_id integer REFERENCES users (id) ON DELETE CASCADE,
       headline varchar(70) NOT NULL,
       description varchar(500) NOT NULL,
