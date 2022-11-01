@@ -1,7 +1,7 @@
 export async function up(sql) {
   await sql`
     CREATE TABLE personalInformation (
-      id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+      id integer PRIMARY KEY,
       user_id integer REFERENCES users (id) ON DELETE CASCADE,
       first_name varchar(20) NOT NULL,
       personal_information text,

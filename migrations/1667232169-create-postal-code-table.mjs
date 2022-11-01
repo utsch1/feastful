@@ -1,7 +1,7 @@
 export async function up(sql) {
   await sql`
-    CREATE TABLE postalCode (
-      id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    CREATE TABLE postalCodes (
+      id integer PRIMARY KEY,
       postal_code integer NOT NULL
     )
   `;
@@ -9,6 +9,6 @@ export async function up(sql) {
 
 export async function down(sql) {
   await sql`
-    DROP TABLE postalCode
+    DROP TABLE postalCodes
   `;
 }
