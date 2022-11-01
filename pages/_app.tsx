@@ -65,7 +65,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
 
           h1 {
-            font-size: 2.25rem;
+            font-size: 2rem;
             margin: 0.75rem 0 0 0;
             font-family: 'Lato-Bold', sans-serif;
             color: #000000;
@@ -76,6 +76,32 @@ function MyApp({ Component, pageProps }: AppProps) {
             margin: 1.5rem 0 0 0;
             font-family: 'Lato-Italic', sans-serif;
             color: #3a4337;
+          }
+          label {
+            font-family: 'Lato-Bold', sans-serif;
+          }
+
+          label > span {
+            font-family: 'Lato-Light', sans-serif;
+            float: right;
+            margin-bottom: 0.3rem;
+          }
+
+          input {
+            display: block;
+            width: 100%;
+            border: 0.5px solid #000000;
+            border-radius: 5px;
+          }
+
+          textarea {
+            width: 100%;
+            border: 0.5px solid #000000;
+            border-radius: 5px;
+          }
+
+          select {
+            width: 100%;
           }
         `}
       />
