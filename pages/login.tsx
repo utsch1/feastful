@@ -12,8 +12,10 @@ type Props = {
 };
 
 export default function Login(props: Props) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [emailLogin, setEmailLogin] = useState('');
+  const [emailRegistration, setEmailRegistration] = useState('');
+  const [passwordLogin, setPasswordLogin] = useState('');
+  const [passwordRegistration, setPasswordRegistration] = useState('');
   const [errorsLogin, setErrorsLogin] = useState<{ message: string }[]>([]);
   const [errorsRegistration, setErrorsRegistration] = useState<
     { message: string }[]
@@ -28,8 +30,8 @@ export default function Login(props: Props) {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        email: email,
-        password,
+        email: emailRegistration,
+        password: passwordRegistration,
       }),
     });
     const registerResponseBody =
@@ -64,8 +66,8 @@ export default function Login(props: Props) {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        email,
-        password,
+        email: emailLogin,
+        password: passwordLogin,
       }),
     });
     const loginResponseBody = (await loginResponse.json()) as LoginResponseBody;
@@ -121,9 +123,9 @@ export default function Login(props: Props) {
           E-Mail
           <input
             type="email"
-            value={email}
+            value={emailLogin}
             onChange={(event) => {
-              setEmail(event.currentTarget.value);
+              setEmailLogin(event.currentTarget.value);
             }}
             required
           />
@@ -134,9 +136,9 @@ export default function Login(props: Props) {
           Password
           <input
             type="password"
-            value={password}
+            value={passwordLogin}
             onChange={(event) => {
-              setPassword(event.currentTarget.value);
+              setPasswordLogin(event.currentTarget.value);
             }}
             required
           />
@@ -173,9 +175,9 @@ export default function Login(props: Props) {
         <label>
           E-Mail
           <input
-            value={email}
+            value={emailRegistration}
             onChange={(event) => {
-              setEmail(event.currentTarget.value);
+              setEmailRegistration(event.currentTarget.value);
             }}
           />
         </label>
@@ -185,9 +187,9 @@ export default function Login(props: Props) {
           Password
           <input
             type="password"
-            value={password}
+            value={passwordRegistration}
             onChange={(event) => {
-              setPassword(event.currentTarget.value);
+              setPasswordRegistration(event.currentTarget.value);
             }}
           />
         </label>

@@ -7,7 +7,7 @@ export type Experience = {
   headline: string;
   description: string;
   cuisineId: number;
-  languagesId: number;
+  languagesId: number | null;
   postalCodeId: number;
   price: number;
   // createAt: string;
@@ -29,6 +29,15 @@ export type PostalCodes = {
   postalCode: number;
 };
 
+// Get all experiences
+export async function getExperiences() {
+  const experiences = await sql<Experience[]>`
+    SELECT * FROM experiences
+  `;
+  return experiences;
+}
+
+// Create a single experience
 export async function createExperience(
   userId: User['id'],
   headline: string,
@@ -44,14 +53,7 @@ export async function createExperience(
   VALUES
     (${headline}, ${userId}, ${description}, ${cuisineId}, ${languagesId}, ${postalCodeId}, ${price})
   RETURNING
-    id,
-    user_id,
-    headline,
-    description,
-    cuisine_id,
-    languages_id,
-    postal_code_id,
-    price
+    *
   `;
   return experience;
 }
