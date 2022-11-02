@@ -1,4 +1,5 @@
 import { sql } from './connect';
+import { User } from './users';
 
 export type Experience = {
   id: number;
@@ -6,11 +7,11 @@ export type Experience = {
   headline: string;
   description: string;
   cuisineId: number;
-  languagesId?: number;
+  languagesId: number;
   postalCodeId: number;
   price: number;
-  createAt: Date;
-  eventDate: Date;
+  // createAt: string;
+  // eventDate: string;
 };
 
 export type Cuisines = {
@@ -28,17 +29,47 @@ export type PostalCodes = {
   postalCode: number;
 };
 
-export async function getExperiencesByUserId(userId: number) {
-  const [user] = await sql<Experience[]>`
-    SELECT
-      *
-    FROM
-      experiences
-    WHERE
-      userId = ${userId}
+export async function createExperience(
+  userId: User['id'],
+  headline: string,
+  description: string,
+  cuisineId: Cuisines['id'],
+  languagesId: Languages['id'],
+  postalCodeId: PostalCodes['id'],
+  price: number,
+) {
+  const [experience] = await sql<Experience[]>`
+  INSERT INTO experiences
+    (headline, user_id, description, cuisine_id, languages_id, postal_code_id, price)
+  VALUES
+    (${headline}, ${userId}, ${description}, ${cuisineId}, ${languagesId}, ${postalCodeId}, ${price})
+  RETURNING
+    id,
+    user_id,
+    headline,
+    description,
+    cuisine_id,
+    languages_id,
+    postal_code_id,
+    price
   `;
-  return user;
+  return experience;
 }
+
+// export async function getExperienceByUserId(
+//   userId: User['id'],
+//   id: Experience['id'],
+// ) {
+//   const [experience] = await sql<Experience[]>`
+//     SELECT
+//       *
+//     FROM
+//       experiences, users
+//     WHERE
+//       users.id = ${userId}
+//   `;
+//   return experience;
+// }
 
 export async function getCuisines() {
   const cuisines = await sql<Cuisines[]>`

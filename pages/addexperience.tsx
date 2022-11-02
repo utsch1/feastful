@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import {
   Cuisines,
+  Experience,
   getCuisines,
   getLanguages,
   getPostalCodes,
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export default function Login(props: Props) {
+  const [experience, setExperience] = useState<Experience[]>([]);
   const [headline, setHeadline] = useState('');
   const [description, setDescription] = useState('');
   const [cuisine, setCuisine] = useState('');
@@ -26,22 +28,25 @@ export default function Login(props: Props) {
   const [price, setPrice] = useState('');
   const [eventDate, setEventDate] = useState('');
 
-  async function experienceHandler() {
-    const experienceResponse = await fetch('/api/user/experiences', {
+  async function createExperienceFromApi() {
+    const response = await fetch('/api/user/experiences', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        headline,
-        description,
-        price,
-        cuisine,
-        language,
-        postalCode,
-        eventDate,
+        headline: headline,
+        description: description,
+        price: price,
+        cuisine: cuisine,
+        language: language,
+        postalCode: postalCode,
       }),
     });
+    const experienceFromApi = (await response.json()) as Experience;
+
+    const newState = [...experience, experienceFromApi];
+    setExperience(newState);
   }
 
   return (
@@ -173,12 +178,12 @@ export default function Login(props: Props) {
             onChange={(event) => {
               setEventDate(event.currentTarget.value);
             }}
-            required
+            // required
           />
         </label>
         <button
           onClick={async () => {
-            await experienceHandler();
+            await createExperienceFromApi();
           }}
         >
           Save
