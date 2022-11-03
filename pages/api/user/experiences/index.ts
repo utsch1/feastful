@@ -42,13 +42,16 @@ export default async function handler(
     }
     // 1. make sure the data exist
 
+    console.log(request.body);
+
+    const userId = request.body?.userId;
     const headline = request.body?.headline;
     const description = request.body?.description;
-    const cuisineId = request.body?.cuisineId;
-    const languagesId = request.body?.languagesId;
-    const postalCodeId = request.body?.postalCodeId;
+    const cuisineId = request.body?.cuisine;
+    const languagesId = request.body?.language;
+    const postalCodeId = request.body?.postalCode;
     const price = request.body?.price;
-    const userId = request.body?.userId;
+    const eventDate = new Date(request.body?.eventDate);
 
     console.log(headline);
     console.log(description);
@@ -56,6 +59,7 @@ export default async function handler(
     console.log(languagesId);
     console.log(postalCodeId);
     console.log(price);
+    console.log(eventDate);
 
     if (
       !(
@@ -74,13 +78,14 @@ export default async function handler(
 
     // 2. create new experience
     const newExperience = await createExperience(
+      userId,
       headline,
       description,
-      price,
       cuisineId,
       languagesId,
       postalCodeId,
-      userId,
+      price,
+      eventDate,
     );
 
     // 3. response with the created experience

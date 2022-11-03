@@ -9,7 +9,7 @@ export async function up(sql) {
       languages_id integer REFERENCES languages (id),
       postal_code_id integer REFERENCES postalCodes (id),
       price integer NOT NULL,
-      created_at timestamp,
+      created_at timestamp NOT NULL DEFAULT NOW(),
       event_date timestamp
     )
   `;

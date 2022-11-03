@@ -10,8 +10,8 @@ export type Experience = {
   languagesId: number | null;
   postalCodeId: number;
   price: number;
-  // createAt: string;
-  // eventDate: string;
+  createdAt: Date;
+  eventDate: Date;
 };
 
 export type Cuisines = {
@@ -46,12 +46,13 @@ export async function createExperience(
   languagesId: Languages['id'],
   postalCodeId: PostalCodes['id'],
   price: number,
+  eventDate: Date,
 ) {
   const [experience] = await sql<Experience[]>`
   INSERT INTO experiences
-    (headline, user_id, description, cuisine_id, languages_id, postal_code_id, price)
+    (user_id, headline, description, cuisine_id, languages_id, postal_code_id, price, event_date)
   VALUES
-    (${headline}, ${userId}, ${description}, ${cuisineId}, ${languagesId}, ${postalCodeId}, ${price})
+    (${userId}, ${headline}, ${description}, ${cuisineId}, ${languagesId}, ${postalCodeId}, ${price}, ${eventDate})
   RETURNING
     *
   `;

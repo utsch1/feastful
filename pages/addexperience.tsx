@@ -39,13 +39,14 @@ export default function AddExperience(props: Props) {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
+        userId: props.user.id,
         headline: headline,
         description: description,
-        price: price,
+        price: Number(price),
         cuisine: Number(cuisine),
         language: Number(language),
         postalCode: Number(postalCode),
-        userId: props.user.id,
+        eventDate: eventDate,
       }),
     });
     const experienceResponseBody =
@@ -67,7 +68,10 @@ export default function AddExperience(props: Props) {
     console.log(typeof cuisine);
     console.log(typeof language);
     console.log(typeof postalCode);
-    console.log(price);
+    console.log(typeof price);
+    console.log(typeof eventDate);
+    console.log(eventDate);
+    console.log(new Date(eventDate).getTime());
   }
 
   return (
