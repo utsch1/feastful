@@ -1,6 +1,11 @@
 import Head from 'next/head';
+import { Experience, getExperiences } from '../database/experiences';
 
-export default function Experiences() {
+type Props = {
+  experiences: Experience[];
+};
+
+export default function Experiences(props: Props) {
   return (
     <div>
       <Head>
@@ -9,12 +14,29 @@ export default function Experiences() {
       </Head>
 
       <div>
-        <h1>experiences</h1>
+        <h1>Explore cooking lessons</h1>
       </div>
 
       <div>
-        <p>acilisi.</p>
+        {props.experiences.map((experiences) => {
+          return (
+            <div key={`experience-${experiences.id}`}>
+              <h3>{experiences.headline}</h3>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const oldExperiences = await getExperiences();
+
+  // https://flaviocopes.com/nextjs-serialize-date-json/
+  const experiences = JSON.parse(JSON.stringify(oldExperiences));
+
+  return {
+    props: { experiences: experiences },
+  };
 }

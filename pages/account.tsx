@@ -35,7 +35,7 @@ export default function UserProfile(props: Props) {
           return (
             <div key={`experience-${experience.userId}`}>
               <span>
-                <p>{experience.headline}</p>
+                <span>{experience.headline}</span>
                 <button>Update</button>
                 <button>Delete</button>
               </span>
@@ -65,6 +65,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
+
+  // DELETE AFTERWARDS
   console.log(experiences);
 
   return {

@@ -95,7 +95,7 @@ export default function Header(props: Props) {
                 </div>
                 <hr />
                 <div>
-                  <a href="/logout">LOGOUT</a>
+                  <Link href="/logout">LOGOUT</Link>
                 </div>
               </>
             ) : (

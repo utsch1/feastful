@@ -59,7 +59,7 @@ export async function createExperience(
   return experience;
 }
 
-// get all experiences by user ID
+// Get all experiences by user ID
 export async function getExperiencesByUserId(userId: number) {
   const experiences = await sql<Experience[]>`
     SELECT
@@ -76,6 +76,7 @@ export async function getExperiencesByUserId(userId: number) {
   return experiences;
 }
 
+// Get single experience
 export async function getExperienceById(id: number) {
   const [experience] = await sql<Experience[]>`
     SELECT
