@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { Experience, getExperiencesByUserId } from '../database/experiences';
 import { getUserBySessionToken, User } from '../database/users';
 
@@ -30,6 +31,11 @@ export default function UserProfile(props: Props) {
       <h2>Hi, {props.user.email}</h2>
       <h1>Your account overview</h1>
       <h3>Your cooking classes</h3>
+      <Link href="/addexperience">
+        <a data-test-id="add-new-experience">CREATE NEW</a>
+      </Link>
+      <br />
+      <br />
       <div>
         {props.experiences.map((experience) => {
           return (

@@ -22,6 +22,7 @@ export default function Experiences(props: Props) {
           return (
             <div key={`experience-${experiences.id}`}>
               <h3>{experiences.headline}</h3>
+              <p>{experiences.description}</p>
             </div>
           );
         })}
@@ -34,6 +35,7 @@ export async function getServerSideProps() {
   const oldExperiences = await getExperiences();
 
   // https://flaviocopes.com/nextjs-serialize-date-json/
+  // in order to be able to use dates in frontend
   const experiences = JSON.parse(JSON.stringify(oldExperiences));
 
   return {
