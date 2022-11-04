@@ -1,9 +1,11 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import { Experience, getExperiencesByUserId } from '../database/experiences';
 import { getUserBySessionToken, User } from '../database/users';
 
 type Props = {
   user?: User;
+  experiences: Experience[];
 };
 
 export default function UserProfile(props: Props) {
@@ -28,9 +30,19 @@ export default function UserProfile(props: Props) {
       <h2>Hi, {props.user.email}</h2>
       <h1>Your account overview</h1>
       <h3>Your cooking classes</h3>
-      <p>
-        {props.user.id} {props.user.email}
-      </p>
+      <div>
+        {props.experiences.map((experience) => {
+          return (
+            <div key={`experience-${experience.userId}`}>
+              <span>
+                <p>{experience.headline}</p>
+                <button>Update</button>
+                <button>Delete</button>
+              </span>
+            </div>
+          );
+        })}
+      </div>
       <h3>Personal information</h3>
       <p>
         {props.user.id} {props.user.email}
@@ -43,6 +55,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
 
   const user = token && (await getUserBySessionToken(token));
+  const experiences = user && (await getExperiencesByUserId(user.id));
 
   if (!user) {
     return {
@@ -52,8 +65,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
+  console.log(experiences);
 
   return {
-    props: { user },
+    props: { user: user, experiences: experiences },
   };
 }

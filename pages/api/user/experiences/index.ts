@@ -4,6 +4,7 @@ import {
   Experience,
   getExperiences,
 } from '../../../../database/experiences';
+import { createPhotoUrl } from '../../../../database/photos';
 import { getValidSessionByToken } from '../../../../database/sessions';
 
 export type ExperienceResponseBody =
@@ -52,6 +53,7 @@ export default async function handler(
     const postalCodeId = request.body?.postalCode;
     const price = request.body?.price;
     const eventDate = new Date(request.body?.eventDate);
+    const photoUrl = request.body?.photoUrl;
 
     console.log(headline);
     console.log(description);
@@ -60,6 +62,7 @@ export default async function handler(
     console.log(postalCodeId);
     console.log(price);
     console.log(eventDate);
+    console.log(photoUrl);
 
     if (
       !(
@@ -88,8 +91,10 @@ export default async function handler(
       eventDate,
     );
 
+    const newPhoto = await createPhotoUrl(photoUrl, newExperience.id);
+
     // 3. response with the created experience
-    return response.status(200).json({ newExperience });
+    return response.status(200).json({ newExperience, newPhoto });
   }
 
   return response.status(400).json({ message: 'Method not allowed' });

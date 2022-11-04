@@ -11,7 +11,6 @@ import {
   Languages,
   PostalCodes,
 } from '../database/experiences';
-import { Photo } from '../database/photos';
 import { getUserBySessionToken, User } from '../database/users';
 import { ExperienceResponseBody } from './api/user/experiences';
 
@@ -20,7 +19,6 @@ type Props = {
   postalCodes: PostalCodes[];
   languages: Languages[];
   user: User;
-  photos: Photo[];
 };
 
 export default function AddExperience(props: Props) {
@@ -32,7 +30,7 @@ export default function AddExperience(props: Props) {
   const [price, setPrice] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [image, setImage] = useState('');
-  const [url, setUrl] = useState('');
+  const [photoUrl, setPhotoUrl] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
 
@@ -51,6 +49,7 @@ export default function AddExperience(props: Props) {
         language: Number(language),
         postalCode: Number(postalCode),
         eventDate: eventDate,
+        photoUrl: photoUrl,
       }),
     });
     const experienceResponseBody =
@@ -63,16 +62,6 @@ export default function AddExperience(props: Props) {
     }
 
     await router.push(`/account`);
-
-    // console.log(headline);
-    // console.log(description);
-    // console.log(typeof cuisine);
-    // console.log(typeof language);
-    // console.log(typeof postalCode);
-    // console.log(typeof price);
-    // console.log(typeof eventDate);
-    // console.log(eventDate);
-    // console.log(new Date(eventDate).getTime());
   }
 
   const selectImage = (event: any) => {
@@ -90,7 +79,7 @@ export default function AddExperience(props: Props) {
     })
       .then((response) => response.json())
       .then((data) => {
-        setUrl(data.url);
+        setPhotoUrl(data.url);
         console.log(data);
       })
       .catch((error) => console.log(error));
@@ -231,7 +220,7 @@ export default function AddExperience(props: Props) {
         Photos
         <input type="file" onChange={selectImage} />
         <button onClick={uploadImage}>Upload</button>
-        <Image src={url} height="50" width="50" alt="uploaded photo" />
+        <Image src={photoUrl} height="50" width="50" alt="uploaded photo" />
       </label>
       <button
         onClick={async () => {

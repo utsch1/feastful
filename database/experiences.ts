@@ -59,20 +59,34 @@ export async function createExperience(
   return experience;
 }
 
-// export async function getExperienceByUserId(
-//   userId: User['id'],
-//   id: Experience['id'],
-// ) {
-//   const [experience] = await sql<Experience[]>`
-//     SELECT
-//       *
-//     FROM
-//       experiences, users
-//     WHERE
-//       users.id = ${userId}
-//   `;
-//   return experience;
-// }
+// get all experiences by user ID
+export async function getExperiencesByUserId(userId: number) {
+  const experiences = await sql<Experience[]>`
+    SELECT
+      users.id AS user_id,
+      headline AS headline
+    FROM
+      experiences,
+      users
+    WHERE
+      users.id = ${userId}
+    AND
+      experiences.user_id = ${userId}
+  `;
+  return experiences;
+}
+
+export async function getExperienceById(id: number) {
+  const [experience] = await sql<Experience[]>`
+    SELECT
+      *
+    FROM
+      experiences
+    WHERE
+      id = ${id}
+  `;
+  return experience;
+}
 
 export async function getCuisines() {
   const cuisines = await sql<Cuisines[]>`
