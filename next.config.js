@@ -12,5 +12,8 @@ module.exports = {
     locales: ['en'],
     defaultLocale: 'en',
   },
+  images: {
+    domains: ['res.cloudinary.com'],
+  },
   nextConfig,
 };

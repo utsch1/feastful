@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import {
@@ -10,6 +11,7 @@ import {
   Languages,
   PostalCodes,
 } from '../database/experiences';
+import { Photo } from '../database/photos';
 import { getUserBySessionToken, User } from '../database/users';
 import { ExperienceResponseBody } from './api/user/experiences';
 
@@ -18,10 +20,10 @@ type Props = {
   postalCodes: PostalCodes[];
   languages: Languages[];
   user: User;
+  photos: Photo[];
 };
 
 export default function AddExperience(props: Props) {
-  // const [experience, setExperience] = useState<Experience[]>([]);
   const [headline, setHeadline] = useState('');
   const [description, setDescription] = useState('');
   const [cuisine, setCuisine] = useState('');
@@ -29,6 +31,8 @@ export default function AddExperience(props: Props) {
   const [postalCode, setPostalCode] = useState('');
   const [price, setPrice] = useState('');
   const [eventDate, setEventDate] = useState('');
+  const [image, setImage] = useState('');
+  const [url, setUrl] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
 
@@ -58,21 +62,39 @@ export default function AddExperience(props: Props) {
       return console.log(experienceResponseBody.errors);
     }
 
-    // const newState = [...experience, experienceFromApi];
-    // setExperience(newState);
-
     await router.push(`/account`);
 
-    console.log(headline);
-    console.log(description);
-    console.log(typeof cuisine);
-    console.log(typeof language);
-    console.log(typeof postalCode);
-    console.log(typeof price);
-    console.log(typeof eventDate);
-    console.log(eventDate);
-    console.log(new Date(eventDate).getTime());
+    // console.log(headline);
+    // console.log(description);
+    // console.log(typeof cuisine);
+    // console.log(typeof language);
+    // console.log(typeof postalCode);
+    // console.log(typeof price);
+    // console.log(typeof eventDate);
+    // console.log(eventDate);
+    // console.log(new Date(eventDate).getTime());
   }
+
+  const selectImage = (event: any) => {
+    setImage(event.currentTarget.files[0]);
+  };
+
+  const uploadImage = async () => {
+    const data = new FormData();
+    data.append('file', image);
+    data.append('upload_preset', 'feastful-final-project');
+    data.append('cloud_name', 'dccdgltzj');
+    await fetch('  https://api.cloudinary.com/v1_1/dccdgltzj/image/upload', {
+      method: 'POST',
+      body: data,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUrl(data.url);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div>
@@ -202,8 +224,14 @@ export default function AddExperience(props: Props) {
           onChange={(event) => {
             setEventDate(event.currentTarget.value);
           }}
-          // required
+          required
         />
+      </label>
+      <label htmlFor="photos">
+        Photos
+        <input type="file" onChange={selectImage} />
+        <button onClick={uploadImage}>Upload</button>
+        <Image src={url} height="50" width="50" alt="uploaded photo" />
       </label>
       <button
         onClick={async () => {
