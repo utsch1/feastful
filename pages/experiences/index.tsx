@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import { Experience, getExperiences } from '../database/experiences';
+import Link from 'next/link';
+import { Experience, getExperiences } from '../../database/experiences';
 
 type Props = {
   experiences: Experience[];
@@ -21,7 +22,9 @@ export default function Experiences(props: Props) {
         {props.experiences.map((experiences) => {
           return (
             <div key={`experience-${experiences.id}`}>
-              <h3>{experiences.headline}</h3>
+              <Link href={`/experiences/${experiences.id}`}>
+                <h3>{experiences.headline}</h3>
+              </Link>
               <p>{experiences.description}</p>
             </div>
           );

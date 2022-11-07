@@ -76,7 +76,7 @@ export async function getExperiencesByUserId(userId: number) {
   return experiences;
 }
 
-// Get single experience
+// Get single experience by ID
 export async function getExperienceById(id: number) {
   const [experience] = await sql<Experience[]>`
     SELECT
@@ -89,6 +89,50 @@ export async function getExperienceById(id: number) {
   return experience;
 }
 
+// Update experience by ID
+export async function updateExperienceById(
+  id: number,
+  headline: string,
+  description: string,
+  cuisineId: Cuisines['id'],
+  languagesId: Languages['id'],
+  postalCodeId: PostalCodes['id'],
+  price: number,
+  eventDate: Date,
+) {
+  const [experience] = await sql<Experience[]>`
+    UPDATE
+      experiences
+    SET
+      headline = ${headline},
+      description = ${description},
+      cuisine_id = ${cuisineId},
+      languages_id = ${languagesId},
+      postal_code_id = ${postalCodeId},
+      price = ${price},
+      event_date = ${eventDate}
+    WHERE
+      id = ${id}
+    RETURNING
+      *
+  `;
+  return experience;
+}
+
+// Delete experience by ID
+export async function deleteExperienceById(id: number) {
+  const [experience] = await sql<Experience[]>`
+    DELETE FROM
+      experiences
+    WHERE
+      id = ${id}
+    RETURNING
+      *
+  `;
+  return experience;
+}
+
+// Get all cuisines
 export async function getCuisines() {
   const cuisines = await sql<Cuisines[]>`
   SELECT
@@ -99,6 +143,7 @@ export async function getCuisines() {
   return cuisines;
 }
 
+// Get all postal codes
 export async function getPostalCodes() {
   const postalCodes = await sql<PostalCodes[]>`
   SELECT
@@ -109,6 +154,7 @@ export async function getPostalCodes() {
   return postalCodes;
 }
 
+// Get all languages
 export async function getLanguages() {
   const languages = await sql<Languages[]>`
   SELECT
