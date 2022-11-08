@@ -30,6 +30,21 @@ export default function SinglePlant(props: Props) {
           content={`This is the ${props.experience.headline}'s form`}
         />
       </Head>
+
+      <div>
+        <div key={`experience-${props.experience.id}`}>
+          {/* <Image
+                href={props.photos.url}
+                alt="impressions of the cooking lesson"
+              /> */}
+
+          <h1>{props.experience.headline}</h1>
+          <p>{props.experience.description}</p>
+          <p>{props.experience.price}€/person</p>
+          {/* <p>{props.experience.cuisineId}</p> */}
+          {/* <p>{props.experience.eventDate}</p> */}
+        </div>
+      </div>
     </div>
   );
 }

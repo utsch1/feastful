@@ -1,9 +1,12 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Experience, getExperiences } from '../../database/experiences';
+import { getPhotoUrlByExperienceId, Photo } from '../../database/photos';
 
 type Props = {
   experiences: Experience[];
+  photos: Photo[];
 };
 
 export default function Experiences(props: Props) {
@@ -22,10 +25,14 @@ export default function Experiences(props: Props) {
         {props.experiences.map((experiences) => {
           return (
             <div key={`experience-${experiences.id}`}>
+              {/* <Image
+                href={props.photos.url}
+                alt="impressions of the cooking lesson"
+              /> */}
               <Link href={`/experiences/${experiences.id}`}>
                 <h3>{experiences.headline}</h3>
               </Link>
-              <p>{experiences.description}</p>
+              <p>{experiences.price}€/person</p>
             </div>
           );
         })}
@@ -36,6 +43,7 @@ export default function Experiences(props: Props) {
 
 export async function getServerSideProps() {
   const oldExperiences = await getExperiences();
+  // const photos = await getPhotoUrlByExperienceId(experiences.id);
 
   // https://flaviocopes.com/nextjs-serialize-date-json/
   // in order to be able to use dates in frontend

@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { Fragment, useEffect, useState } from 'react';
 import { Experience, getExperiencesByUserId } from '../database/experiences';
 import { getUserBySessionToken, User } from '../database/users';
 
@@ -10,6 +11,32 @@ type Props = {
 };
 
 export default function UserProfile(props: Props) {
+  const [newExperiences, setNewExperiences] = useState<Experience[]>([]);
+
+  // Load all experiences into state on first render and every time props.experiences changes
+  // useEffect(() => {
+  //   setNewExperiences(props.experiences);
+  // }, [props.experiences]);
+
+  async function deleteExperienceFromApiById(id: number) {
+    const response = await fetch(`/api/user/experiences/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: id }),
+    });
+    const deletedExperience = (await response.json()) as Experience;
+
+    const filteredExperiences = newExperiences.filter((experience) => {
+      return experience.id !== deletedExperience.id;
+    });
+
+    setNewExperiences(filteredExperiences);
+  }
+
+  console.log(props.experiences);
+
   if (!props.user) {
     return (
       <>
@@ -32,20 +59,27 @@ export default function UserProfile(props: Props) {
       <h1>Your account overview</h1>
       <h3>Your cooking classes</h3>
       <Link href="/addexperience">
-        <a data-test-id="add-new-experience">CREATE NEW</a>
+        <a data-test-id="add-new-experience">+</a>
       </Link>
       <br />
       <br />
       <div>
         {props.experiences.map((experience) => {
           return (
-            <div key={`experience-${experience.userId}`}>
+            <Fragment key={`experience-${experience.id}`}>
               <span>
                 <span>{experience.headline}</span>
-                <button>Update</button>
-                <button>Delete</button>
+                <Link href={`/editexperience/${experience.id}`}>Update</Link>
+                <button
+                  onClick={async () =>
+                    await deleteExperienceFromApiById(experience.id)
+                  }
+                >
+                  Delete
+                </button>
               </span>
-            </div>
+              <br />
+            </Fragment>
           );
         })}
       </div>
@@ -71,9 +105,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
-
-  // DELETE AFTERWARDS
-  console.log(experiences);
 
   return {
     props: { user: user, experiences: experiences },

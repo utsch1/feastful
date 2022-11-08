@@ -43,8 +43,6 @@ export default async function handler(
     }
     // 1. make sure the data exist
 
-    console.log(request.body);
-
     const userId = request.body?.userId;
     const headline = request.body?.headline;
     const description = request.body?.description;
@@ -54,15 +52,6 @@ export default async function handler(
     const price = request.body?.price;
     const eventDate = new Date(request.body?.eventDate);
     const photoUrl = request.body?.photoUrl;
-
-    console.log(headline);
-    console.log(description);
-    console.log(cuisineId);
-    console.log(languagesId);
-    console.log(postalCodeId);
-    console.log(price);
-    console.log(eventDate);
-    console.log(photoUrl);
 
     if (
       !(

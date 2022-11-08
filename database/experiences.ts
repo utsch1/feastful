@@ -63,8 +63,9 @@ export async function createExperience(
 export async function getExperiencesByUserId(userId: number) {
   const experiences = await sql<Experience[]>`
     SELECT
+      experiences.id AS id,
       users.id AS user_id,
-      headline AS headline
+      experiences.headline AS headline
     FROM
       experiences,
       users
@@ -76,6 +77,33 @@ export async function getExperiencesByUserId(userId: number) {
   return experiences;
 }
 
+// Get single experience by user ID
+export async function getExperienceByUserId(userId: number) {
+  const experience = await sql<Experience[]>`
+    SELECT
+      experiences.id AS id,
+      users.id AS user_id,
+      experiences.headline AS headline,
+      experiences.description AS description,
+      cuisines.id AS cuisine_id,
+      languages.id AS language_id,
+      postalCodes.id AS postal_code_id,
+      experiences.price AS price,
+      experiences.event_date AS event_date
+    FROM
+      experiences,
+      users,
+      cuisines,
+      languages,
+      postalCodes
+    WHERE
+      users.id = ${userId}
+    AND
+      experiences.user_id = ${userId}
+  `;
+  return experience;
+}
+
 // Get single experience by ID
 export async function getExperienceById(id: number) {
   const [experience] = await sql<Experience[]>`
@@ -84,7 +112,30 @@ export async function getExperienceById(id: number) {
     FROM
       experiences
     WHERE
-      id = ${id}
+      experiences.id = ${id}
+  `;
+  return experience;
+}
+
+// Get a single experience by id and valid session token
+export async function getExperienceByIdAndValidSessionToken(
+  id: number,
+  token: string | undefined,
+) {
+  if (!token) return undefined;
+  // STRETCH: Update this adding a role to the users and matching it with the session token
+  const [experience] = await sql<Experience[]>`
+    SELECT
+      experiences.*
+    FROM
+      experiences,
+      sessions
+    WHERE
+      sessions.token = ${token}
+    AND
+      sessions.expiry_timestamp > now()
+    AND
+      experiences.id = ${id}
   `;
   return experience;
 }
