@@ -2,11 +2,12 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Cuisines,
   Experience,
   getCuisines,
+  getExperienceById,
   getExperienceByUserId,
   getLanguages,
   getPostalCodes,
@@ -14,7 +15,6 @@ import {
   PostalCodes,
 } from '../../database/experiences';
 import { getUserBySessionToken, User } from '../../database/users';
-import { ExperienceResponseBody } from '../api/user/experiences';
 
 type Props = {
   cuisines: Cuisines[];
@@ -25,11 +25,14 @@ type Props = {
 };
 
 export default function EditExperience(props: Props) {
-  // const [experience, setExperience] = useState<Experience[]>([]);
+  console.log(props);
+  const [experience, setExperience] = useState<Experience[]>([]);
   const [headline, setHeadline] = useState(props.experience.headline);
   const [description, setDescription] = useState(props.experience.description);
   const [cuisine, setCuisine] = useState(props.experience.cuisineId);
-  const [language, setLanguage] = useState(props.experience.languagesId);
+  const [language, setLanguage] = useState(
+    Number(props.experience.languagesId),
+  );
   const [postalCode, setPostalCode] = useState(props.experience.postalCodeId);
   const [price, setPrice] = useState(props.experience.price);
   const [eventDate, setEventDate] = useState(props.experience.eventDate);
@@ -37,6 +40,13 @@ export default function EditExperience(props: Props) {
   const [photoUrl, setPhotoUrl] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
+
+  async function getExperienceFromApiById(id: number) {
+    const response = await fetch(`/api/user/experiences/${id}`);
+    const experienceFromApi = await response.json();
+
+    setExperience(experienceFromApi);
+  }
 
   async function updateExperienceFromApiById(id: number) {
     const response = await fetch(`/api/user/experience/${id}`, {
@@ -57,31 +67,26 @@ export default function EditExperience(props: Props) {
       }),
     });
 
-    const experienceResponseBody =
-      (await response.json()) as ExperienceResponseBody;
+    const updatedExperienceFromApi = (await response.json()) as Experience;
 
-    // Handle errors
-    if ('errors' in experienceResponseBody) {
-      setErrors(experienceResponseBody.errors);
-      return console.log(experienceResponseBody.errors);
-    }
+    const newState = experience.map((experience) => {
+      if (experience.id === updatedExperienceFromApi.id) {
+        return updatedExperienceFromApi;
+      } else {
+        return experience;
+      }
+    });
+
+    setExperience(newState);
 
     await router.push(`/account`);
-
-    // const updatedExperienceFromApi = (await response.json()) as Experience;
-
-    // const newState = experience.map((newExperience) => {
-    //   if (newExperience.id === updatedExperienceFromApi.id) {
-    //     return updatedExperienceFromApi;
-    //   } else {
-    //     return newExperience;
-    //   }
-    // });
-
-    // setExperience(newState);
-
-    // await router.push(`/account`);
   }
+
+  // useEffect(() => {
+  //   getExperienceFromApiById(props.experience.id).catch((err) => {
+  //     console.log(err);
+  //   });
+  // }, []);
 
   const selectImage = (event: any) => {
     setImage(event.currentTarget.files[0]);
@@ -155,7 +160,7 @@ export default function EditExperience(props: Props) {
           type="number"
           value={price}
           onChange={(event) => {
-            setPrice(event.currentTarget.value);
+            setPrice(Number(event.currentTarget.value));
           }}
           required
         />
@@ -167,7 +172,7 @@ export default function EditExperience(props: Props) {
         <select
           value={cuisine}
           onChange={(event) => {
-            setCuisine(event.currentTarget.value);
+            setCuisine(Number(event.currentTarget.value));
           }}
           required
         >
@@ -188,7 +193,7 @@ export default function EditExperience(props: Props) {
         <select
           value={postalCode}
           onChange={(event) => {
-            setPostalCode(event.currentTarget.value);
+            setPostalCode(Number(event.currentTarget.value));
           }}
           required
         >
@@ -209,7 +214,7 @@ export default function EditExperience(props: Props) {
         <select
           value={language}
           onChange={(event) => {
-            setLanguage(event.currentTarget.value);
+            setLanguage(Number(event.currentTarget.value));
           }}
         >
           <option value="Choose language"> -- Choose language -- </option>
@@ -243,7 +248,7 @@ export default function EditExperience(props: Props) {
       </label>
       <button
         onClick={async () => {
-          await updateExperienceFromApiById();
+          await updateExperienceFromApiById(props.experience.id);
         }}
       >
         Save
@@ -254,6 +259,9 @@ export default function EditExperience(props: Props) {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
+  const id = context.query.experienceId;
+  const singleExperience = await getExperienceById(Number(id));
+  const experience = JSON.parse(JSON.stringify(singleExperience));
 
   const user = token && (await getUserBySessionToken(token));
 
@@ -270,9 +278,19 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const postalCodes = await getPostalCodes();
   const languages = await getLanguages();
 
-  const foundExperience = JSON.parse(
-    JSON.stringify(await getExperienceByUserId(user.id)),
-  );
+  // const foundExperience = JSON.parse(
+  //   JSON.stringify(await getExperienceByUserId(user.id)),
+  // );
+
+  // if (!experience) {
+  //   return {
+  //     props: {
+  //       user: user,
+  //     },
+  //   };
+  // }
+
+  console.log(experience);
 
   return {
     props: {
@@ -280,7 +298,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       postalCodes: postalCodes,
       languages: languages,
       user: user,
-      experience: foundExperience,
+      experience: experience,
     },
   };
 }

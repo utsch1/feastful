@@ -2,7 +2,11 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Experience, getExperiences } from '../../database/experiences';
-import { getPhotoUrlByExperienceId, Photo } from '../../database/photos';
+import {
+  getPhotos,
+  getPhotoUrlByExperienceId,
+  Photo,
+} from '../../database/photos';
 
 type Props = {
   experiences: Experience[];
@@ -25,10 +29,12 @@ export default function Experiences(props: Props) {
         {props.experiences.map((experiences) => {
           return (
             <div key={`experience-${experiences.id}`}>
-              {/* <Image
-                href={props.photos.url}
+              <Image
+                src={experiences.photo}
                 alt="impressions of the cooking lesson"
-              /> */}
+                width="50"
+                height="50"
+              />
               <Link href={`/experiences/${experiences.id}`}>
                 <h3>{experiences.headline}</h3>
               </Link>
@@ -43,13 +49,32 @@ export default function Experiences(props: Props) {
 
 export async function getServerSideProps() {
   const oldExperiences = await getExperiences();
+  const photos = await getPhotos();
+
   // const photos = await getPhotoUrlByExperienceId(experiences.id);
 
   // https://flaviocopes.com/nextjs-serialize-date-json/
   // in order to be able to use dates in frontend
   const experiences = JSON.parse(JSON.stringify(oldExperiences));
 
+  console.log(photos);
+  console.log(experiences);
+
+  const allExperiences = experiences.map((experience) => {
+    const photoUrl = photos.find(
+      (photo) => experience.id === photo.experiencesId,
+    );
+    return {
+      id: experience.id,
+      headline: experience.headline,
+      price: experience.price,
+      photo: photoUrl.photoUrl,
+    };
+  });
+
+  console.log(allExperiences);
+
   return {
-    props: { experiences: experiences },
+    props: { experiences: allExperiences },
   };
 }

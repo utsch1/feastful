@@ -84,6 +84,11 @@ export default function UserProfile(props: Props) {
         })}
       </div>
       <h3>Personal information</h3>
+      <Link href="/addpersonalinformation">
+        <a data-test-id="add-personal-information">+</a>
+      </Link>
+      <br />
+      <br />
       <p>
         {props.user.id} {props.user.email}
       </p>
