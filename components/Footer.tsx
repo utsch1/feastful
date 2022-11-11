@@ -29,7 +29,7 @@ const footerStyles = css`
 export default function Footer() {
   return (
     <footer css={footerStyles}>
-      <span>© FEASTFUL 2022</span>
+      <span>© UTE GREINER 2022</span>
       <span>
         <Link href="/credits">CREDITS</Link>
         <Link href="/about">ABOUT</Link>

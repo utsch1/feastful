@@ -27,6 +27,7 @@ export const customTheme = createTheme({
     h2: {
       fontFamily: "'Lato', 'Arial', 'sans-serif'",
       fontSize: '1.25rem',
+      fontWeight: 700,
     },
     h3: {
       fontFamily: "'Lato', 'Arial', 'sans-serif'",

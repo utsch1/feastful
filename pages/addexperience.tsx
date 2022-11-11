@@ -223,14 +223,13 @@ export default function AddExperience(props: Props) {
         <button onClick={uploadImage}>Upload</button>
         <Image src={photoUrl} height="50" width="50" alt="uploaded photo" />
       </label>
-      <Button
-        variant="contained"
+      <button
         onClick={async () => {
           await createExperienceFromApi();
         }}
       >
         Save
-      </Button>
+      </button>
     </div>
   );
 }

@@ -1,7 +1,5 @@
-import { Typography } from '@mui/material';
+import { Box, Grid, Link, Typography } from '@mui/material';
 import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
 import { Experience, getExperiences } from '../../database/experiences';
 import { getPhotos, Photo } from '../../database/photos';
 
@@ -22,24 +20,40 @@ export default function Experiences(props: Props) {
         <h1>Explore cooking lessons</h1>
       </div>
 
-      <div>
-        {props.experiences.map((experiences) => {
-          return (
-            <div key={`experience-${experiences.id}`}>
-              <Image
-                src={experiences.photo}
-                alt="impressions of the cooking lesson"
-                width="50"
-                height="50"
-              />
-              <Link href={`/experiences/${experiences.id}`}>
-                <h3>{experiences.headline}</h3>
-              </Link>
-              <Typography>{experiences.price}€/person</Typography>
-            </div>
-          );
-        })}
-      </div>
+      <Grid container>
+        <>
+          {props.experiences.map((experiences) => {
+            return (
+              <div key={`experience-${experiences.id}`}>
+                <Grid>
+                  <Box
+                    component="img"
+                    sx={{
+                      width: 250,
+                      height: 250,
+                      borderRadius: '5px',
+                    }}
+                    m={0}
+                    mr="2.8rem"
+                    src={experiences.photo}
+                    alt="impressions of the cooking lesson"
+                  />
+                  <Link
+                    color="inherit"
+                    underline="none"
+                    href={`/experiences/${experiences.id}`}
+                  >
+                    <Typography variant="h2" component="h2" m={0}>
+                      {experiences.headline}
+                    </Typography>
+                  </Link>
+                  <Typography>{experiences.price}€/person</Typography>
+                </Grid>
+              </div>
+            );
+          })}
+        </>
+      </Grid>
     </div>
   );
 }

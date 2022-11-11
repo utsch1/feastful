@@ -1,10 +1,15 @@
+import { Box, Grid, Typography } from '@mui/material';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Experience, getExperienceById } from '../../database/experiences';
 import { getPhotos, Photo } from '../../database/photos';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
+
+const pictureStyles = {
+  width: '48.5%',
+  objectFit: 'cover',
+};
 
 type Props = { experience: Experience } | { error: string };
 type PropsPhoto = { photo: Photo };
@@ -36,22 +41,62 @@ export default function SingleExperience(props: Props & PropsPhoto) {
 
       <div>
         <div key={`experience-${props.experience.id}`}>
-          {/* <Image
-                href={props.photos.url}
-                alt="impressions of the cooking lesson"
-              /> */}
-
           <h1>{props.experience.headline}</h1>
-          <Image
+          <Box
+            style={pictureStyles}
+            component="img"
+            sx={{
+              width: 250,
+              height: 300,
+              borderRadius: '5px',
+            }}
+            m={0}
+            mr="2rem"
             src={props.photo.photoUrl}
-            alt="Impressions of cooking lesson"
-            height="200"
-            width="200"
+            alt="impressions of the cooking lesson"
           />
-          <p>{props.experience.description}</p>
-          <p>{props.experience.price}€/person</p>
-          {/* <p>{props.experience.cuisineId}</p> */}
-          {/* <p>{props.experience.eventDate}</p> */}
+          <Box
+            style={pictureStyles}
+            component="img"
+            sx={{
+              width: 250,
+              height: 300,
+              borderRadius: '5px',
+            }}
+            m={0}
+            src={props.photo.photoUrl}
+            alt="impressions of the cooking lesson"
+          />
+          <Grid container spacing={4}>
+            <Grid item xs={7}>
+              <Typography variant="h2" component="h2" m={0} mt="0.5rem">
+                Cooking lesson with Ute
+              </Typography>
+              <Typography mb="1rem" mt="0.5rem">
+                {props.experience.price}€/person
+              </Typography>
+              <Typography mb="1rem">{props.experience.description}</Typography>
+              {/* <p>{props.experience.cuisineId}</p> */}
+              {/* <p>{props.experience.eventDate}</p> */}
+            </Grid>
+            <Grid container item xs={5} justifyContent="center">
+              <Box
+                sx={{
+                  width: '100%',
+                  height: 200,
+                  backgroundColor: 'primary.main',
+                  borderRadius: '5px',
+                }}
+                display="flex"
+                p="0.5rem"
+                justifyContent="center"
+              >
+                <Typography variant="h2" component="h2" m={0} mt="0.5rem">
+                  Get to know Ute
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
         </div>
       </div>
     </div>
