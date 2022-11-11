@@ -13,9 +13,6 @@ export const customTheme = createTheme({
       main: red.A400,
     },
   },
-  shape: {
-    borderRadius: 5,
-  },
   typography: {
     htmlFontSize: 16,
     fontFamily: "'Lato', 'Arial', 'sans-serif'",
@@ -39,6 +36,11 @@ export const customTheme = createTheme({
     button: {
       fontFamily: "'Lato', 'Arial', 'sans-serif'",
       fontSize: '1rem',
+      lineHeight: 1,
     },
   },
 });
+
+customTheme.shadows.push(
+  '5px 7px 7px -5px rgba(165, 123, 120, 0.8), 5px 7px 7px -5px rgba(165, 123, 120, 0.8), 5px 7px 7px -5px rgba(165, 123, 120, 0.8)',
+);

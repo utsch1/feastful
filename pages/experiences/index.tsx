@@ -25,7 +25,7 @@ export default function Experiences(props: Props) {
           {props.experiences.map((experiences) => {
             return (
               <div key={`experience-${experiences.id}`}>
-                <Grid>
+                <Grid item>
                   <Box
                     component="img"
                     sx={{

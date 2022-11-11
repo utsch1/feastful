@@ -1,5 +1,7 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Button } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { Button, Grid, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -57,7 +59,7 @@ export default function UserProfile(props: Props) {
         <title>Personal Information</title>
         <meta name="description" content="Biography of the person" />
       </Head>
-      <div>Hi, {props.user.email}</div>
+      {/* <div>Hi, {props.user.email}</div> */}
       <h1>Your account overview</h1>
       <h3>Your cooking classes</h3>
       <Link href="/addexperience">
@@ -65,36 +67,53 @@ export default function UserProfile(props: Props) {
       </Link>
       <br />
       <br />
-      <div>
-        {props.experiences.map((experience) => {
-          return (
-            <Fragment key={`experience-${experience.id}`}>
-              <span>
-                <span>{experience.headline}</span>
-                <Link
-                  underline="none"
-                  component="button"
-                  href={`/editexperience/${experience.id}`}
+
+      <Grid container>
+        <>
+          {props.experiences.map((experience) => {
+            return (
+              <Fragment key={`experience-${experience.id}`}>
+                <Grid
+                  container
+                  item
+                  p="0.5rem"
+                  mb="0.5rem"
+                  sx={{
+                    border: 1,
+                    borderColor: 'primary.main',
+                    borderRadius: '5px',
+                  }}
                 >
-                  <Button variant="contained" disableElevation>
-                    Update
-                  </Button>
-                </Link>
-                <Button
-                  variant="contained"
-                  disableElevation
-                  onClick={async () =>
-                    await deleteExperienceFromApiById(experience.id)
-                  }
-                >
-                  Delete
-                </Button>
-              </span>
-              <br />
-            </Fragment>
-          );
-        })}
-      </div>
+                  <Grid item xs={7}>
+                    <Typography>{experience.headline}</Typography>
+                  </Grid>
+                  <Grid container item xs={5} justifyContent="flex-end">
+                    <Link
+                      underline="none"
+                      component="button"
+                      href={`/editexperience/${experience.id}`}
+                    >
+                      <Button variant="contained" disableElevation>
+                        Update
+                      </Button>
+                    </Link>
+                    <Button
+                      sx={{ ml: 1.5 }}
+                      variant="contained"
+                      disableElevation
+                      onClick={async () =>
+                        await deleteExperienceFromApiById(experience.id)
+                      }
+                    >
+                      Delete
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Fragment>
+            );
+          })}
+        </>
+      </Grid>
       <h3>Personal information</h3>
       <Link href="/addpersonalinformation">
         <AddCircleIcon color="primary" />

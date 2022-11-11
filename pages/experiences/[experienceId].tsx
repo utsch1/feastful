@@ -1,4 +1,5 @@
 import { Box, Grid, Typography } from '@mui/material';
+import { positions } from '@mui/system';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -46,8 +47,7 @@ export default function SingleExperience(props: Props & PropsPhoto) {
             style={pictureStyles}
             component="img"
             sx={{
-              width: 250,
-              height: 300,
+              height: 200,
               borderRadius: '5px',
             }}
             m={0}
@@ -59,8 +59,7 @@ export default function SingleExperience(props: Props & PropsPhoto) {
             style={pictureStyles}
             component="img"
             sx={{
-              width: 250,
-              height: 300,
+              height: 200,
               borderRadius: '5px',
             }}
             m={0}
@@ -86,14 +85,45 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                   height: 200,
                   backgroundColor: 'primary.main',
                   borderRadius: '5px',
+                  boxShadow: 25,
                 }}
                 display="flex"
+                mt="0.5rem"
+                mb="1rem"
                 p="0.5rem"
                 justifyContent="center"
               >
-                <Typography variant="h2" component="h2" m={0} mt="0.5rem">
+                <Typography
+                  variant="h2"
+                  component="h2"
+                  m={0}
+                  mt="1.5rem"
+                  height="20"
+                >
                   Get to know Ute
                 </Typography>
+                <Box
+                  component="img"
+                  sx={{
+                    height: 70,
+                    width: 70,
+                    borderRadius: '50%',
+                  }}
+                  mt="0.5rem"
+                  right="80px"
+                  position="absolute"
+                  src="/Ute.JPG"
+                  alt="photo of user"
+                />
+                {/* <Grid item xs={12}>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+                    diam nonumy eirmod tempor invidunt ut labore et dolore magna
+                    aliquyam erat, sed diam voluptua. At vero eos et accusam et
+                    justo duo dolores et ea rebum. Stet clita kasd gubergren, no
+                    sea takimata sanctus est Lorem ipsum dolor sit amet.
+                  </Typography>
+                </Grid> */}
               </Box>
             </Grid>
           </Grid>
