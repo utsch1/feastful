@@ -12,7 +12,11 @@
   "dependencies": {
     "@cloudinary/react": "^1.5.0",
     "@cloudinary/url-gen": "^1.8.6",
-    "@emotion/react": "^11.10.4",
+    "@emotion/cache": "^11.10.5",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.13",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie": "^0.5.1",
     "bcrypt": "^5.1.0",
@@ -20,7 +24,6 @@
     "cookie": "^0.5.0",
     "dotenv-cli": "^6.0.0",
     "dotenv-safe": "^8.2.0",
-    "i": "^0.3.7",
     "ley": "^0.8.1",
     "next": "12.3.1",
     "postgres": "https://github.com/porsager/postgres",
@@ -56,6 +59,7 @@
     "eslint-plugin-sonarjs": "0.16.0",
     "eslint-plugin-testing-library": "5.7.2",
     "eslint-plugin-unicorn": "44.0.2",
+    "lato-font": "^3.0.0",
     "libpg-query": "13.2.5",
     "typescript": "4.8.4"
   },

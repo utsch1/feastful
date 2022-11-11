@@ -1,8 +1,10 @@
 import { css, Global } from '@emotion/react';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { AppProps } from 'next/app';
 import { useCallback, useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { User } from '../database/users';
+import { customTheme } from '../styles/customtheme';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState<User>();
@@ -23,7 +25,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [refreshUserProfile]);
 
   return (
-    <>
+    <ThemeProvider theme={customTheme}>
+      <CssBaseline />
       <Global
         styles={css`
           *,
@@ -31,17 +34,19 @@ function MyApp({ Component, pageProps }: AppProps) {
           *::after {
             box-sizing: border-box;
           }
-          @font-face {
+          /* @font-face {
             font-family: 'Lato-Regular';
-            src: url('../fonts/Lato/Lato-Regular.ttf') format('truetype');
+            src: url('/fonts/Lato-Regular.ttf');
+            format: ('ttf');
+            font-display: swap;
           }
           @font-face {
             font-family: 'Lato-Italic';
-            src: url('../fonts/Lato/Lato-Italic.ttf') format('truetype');
+            src: url('../fonts/Lato-Italic.ttf') format('truetype');
           }
           @font-face {
             font-family: 'Lato-Bold';
-            src: url('../fonts/Lato/Lato-Bold.ttf') format('truetype');
+            src: url('../fonts/Lato-Bold.ttf') format('truetype');
           }
           @font-face {
             font-family: 'Lato-BoldItalic';
@@ -56,7 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             src: url('../fonts/Lato/Lato-ThinItalic.ttf') format('truetype');
           }
 
-          body {
+          /* body {
             height: 100vh;
             background-color: #ffffff;
             font-family: 'Lato-Regular', sans-serif;
@@ -69,9 +74,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             margin: 0.75rem 0 0 0;
             font-family: 'Lato-Bold', sans-serif;
             color: #000000;
-          }
+          } */
 
-          h2 {
+          /* h2 {
             font-size: 1.25rem;
             margin: 1.5rem 0 0 0;
             font-family: 'Lato-Italic', sans-serif;
@@ -102,13 +107,14 @@ function MyApp({ Component, pageProps }: AppProps) {
 
           select {
             width: 100%;
-          }
+          } */
         `}
       />
+
       <Layout user={user}>
         <Component {...pageProps} refreshUserProfile={refreshUserProfile} />
       </Layout>
-    </>
+    </ThemeProvider>
   );
 }
 

@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -222,13 +223,14 @@ export default function AddExperience(props: Props) {
         <button onClick={uploadImage}>Upload</button>
         <Image src={photoUrl} height="50" width="50" alt="uploaded photo" />
       </label>
-      <button
+      <Button
+        variant="contained"
         onClick={async () => {
           await createExperienceFromApi();
         }}
       >
         Save
-      </button>
+      </Button>
     </div>
   );
 }

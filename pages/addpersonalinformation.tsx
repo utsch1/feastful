@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -112,13 +113,14 @@ export default function AddPersonalInformation(props: Props) {
         <button onClick={uploadImage}>Upload</button>
         <Image src={photoUrl} height="50" width="50" alt="uploaded photo" />
       </label>
-      <button
+      <Button
+        variant="contained"
         onClick={async () => {
           await createPersonalInformationFromApi();
         }}
       >
         Save
-      </button>
+      </Button>
     </div>
   );
 }

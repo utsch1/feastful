@@ -1,12 +1,9 @@
+import { Typography } from '@mui/material';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Experience, getExperiences } from '../../database/experiences';
-import {
-  getPhotos,
-  getPhotoUrlByExperienceId,
-  Photo,
-} from '../../database/photos';
+import { getPhotos, Photo } from '../../database/photos';
 
 type Props = {
   experiences: Experience[];
@@ -38,7 +35,7 @@ export default function Experiences(props: Props) {
               <Link href={`/experiences/${experiences.id}`}>
                 <h3>{experiences.headline}</h3>
               </Link>
-              <p>{experiences.price}€/person</p>
+              <Typography>{experiences.price}€/person</Typography>
             </div>
           );
         })}
@@ -57,9 +54,6 @@ export async function getServerSideProps() {
   // in order to be able to use dates in frontend
   const experiences = JSON.parse(JSON.stringify(oldExperiences));
 
-  console.log(photos);
-  console.log(experiences);
-
   const allExperiences = experiences.map((experience) => {
     const photoUrl = photos.find(
       (photo) => experience.id === photo.experiencesId,
@@ -68,11 +62,13 @@ export async function getServerSideProps() {
       id: experience.id,
       headline: experience.headline,
       price: experience.price,
+      cuisineId: experience.cuisineId,
+      languagesId: experience.languagesId,
+      postalCodeId: experience.postalCodeId,
+      eventDate: experience.eventDate,
       photo: photoUrl.photoUrl,
     };
   });
-
-  console.log(allExperiences);
 
   return {
     props: { experiences: allExperiences },

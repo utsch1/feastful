@@ -1,12 +1,15 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Experience, getExperienceById } from '../../database/experiences';
+import { getPhotos, Photo } from '../../database/photos';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
 type Props = { experience: Experience } | { error: string };
+type PropsPhoto = { photo: Photo };
 
-export default function SinglePlant(props: Props) {
+export default function SingleExperience(props: Props & PropsPhoto) {
   if ('error' in props) {
     return (
       <div>
@@ -39,6 +42,12 @@ export default function SinglePlant(props: Props) {
               /> */}
 
           <h1>{props.experience.headline}</h1>
+          <Image
+            src={props.photo.photoUrl}
+            alt="Impressions of cooking lesson"
+            height="200"
+            width="200"
+          />
           <p>{props.experience.description}</p>
           <p>{props.experience.price}€/person</p>
           {/* <p>{props.experience.cuisineId}</p> */}
@@ -63,11 +72,10 @@ export async function getServerSideProps(
     };
   }
 
-  // const singleExperience = await getExperienceById(experienceId);
+  const oldExperience = await getExperienceById(experienceId);
+  const photos = await getPhotos();
 
-  const experience = JSON.parse(
-    JSON.stringify(await getExperienceById(experienceId)),
-  );
+  const experience = JSON.parse(JSON.stringify(oldExperience));
 
   if (typeof experience === 'undefined') {
     context.res.statusCode = 404;
@@ -78,9 +86,11 @@ export async function getServerSideProps(
     };
   }
 
+  const photoUrl = photos.find(
+    (photo) => experience.id === photo.experiencesId,
+  );
+
   return {
-    props: {
-      experience: experience,
-    },
+    props: { experience: experience, photo: photoUrl },
   };
 }

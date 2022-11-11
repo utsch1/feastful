@@ -112,7 +112,7 @@ export async function getExperienceById(id: number) {
     FROM
       experiences
     WHERE
-      experiences.id = ${id}
+      id = ${id}
   `;
   return experience;
 }

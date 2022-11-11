@@ -1,7 +1,9 @@
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { Button } from '@mui/material';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Experience, getExperiencesByUserId } from '../database/experiences';
 import { getUserBySessionToken, User } from '../database/users';
 
@@ -55,11 +57,11 @@ export default function UserProfile(props: Props) {
         <title>Personal Information</title>
         <meta name="description" content="Biography of the person" />
       </Head>
-      <h2>Hi, {props.user.email}</h2>
+      <div>Hi, {props.user.email}</div>
       <h1>Your account overview</h1>
       <h3>Your cooking classes</h3>
       <Link href="/addexperience">
-        <a data-test-id="add-new-experience">+</a>
+        <AddCircleIcon color="primary" />
       </Link>
       <br />
       <br />
@@ -69,14 +71,24 @@ export default function UserProfile(props: Props) {
             <Fragment key={`experience-${experience.id}`}>
               <span>
                 <span>{experience.headline}</span>
-                <Link href={`/editexperience/${experience.id}`}>Update</Link>
-                <button
+                <Link
+                  underline="none"
+                  component="button"
+                  href={`/editexperience/${experience.id}`}
+                >
+                  <Button variant="contained" disableElevation>
+                    Update
+                  </Button>
+                </Link>
+                <Button
+                  variant="contained"
+                  disableElevation
                   onClick={async () =>
                     await deleteExperienceFromApiById(experience.id)
                   }
                 >
                   Delete
-                </button>
+                </Button>
               </span>
               <br />
             </Fragment>
@@ -85,7 +97,7 @@ export default function UserProfile(props: Props) {
       </div>
       <h3>Personal information</h3>
       <Link href="/addpersonalinformation">
-        <a data-test-id="add-personal-information">+</a>
+        <AddCircleIcon color="primary" />
       </Link>
       <br />
       <br />
