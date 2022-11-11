@@ -47,7 +47,9 @@ export default function Experiences(props: Props) {
                       {experiences.headline}
                     </Typography>
                   </Link>
-                  <Typography>{experiences.price}€/person</Typography>
+                  <Typography mb="1.5rem">
+                    {experiences.price}€/person
+                  </Typography>
                 </Grid>
               </div>
             );
