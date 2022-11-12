@@ -1,8 +1,21 @@
+import {
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+// import * as React from 'react';
 import { useState } from 'react';
 import {
   Cuisines,
@@ -16,13 +29,18 @@ import { getUserBySessionToken, User } from '../database/users';
 import { ExperienceResponseBody } from './api/user/experiences';
 
 type Props = {
-  cuisines: Cuisines[];
   postalCodes: PostalCodes[];
   languages: Languages[];
   user: User;
 };
 
-export default function AddExperience(props: Props) {
+type PropsCuisine = {
+  cuisines: Cuisines[] | null;
+};
+
+export default function AddExperience(props: Props & PropsCuisine) {
+  const characterLimitHeadline = 50;
+  const characterLimitDescription = 1000;
   const [headline, setHeadline] = useState('');
   const [description, setDescription] = useState('');
   const [cuisine, setCuisine] = useState('');
@@ -65,6 +83,18 @@ export default function AddExperience(props: Props) {
     await router.push(`/account`);
   }
 
+  const handleChangeCuisine = (event: SelectChangeEvent) => {
+    setCuisine(event.target.value as string);
+  };
+
+  const handleChangePostalCode = (event: SelectChangeEvent) => {
+    setPostalCode(event.target.value as string);
+  };
+
+  const handleChangeLanguages = (event: SelectChangeEvent) => {
+    setLanguage(event.target.value as string);
+  };
+
   const selectImage = (event: any) => {
     setImage(event.currentTarget.files[0]);
   };
@@ -100,111 +130,134 @@ export default function AddExperience(props: Props) {
       {errors.map((error) => {
         return <p key={error.message}>{error.message}</p>;
       })}
-      <label htmlFor="cooking-class-headline">
-        Headline*
-        <span>Maximum 50 characters</span>
-        <br />
-        <input
-          value={headline}
-          maxLength={50}
-          onChange={(event) => {
-            setHeadline(event.currentTarget.value);
-          }}
-          required
-        />
-      </label>
-      <br />
-      <label htmlFor="cooking-class-description">
-        Description*
-        <span>Maximum 1000 characters</span>
-        <br />
-        <textarea
-          value={description}
-          maxLength={1000}
-          rows={6}
-          cols={145}
-          onChange={(event) => {
-            setDescription(event.currentTarget.value);
-          }}
-          required
-        />
-      </label>
-      <br />
-      <label htmlFor="cooking-class-price-per-person">
-        Price per person*
-        <br />
-        <input
-          type="number"
-          value={price}
-          onChange={(event) => {
-            setPrice(event.currentTarget.value);
-          }}
-          required
-        />
-      </label>
-      <br />
-      <label htmlFor="cuisine">
-        Cuisine*
-        <br />
-        <select
-          value={cuisine}
-          onChange={(event) => {
-            setCuisine(event.currentTarget.value);
-          }}
-          required
-        >
-          <option value="Choose cuisine"> -- Choose cuisine -- </option>
-          {props.cuisines.map((option) => {
-            return (
-              <option key={option.id} value={option.id}>
-                {option.cuisine}
-              </option>
-            );
-          })}
-        </select>
-      </label>
-      <br />
-      <label htmlFor="postal-code">
-        Postal Code*
-        <br />
-        <select
-          value={postalCode}
-          onChange={(event) => {
-            setPostalCode(event.currentTarget.value);
-          }}
-          required
-        >
-          <option value="Choose postal code"> -- Choose postal code -- </option>
-          {props.postalCodes.map((option) => {
-            return (
-              <option key={option.id} value={option.id}>
-                {option.postalCode}
-              </option>
-            );
-          })}
-        </select>
-      </label>
-      <br />
-      <label htmlFor="postal-code">
-        Languages
-        <br />
-        <select
-          value={language}
-          onChange={(event) => {
-            setLanguage(event.currentTarget.value);
-          }}
-        >
-          <option value="Choose language"> -- Choose language -- </option>
-          {props.languages.map((option) => {
-            return (
-              <option key={option.id} value={option.id}>
-                {option.language}
-              </option>
-            );
-          })}
-        </select>
-      </label>
-      <br />
+
+      {/* input for headline */}
+      <InputLabel htmlFor="cooking-class-headline">Headline*</InputLabel>
+      <TextField
+        fullWidth
+        id="cooking-class-headline"
+        variant="outlined"
+        inputProps={{
+          maxLength: characterLimitHeadline,
+        }}
+        required
+        type="text"
+        size="small"
+        color="secondary"
+        margin="none"
+        value={headline}
+        onChange={(event) => {
+          setHeadline(event.currentTarget.value);
+        }}
+      />
+      <FormHelperText id="maximum-50-characters">
+        {`${headline.length}/${characterLimitHeadline}`}
+      </FormHelperText>
+
+      {/* input for description */}
+      <InputLabel htmlFor="cooking-class-description">Description*</InputLabel>
+      <TextField
+        fullWidth
+        multiline
+        id="cooking-class-description"
+        variant="outlined"
+        inputProps={{
+          maxLength: characterLimitDescription,
+        }}
+        required
+        type="text"
+        size="small"
+        color="secondary"
+        margin="none"
+        value={description}
+        onChange={(event) => {
+          setDescription(event.currentTarget.value);
+        }}
+      />
+      <FormHelperText id="maximum-50-characters">
+        {`${description.length}/${characterLimitDescription}`}
+      </FormHelperText>
+
+      {/* input for price */}
+      <InputLabel htmlFor="cooking-class-price">Price per person*</InputLabel>
+      <TextField
+        sx={{ width: '45%' }}
+        id="cooking-class-price"
+        variant="outlined"
+        required
+        size="small"
+        color="secondary"
+        margin="none"
+        type="number"
+        value={price}
+        onChange={(event) => {
+          setPrice(event.currentTarget.value);
+        }}
+      />
+
+      {/* input for cuisine */}
+      <InputLabel htmlFor="cooking-class-cuisine">Cuisine*</InputLabel>
+      <TextField
+        select
+        sx={{ width: '45%' }}
+        id="cooking-class-cuisine"
+        required
+        size="small"
+        color="secondary"
+        margin="none"
+        value={cuisine ? cuisine : ''}
+        defaultValue={cuisine}
+        onChange={handleChangeCuisine}
+      >
+        {props.cuisines?.map((option) => (
+          <MenuItem key={option.id} value={option.id}>
+            {option.cuisine}
+          </MenuItem>
+        ))}
+      </TextField>
+
+      {/* input for postal code */}
+      <InputLabel htmlFor="cooking-class-postal-code">Postal Code*</InputLabel>
+      <TextField
+        select
+        sx={{ width: '45%' }}
+        id="cooking-class-postal-code"
+        required
+        size="small"
+        color="secondary"
+        margin="none"
+        value={postalCode ? postalCode : ''}
+        defaultValue={postalCode}
+        onChange={handleChangePostalCode}
+      >
+        {props.postalCodes.map((option) => (
+          <MenuItem key={option.id} value={option.id}>
+            {option.postalCode}
+          </MenuItem>
+        ))}
+      </TextField>
+
+      {/* input for languages */}
+      <InputLabel htmlFor="cooking-class-languages">Languages*</InputLabel>
+      <TextField
+        select
+        sx={{ width: '45%' }}
+        id="cooking-class-languages"
+        required
+        size="small"
+        color="secondary"
+        margin="none"
+        value={language ? language : ''}
+        defaultValue={language}
+        onChange={handleChangeLanguages}
+      >
+        {props.languages.map((option) => (
+          <MenuItem key={option.id} value={option.id}>
+            {option.language}
+          </MenuItem>
+        ))}
+      </TextField>
+
       <label htmlFor="date">
         Date*
         <br />
@@ -219,17 +272,32 @@ export default function AddExperience(props: Props) {
       </label>
       <label htmlFor="photos">
         Photos
-        <input type="file" onChange={selectImage} />
-        <button onClick={uploadImage}>Upload</button>
-        <Image src={photoUrl} height="50" width="50" alt="uploaded photo" />
+        <input type="file" style={{ display: 'none' }} onChange={selectImage} />
+        <Button
+          sx={{ ml: 1.5 }}
+          variant="contained"
+          disableElevation
+          onClick={uploadImage}
+        >
+          Upload
+        </Button>
+        {/* condition whether there are photo url's available*/}
+        {!photoUrl ? (
+          <div>{''}</div>
+        ) : (
+          <Image src={photoUrl} height="50" width="50" alt="uploaded photo" />
+        )}
       </label>
-      <button
+      <Button
+        sx={{ ml: 1.5 }}
+        variant="contained"
+        disableElevation
         onClick={async () => {
           await createExperienceFromApi();
         }}
       >
         Save
-      </button>
+      </Button>
     </div>
   );
 }

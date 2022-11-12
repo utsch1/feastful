@@ -1,5 +1,4 @@
 import { Box, Grid, Typography } from '@mui/material';
-import { positions } from '@mui/system';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
