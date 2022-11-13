@@ -16,9 +16,9 @@ export default function Experiences(props: Props) {
         <meta name="description" content="Find your cooking experiences" />
       </Head>
 
-      <div>
-        <h1>Explore cooking lessons</h1>
-      </div>
+      <Typography variant="h1" component="h1">
+        Explore cooking lessons
+      </Typography>
 
       <Grid container>
         <>

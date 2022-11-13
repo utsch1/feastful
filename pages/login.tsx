@@ -1,9 +1,14 @@
-import { css } from '@emotion/react';
+import { Person } from '@mui/icons-material';
+import KeyIcon from '@mui/icons-material/Key';
 import {
   Box,
   Button,
+  Divider,
+  FormGroup,
   Grid,
+  InputAdornment,
   InputLabel,
+  Paper,
   TextField,
   Typography,
 } from '@mui/material';
@@ -121,61 +126,83 @@ export default function Login(props: Props) {
         }}
         display="flex"
         m="auto"
-        mt="1rem"
+        mt="3rem"
+        mb="3rem"
         p="0.5rem"
         justifyContent="center"
       >
         <Grid container item direction="row">
-          <Grid container item direction="column" alignItems="center" xs={6}>
+          <Grid
+            container
+            item
+            direction="column"
+            alignItems="center"
+            xs={12}
+            md={5.9}
+          >
             <h1>Login</h1>
-            {errorsLogin.map((error) => {
-              return (
-                <p
-                  css={css`
-                    background-color: red;
-                    color: white;
-                    padding: 5px;
-                  `}
-                  key={error.message}
-                >
-                  ERROR: {error.message}
-                </p>
-              );
-            })}
-            <form>
-              <InputLabel htmlFor="login-email">E-mail*</InputLabel>
-              <TextField
-                fullWidth
-                type="email"
-                id="login-email"
-                variant="outlined"
-                margin="none"
-                size="small"
-                value={emailLogin}
-                onChange={(event) => {
-                  setEmailLogin(event.currentTarget.value);
-                }}
-                required
-              />
-              <InputLabel sx={{ mt: '1rem' }} htmlFor="login-password">
+            <FormGroup>
+              <InputLabel
+                htmlFor="login-email"
+                sx={{ mt: '2rem', color: '#000' }}
+              >
+                E-mail*
+              </InputLabel>
+              <Paper elevation={0}>
+                <TextField
+                  fullWidth
+                  type="email"
+                  id="login-email"
+                  variant="outlined"
+                  color="secondary"
+                  margin="none"
+                  size="small"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Person color="secondary" />
+                      </InputAdornment>
+                    ),
+                  }}
+                  value={emailLogin}
+                  onChange={(event) => {
+                    setEmailLogin(event.currentTarget.value);
+                  }}
+                  required
+                />
+              </Paper>
+              <InputLabel
+                sx={{ mt: '1rem', color: '#000' }}
+                htmlFor="login-password"
+              >
                 Password*
               </InputLabel>
-              <TextField
-                fullWidth
-                type="password"
-                id="login-password"
-                variant="outlined"
-                margin="none"
-                size="small"
-                value={passwordLogin}
-                onChange={(event) => {
-                  setPasswordLogin(event.currentTarget.value);
-                }}
-                required
-              />
+              <Paper elevation={0}>
+                <TextField
+                  fullWidth
+                  type="password"
+                  id="login-password"
+                  variant="outlined"
+                  margin="none"
+                  color="secondary"
+                  size="small"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <KeyIcon color="secondary" />
+                      </InputAdornment>
+                    ),
+                  }}
+                  value={passwordLogin}
+                  onChange={(event) => {
+                    setPasswordLogin(event.currentTarget.value);
+                  }}
+                  required
+                />
+              </Paper>
               <Button
-                sx={{ mt: 1.5 }}
-                style={{ color: 'secondary' }}
+                sx={{ m: 'auto', mt: '2rem', mb: '2rem', width: '50%' }}
+                color="secondary"
                 variant="contained"
                 disableElevation
                 onClick={async () => {
@@ -184,58 +211,126 @@ export default function Login(props: Props) {
               >
                 Login
               </Button>
-            </form>
+            </FormGroup>
+            {errorsLogin.map((error) => {
+              return (
+                <Typography color="error" key={error.message}>
+                  ERROR: {error.message}
+                </Typography>
+              );
+            })}
           </Grid>
-          <Grid container item direction="column" alignItems="center" xs={6}>
+          <Divider
+            orientation="vertical"
+            flexItem
+            color="#000"
+            variant="middle"
+            sx={{
+              width: '2px',
+              display: { xs: 'none', md: 'block' },
+            }}
+          />
+          <Divider
+            flexItem
+            color="#000"
+            variant="middle"
+            sx={{
+              height: '2px',
+              display: { xs: 'block', md: 'none' },
+            }}
+          />
+          <Grid
+            container
+            item
+            direction="column"
+            alignItems="center"
+            xs={12}
+            md={6}
+          >
             <h1 css={{ marginBottom: '12px' }}>New Account</h1>
             <Typography align="center">
               Do you want to offer cooking lessons? <br />
               Sign up here to create your experiences:
             </Typography>
-            {errorsRegistration.map((error) => {
-              return (
-                <p
-                  css={css`
-                    background-color: red;
-                    color: white;
-                    padding: 5px;
-                  `}
-                  key={error.message}
-                >
-                  ERROR: {error.message}
-                </p>
-              );
-            })}
-            <form>
-              <label>
-                E-Mail
-                <input
+            <FormGroup>
+              <InputLabel
+                sx={{ mt: '2rem', color: '#000' }}
+                htmlFor="registration-email"
+              >
+                E-mail*
+              </InputLabel>
+              <Paper elevation={0}>
+                <TextField
+                  fullWidth
+                  type="password"
+                  id="registration-email"
+                  variant="outlined"
+                  margin="none"
+                  color="secondary"
+                  size="small"
+                  required
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Person color="secondary" />
+                      </InputAdornment>
+                    ),
+                  }}
                   value={emailRegistration}
                   onChange={(event) => {
                     setEmailRegistration(event.currentTarget.value);
                   }}
                 />
-              </label>
-              <br />
-              <br />
-              <label>
-                Password
-                <input
+              </Paper>
+
+              <InputLabel
+                sx={{ mt: '1rem', color: '#000' }}
+                htmlFor="registration-password"
+              >
+                Password*
+              </InputLabel>
+              <Paper elevation={0}>
+                <TextField
+                  fullWidth
                   type="password"
+                  id="registration-password"
+                  variant="outlined"
+                  margin="none"
+                  color="secondary"
+                  size="small"
+                  required
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <KeyIcon color="secondary" />
+                      </InputAdornment>
+                    ),
+                  }}
                   value={passwordRegistration}
                   onChange={(event) => {
                     setPasswordRegistration(event.currentTarget.value);
                   }}
                 />
-              </label>
-              <button
+              </Paper>
+              <Button
+                sx={{ m: 'auto', mt: '2rem', mb: '2rem', width: '50%' }}
+                color="secondary"
+                variant="contained"
+                disableElevation
                 onClick={async () => {
                   await registerHandler();
                 }}
               >
                 Register
-              </button>
-            </form>
+              </Button>
+            </FormGroup>
+            {errorsRegistration.map((error) => {
+              return (
+                <Typography color="error" key={error.message}>
+                  ERROR: {error.message}
+                </Typography>
+              );
+            })}
           </Grid>
         </Grid>
       </Box>
