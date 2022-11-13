@@ -20,7 +20,6 @@ export const customTheme = createTheme({
     h1: {
       fontFamily: "'Lato', 'Arial', 'sans-serif'",
       fontSize: '2rem',
-      lineHeight: 3,
     },
     h2: {
       fontFamily: "'Lato', 'Arial', 'sans-serif'",
@@ -48,10 +47,13 @@ customTheme.shadows.push(
 
 customTheme.typography.h1 = {
   fontSize: '1.5rem',
+  lineHeight: 3,
   '@media (min-width:600px)': {
     fontSize: '1.5rem',
+    lineHeight: 3,
   },
   [customTheme.breakpoints.up('md')]: {
     fontSize: '2rem',
+    lineHeight: 3,
   },
 };

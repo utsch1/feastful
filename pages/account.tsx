@@ -1,4 +1,5 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
@@ -60,14 +61,19 @@ export default function UserProfile(props: Props) {
         <meta name="description" content="Biography of the person" />
       </Head>
       {/* <div>Hi, {props.user.email}</div> */}
-      <h1>Your account overview</h1>
-      <h3>Your cooking classes</h3>
-      <Link href="/addexperience">
-        <AddCircleIcon color="primary" />
-      </Link>
-      <br />
-      <br />
-
+      <Typography variant="h1">Your account overview</Typography>
+      <Grid container>
+        <Grid container item xs={10} mb="0.5rem">
+          <Typography variant="h2" component="h3">
+            Your cooking classes
+          </Typography>
+        </Grid>
+        <Grid container item xs={2} justifyContent="flex-end">
+          <Link href="/addexperience">
+            <AddCircleIcon color="secondary" />
+          </Link>
+        </Grid>
+      </Grid>
       <Grid container>
         <>
           {props.experiences.map((experience) => {
@@ -84,28 +90,33 @@ export default function UserProfile(props: Props) {
                     borderRadius: '5px',
                   }}
                 >
-                  <Grid item xs={7}>
+                  <Grid item xs={12} sm={7} display="flex" alignItems="center">
                     <Typography>{experience.headline}</Typography>
                   </Grid>
-                  <Grid container item xs={5} justifyContent="flex-end">
+                  <Grid container item xs={12} sm={5} justifyContent="flex-end">
                     <Link
                       underline="none"
                       component="button"
                       href={`/editexperience/${experience.id}`}
                     >
-                      <Button variant="contained" disableElevation>
-                        Update
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        aria-label="edit cooking class"
+                      >
+                        <EditIcon />
                       </Button>
                     </Link>
                     <Button
                       sx={{ ml: 1.5 }}
                       variant="contained"
                       disableElevation
+                      aria-label="delete cooking class"
                       onClick={async () =>
                         await deleteExperienceFromApiById(experience.id)
                       }
                     >
-                      Delete
+                      <DeleteIcon />
                     </Button>
                   </Grid>
                 </Grid>
@@ -114,15 +125,61 @@ export default function UserProfile(props: Props) {
           })}
         </>
       </Grid>
-      <h3>Personal information</h3>
-      <Link href="/addpersonalinformation">
-        <AddCircleIcon color="primary" />
-      </Link>
-      <br />
-      <br />
-      <p>
-        {props.user.id} {props.user.email}
-      </p>
+      <Grid container mt="1rem">
+        <Grid container item xs={10} mb="0.5rem">
+          <Typography variant="h2" component="h3">
+            Personal information
+          </Typography>
+        </Grid>
+        <Grid container item xs={2} justifyContent="flex-end">
+          <Link href="/addpersonalinformation">
+            <AddCircleIcon color="secondary" />
+          </Link>
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        item
+        p="0.5rem"
+        mb="0.5rem"
+        sx={{
+          border: 1,
+          borderColor: 'primary.main',
+          borderRadius: '5px',
+        }}
+      >
+        <Grid item xs={7} display="flex" alignItems="center">
+          <Typography>Let people get to know you</Typography>
+        </Grid>
+        <Grid container item xs={5} justifyContent="flex-end">
+          <Link
+            underline="none"
+            component="button"
+            href="/addpersonalinformation"
+          >
+            <Button
+              variant="contained"
+              disableElevation
+              aria-label="edit personal information"
+            >
+              <EditIcon />
+            </Button>
+          </Link>
+        </Grid>
+      </Grid>
+      <Button
+        sx={{
+          mt: '1.5rem',
+          mb: '2rem',
+          float: 'right',
+        }}
+        color="secondary"
+        variant="contained"
+        disableElevation
+        aria-label="delete account"
+      >
+        Delete account
+      </Button>
     </>
   );
 }
