@@ -140,7 +140,7 @@ export default function Login(props: Props) {
             xs={12}
             md={5.9}
           >
-            <h1>Login</h1>
+            <Typography variant="h1">Login</Typography>
             <FormGroup>
               <InputLabel
                 htmlFor="login-email"
