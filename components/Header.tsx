@@ -1,6 +1,19 @@
 import { css } from '@emotion/react';
+import { AccountCircle } from '@mui/icons-material';
+import MenuIcon from '@mui/icons-material/Menu';
+import {
+  AppBar,
+  Box,
+  Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react';
 import { User } from '../database/users';
 
 type Props = {
@@ -67,47 +80,166 @@ const dropdownContent = css`
 `;
 
 export default function Header(props: Props) {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorElNav(event.currentTarget);
+  // };
+
+  // const handleCloseNavMenu = () => {
+  //   setAnchorElNav(null);
+  // };
+
   return (
-    <header>
-      <nav css={navigationStyles}>
-        <div>
-          <Link href="/experiences">
-            <a data-test-id="experiences">EXPERIENCES</a>
-          </Link>
-        </div>
-        <div css={logo}>
-          <Image src="/logo.png" alt="Feastful" width="150" height="21" />
-        </div>
-        <div css={dropdown}>
-          <Image
-            src="/login.png"
-            alt="Icon for login and registration"
-            width="21"
-            height="21"
-          />
-          <div css={dropdownContent}>
-            {props.user ? (
-              <>
+    <AppBar
+      position="fixed"
+      sx={{ height: '5rem', pl: '3rem', pr: '3rem', boxShadow: 0 }}
+    >
+      <Toolbar disableGutters={true}>
+        <Grid container xs={12} alignItems="center" height="5rem">
+          <Grid container item xs={4}>
+            {/* <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <IconButton size="large"
+                aria-label="experiences"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit">
+                  <MenuIcon />
+              </IconButton>
+              <Menu id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+              }}
+            ><Link href="/experiences">
+            <MenuItem onClick={handleClose}>EXPERIENCES</MenuItem>
+          </Link></Menu>
+          </Box> */}
+            {/* <Box display={ xs: 'none', md: 'flex' }> */}
+            <Link href="/experiences" underline="none" color="inherit">
+              <Typography variant="body">EXPERIENCES</Typography>
+            </Link>
+            {/* </Box> */}
+          </Grid>
+          <Grid container item xs={4} justifyContent="center">
+            <Box
+              component="img"
+              sx={{
+                width: 150,
+                height: 21,
+              }}
+              src="/logo.png"
+              alt="Feastful"
+            />
+          </Grid>
+          <Grid container item xs={4} justifyContent="flex-end">
+            <div>
+              <IconButton
+                size="large"
+                aria-label="login and registration"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
                 <div>
-                  <Link href="/account">
-                    <a>ACCOUNT</a>
-                  </Link>
+                  {props.user ? (
+                    <>
+                      <Link href="/account">
+                        <MenuItem onClick={handleClose}>ACCOUNT</MenuItem>
+                      </Link>
+                      <Link href="/logout">
+                        <MenuItem onClick={handleClose}>LOGOUT</MenuItem>
+                      </Link>
+                    </>
+                  ) : (
+                    <Link href="/login">
+                      <MenuItem onClick={handleClose}>LOGIN</MenuItem>
+                    </Link>
+                  )}
                 </div>
-                <hr />
-                <div>
-                  <Link href="/logout">LOGOUT</Link>
-                </div>
-              </>
-            ) : (
-              <div>
-                <Link href="/login">
-                  <a>LOGIN / REGISTER</a>
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
-    </header>
+              </Menu>
+            </div>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
+
+    // <header>
+    //   <nav css={navigationStyles}>
+    //     <div>
+    //       <Link href="/experiences">
+    //         <a data-test-id="experiences">EXPERIENCES</a>
+    //       </Link>
+    //     </div>
+    //     <div css={logo}>
+    //       <Image src="/logo.png" alt="Feastful" width="150" height="21" />
+    //     </div>
+    //     <div css={dropdown}>
+    //       <Image
+    //         src="/login.png"
+    //         alt="Icon for login and registration"
+    //         width="21"
+    //         height="21"
+    //       />
+    // <div css={dropdownContent}>
+    // {props.user ? (
+    //   <>
+    //     <div>
+    //       <Link href="/account">
+    //         <a>ACCOUNT</a>
+    //       </Link>
+    //     </div>
+    //     <hr />
+    //     <div>
+    //       <Link href="/logout">LOGOUT</Link>
+    //     </div>
+    //   </>
+    // ) : (
+    //   <div>
+    //     <Link href="/login">
+    //       <a>LOGIN / REGISTER</a>
+    //     </Link>
+    //   </div>
+    // )}
+    // </div>
+    //     </div>
+    //   </nav>
+    // </header>
   );
 }

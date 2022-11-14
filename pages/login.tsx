@@ -126,7 +126,7 @@ export default function Login(props: Props) {
         }}
         display="flex"
         m="auto"
-        mt="3rem"
+        mt="2rem"
         mb="3rem"
         p="0.5rem"
         justifyContent="center"
@@ -144,7 +144,7 @@ export default function Login(props: Props) {
             <FormGroup>
               <InputLabel
                 htmlFor="login-email"
-                sx={{ mt: '2rem', color: '#000' }}
+                sx={{ sm: { mt: '2rem' }, xs: { mt: '1rem' }, color: '#000' }}
               >
                 E-mail*
               </InputLabel>
@@ -230,15 +230,6 @@ export default function Login(props: Props) {
               display: { xs: 'none', md: 'block' },
             }}
           />
-          <Divider
-            flexItem
-            color="#000"
-            variant="middle"
-            sx={{
-              height: '2px',
-              display: { xs: 'block', md: 'none' },
-            }}
-          />
           <Grid
             container
             item
@@ -247,7 +238,17 @@ export default function Login(props: Props) {
             xs={12}
             md={6}
           >
-            <h1 css={{ marginBottom: '12px' }}>New Account</h1>
+            <Divider
+              orientation="horizontal"
+              flexItem
+              color="#000"
+              variant="middle"
+              sx={{
+                height: '2px',
+                display: { xs: 'block', md: 'none' },
+              }}
+            />
+            <Typography variant="h1">New Account</Typography>
             <Typography align="center">
               Do you want to offer cooking lessons? <br />
               Sign up here to create your experiences:

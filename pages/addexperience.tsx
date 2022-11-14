@@ -313,7 +313,9 @@ export default function AddExperience(props: Props & PropsCuisine) {
           renderInput={(params) => (
             <TextField
               {...params}
+              size="small"
               sx={{
+                width: { sm: '49.5%', xs: '100%' },
                 '& .MuiOutlinedInput-root': {
                   '&:hover fieldset': {
                     borderColor: 'secondary.main',
@@ -335,7 +337,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
       {/* Photo upload */}
       <Typography>Photo*</Typography>
       <Grid container xs={12}>
-        <Grid item xs={8}>
+        <Grid>
           <Button variant="contained" disableElevation>
             <InputLabel htmlFor="choose-photo" sx={{ color: '#000' }}>
               <AddAPhotoIcon fontSize="small" />
