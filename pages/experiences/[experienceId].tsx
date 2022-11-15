@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -7,7 +7,6 @@ import { getPhotos, Photo } from '../../database/photos';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
 const pictureStyles = {
-  width: '48.5%',
   objectFit: 'cover',
 };
 
@@ -28,6 +27,7 @@ export default function SingleExperience(props: Props & PropsPhoto) {
       </div>
     );
   }
+  console.log('date', typeof props.experience.data);
 
   return (
     <div>
@@ -41,47 +41,108 @@ export default function SingleExperience(props: Props & PropsPhoto) {
 
       <div>
         <div key={`experience-${props.experience.id}`}>
-          <h1>{props.experience.headline}</h1>
-          <Box
-            style={pictureStyles}
-            component="img"
-            sx={{
-              height: 200,
-              borderRadius: '5px',
-            }}
-            m={0}
-            mr="2rem"
-            src={props.photo.photoUrl}
-            alt="impressions of the cooking lesson"
-          />
-          <Box
-            style={pictureStyles}
-            component="img"
-            sx={{
-              height: 200,
-              borderRadius: '5px',
-            }}
-            m={0}
-            src={props.photo.photoUrl}
-            alt="impressions of the cooking lesson"
-          />
-          <Grid container spacing={4}>
-            <Grid item xs={7}>
-              <Typography variant="h2" component="h2" m={0} mt="0.5rem">
-                Cooking lesson with Ute
-              </Typography>
-              <Typography mb="1rem" mt="0.5rem">
-                {props.experience.price}€/person
-              </Typography>
-              <Typography mb="1rem">{props.experience.description}</Typography>
-              {/* <p>{props.experience.cuisineId}</p> */}
-              {/* <p>{props.experience.eventDate}</p> */}
+          <Typography variant="h1">{props.experience.headline}</Typography>
+          <Grid container md={12} m="0">
+            <Grid
+              container
+              item
+              md={12}
+              display="flex"
+              justifyContent="space-between"
+            >
+              <Box
+                style={pictureStyles}
+                component="img"
+                sx={{
+                  width: '49%',
+                  height: 200,
+                  borderRadius: '5px',
+                }}
+                m={0}
+                src={props.photo.photoUrl}
+                alt="impressions of the cooking lesson"
+              />
+              {/* </Grid>
+            <Grid container item md={6}> */}
+              <Box
+                style={pictureStyles}
+                component="img"
+                sx={{
+                  width: '49%',
+                  height: 200,
+                  borderRadius: '5px',
+                }}
+                m={0}
+                mb="1rem"
+                src={props.photo.photoUrl}
+                alt="impressions of the cooking lesson"
+              />
             </Grid>
-            <Grid container item xs={5} justifyContent="center">
+            <Grid container item md={6.5}>
+              <Grid
+                container
+                item
+                md={12}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="flex-start"
+                sx={{ height: 'auto' }}
+              >
+                <Typography variant="h2" component="h2" m={0} mt="0.5rem">
+                  Cooking lesson with Ute
+                </Typography>
+                <Typography mb="1rem" mt="0.5rem">
+                  {props.experience.price}€ /person
+                </Typography>
+              </Grid>
+              <Grid
+                container
+                item
+                md={12}
+                display="flex"
+                justifyContent="space-between"
+              >
+                <Grid container item md={6} direction="column">
+                  <Typography>
+                    Cuisine:
+                    {props.experience.cuisineId}
+                  </Typography>
+                  <Typography>
+                    Language:
+                    {props.experience.languagesId}
+                  </Typography>
+                </Grid>
+                <Grid container item md={6} direction="column">
+                  <Typography>
+                    Postal Code:
+                    {props.experience.postalCodeId}
+                  </Typography>
+                  <Typography>
+                    Event Date:
+                    {props.experience.eventDate}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                item
+                md={12}
+                display="flex"
+                alignItems="flex-start"
+                sx={{ minHeight: '150px' }}
+              >
+                <Typography mt="1rem" mb="1rem" align="justify">
+                  {props.experience.description}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid item md={0.5} />
+
+            <Grid container item md={5} justifyContent="center">
               <Box
                 sx={{
                   width: '100%',
-                  height: 200,
+                  height: 'auto',
                   backgroundColor: 'primary.main',
                   borderRadius: '5px',
                   boxShadow: 25,
@@ -92,36 +153,66 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                 p="0.5rem"
                 justifyContent="center"
               >
-                <Typography
-                  variant="h2"
-                  component="h2"
-                  m={0}
-                  mt="1.5rem"
-                  height="20"
+                <Grid
+                  container
+                  item
+                  md={12}
+                  pl="0.5rem"
+                  pr="0.5rem"
+                  direction="column"
+                  display="flex"
+                  justifyContent="space-between"
                 >
-                  Get to know Ute
-                </Typography>
-                <Box
-                  component="img"
-                  sx={{
-                    height: 70,
-                    width: 70,
-                    borderRadius: '50%',
-                  }}
-                  mt="0.5rem"
-                  right="80px"
-                  position="absolute"
-                  src="/Ute.JPG"
-                  alt="photo of user"
-                />
-                {/* <Grid item xs={12}>
-                  <Typography>
+                  <Typography
+                    variant="h2"
+                    component="h2"
+                    mt="0.5rem"
+                    mb="3rem"
+                    align="center"
+                  >
+                    Get to know Ute
+                    <Box
+                      component="img"
+                      sx={{
+                        height: 70,
+                        width: 70,
+                        borderRadius: '50%',
+                      }}
+                      src="/Ute.JPG"
+                      alt="photo of user"
+                      position="absolute"
+                      right="80px"
+                    />
+                  </Typography>
+                  <Typography align="justify">
                     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
                     diam nonumy eirmod tempor invidunt ut labore et dolore magna
                     aliquyam erat, sed diam voluptua. At vero eos et accusam et
                     justo duo dolores et ea rebum. Stet clita kasd gubergren, no
                     sea takimata sanctus est Lorem ipsum dolor sit amet.
                   </Typography>
+                  <Button
+                    sx={{
+                      m: 'auto',
+                      mt: '1rem',
+                      mb: '1rem',
+                    }}
+                    color="secondary"
+                    variant="contained"
+                    disableElevation
+                    aria-label="button for contacting via email"
+                  >
+                    Contact
+                  </Button>
+                </Grid>
+                {/* <Grid
+                  container
+                  item
+                  md={3}
+                  display="flex"
+                  justifyContent="center"
+                >
+
                 </Grid> */}
               </Box>
             </Grid>
