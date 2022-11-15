@@ -281,7 +281,7 @@ export default function Experiences(props: Props) {
         xs={12}
         sm={12}
         md={12}
-        spacing={{ xs: 0, md: 2 }}
+        spacing={{ xs: 0, sm: 2, md: 2 }}
         display="flex"
         m="0"
         justifyContent={{ xs: 'space-around', md: 'flex-start' }}
@@ -307,14 +307,16 @@ export default function Experiences(props: Props) {
                   {!experiences.photo ? (
                     <>
                       <Box
+                        component="img"
                         sx={{
-                          width: 250,
-                          height: 250,
+                          width: '100%',
                           borderRadius: '5px',
                           backgroundColor: 'primary.main',
                           // display: { xs: 'none', sm: 'block' },
                         }}
                         m={0}
+                        src="/no-photo-available.png"
+                        alt="no photo available"
                       />
                       {/* <Box
                         style={pictureStyles}
@@ -333,8 +335,7 @@ export default function Experiences(props: Props) {
                       <Box
                         component="img"
                         sx={{
-                          width: 250,
-                          height: 250,
+                          width: '100%',
                           borderRadius: '5px',
                           // display: { xs: 'none', sm: 'block' },
                         }}
