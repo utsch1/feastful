@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { AccountCircle } from '@mui/icons-material';
-import MenuIcon from '@mui/icons-material/Menu';
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import {
   AppBar,
   Box,
@@ -106,41 +106,25 @@ export default function Header(props: Props) {
     >
       <Toolbar disableGutters={true}>
         <Grid container xs={12} alignItems="center" height="5rem">
-          <Grid container item xs={4}>
-            {/* <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-              <IconButton size="large"
-                aria-label="experiences"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit">
-                  <MenuIcon />
-              </IconButton>
-              <Menu id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            ><Link href="/experiences">
-            <MenuItem onClick={handleClose}>EXPERIENCES</MenuItem>
-          </Link></Menu>
-          </Box> */}
-            {/* <Box display={ xs: 'none', md: 'flex' }> */}
+          <Grid
+            container
+            item
+            xs={4}
+            sx={{ display: { xs: 'none', sm: 'block' } }}
+          >
             <Link href="/experiences" underline="none" color="inherit">
               <Typography variant="body">EXPERIENCES</Typography>
             </Link>
-            {/* </Box> */}
+          </Grid>
+          <Grid
+            container
+            item
+            xs={4}
+            sx={{ display: { xs: 'block', sm: 'none' } }}
+          >
+            <Link href="/experiences" underline="none" color="inherit">
+              <RestaurantMenuIcon />
+            </Link>
           </Grid>
           <Grid container item xs={4} justifyContent="center">
             <Box
