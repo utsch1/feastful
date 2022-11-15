@@ -12,6 +12,12 @@ export const customTheme = createTheme({
     error: {
       main: red.A400,
     },
+    info: {
+      main: '#000',
+    },
+    text: {
+      primary: '#000',
+    },
   },
   typography: {
     htmlFontSize: 16,
@@ -43,6 +49,7 @@ export const customTheme = createTheme({
 
 customTheme.shadows.push(
   '5px 7px 7px -5px rgba(165, 123, 120, 0.8), 5px 7px 7px -5px rgba(165, 123, 120, 0.8), 5px 7px 7px -5px rgba(165, 123, 120, 0.8)',
+  '5px 7px 7px -5px rgba(165, 123, 120, 0.8), 5px 7px 7px -5px rgba(165, 123, 120, 0.8), 5px 7px 7px -5px rgba(231,220,218, 0.8)',
 );
 
 customTheme.typography.h1 = {
