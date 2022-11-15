@@ -1,3 +1,13 @@
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import {
+  Box,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
@@ -12,6 +22,7 @@ type Props = {
 };
 
 export default function AddPersonalInformation(props: Props) {
+  const characterLimitPersonalInformation = 500;
   const [firstName, setFirstName] = useState('');
   const [personalInformation, setPersonalInformation] = useState('');
   const [image, setImage] = useState('');
@@ -75,46 +86,108 @@ export default function AddPersonalInformation(props: Props) {
         />
       </Head>
 
-      <h1>Enter your personal information</h1>
+      <Typography variant="h1">Enter your personal information</Typography>
       {errors.map((error) => {
         return <p key={error.message}>{error.message}</p>;
       })}
-      <label htmlFor="first-name">
+
+      {/* input for first name */}
+      <InputLabel htmlFor="first-name" sx={{ color: '#000' }}>
         First Name*
-        <br />
-        <input
-          value={firstName}
-          onChange={(event) => {
-            setFirstName(event.currentTarget.value);
-          }}
-          required
-        />
-      </label>
-      <br />
-      <label htmlFor="personal-information">
+      </InputLabel>
+      <TextField
+        fullWidth
+        id="first-name"
+        variant="outlined"
+        required
+        type="text"
+        size="small"
+        color="secondary"
+        margin="none"
+        value={firstName}
+        onChange={(event) => {
+          setFirstName(event.currentTarget.value);
+        }}
+      />
+
+      {/* input for personal information */}
+      <InputLabel htmlFor="personal-information" sx={{ color: '#000' }}>
         Personal Information*
-        <span>Maximum 500 characters</span>
-        <br />
-        <textarea
-          value={personalInformation}
-          maxLength={500}
-          rows={6}
-          cols={145}
-          onChange={(event) => {
-            setPersonalInformation(event.currentTarget.value);
+      </InputLabel>
+      <TextField
+        fullWidth
+        multiline
+        id="personal-information"
+        variant="outlined"
+        inputProps={{
+          maxLength: characterLimitPersonalInformation,
+        }}
+        required
+        type="text"
+        size="small"
+        color="secondary"
+        margin="none"
+        value={personalInformation}
+        onChange={(event) => {
+          setPersonalInformation(event.currentTarget.value);
+        }}
+      />
+      <FormHelperText id="maximum-500-characters" sx={{ color: '#000' }}>
+        {`${personalInformation.length}/${characterLimitPersonalInformation}`}
+      </FormHelperText>
+
+      {/* Photo upload */}
+      <Typography>Photo*</Typography>
+      <Grid container xs={12}>
+        <Grid>
+          <Button variant="contained" disableElevation>
+            <InputLabel htmlFor="choose-photo" sx={{ color: '#000' }}>
+              <AddAPhotoIcon fontSize="small" />
+              <input
+                type="file"
+                id="choose-photo"
+                style={{ display: 'none' }}
+                onChange={selectImage}
+              />
+            </InputLabel>
+          </Button>
+          <Button
+            sx={{ ml: 1.5 }}
+            variant="contained"
+            disableElevation
+            onClick={uploadImage}
+          >
+            <FileUploadIcon />
+          </Button>
+        </Grid>
+      </Grid>
+
+      {/* condition whether there are photo url's available*/}
+      {!photoUrl ? (
+        <div>{''}</div>
+      ) : (
+        <Box
+          component="img"
+          sx={{
+            height: 60,
+            borderRadius: '5px',
           }}
-          required
+          mt={1}
+          mr="2rem"
+          src={photoUrl}
+          alt="uploaded photo"
         />
-      </label>
-      <br />
-      <label htmlFor="personal-photo">
-        Photos
-        <input type="file" onChange={selectImage} />
-        <button onClick={uploadImage}>Upload</button>
-        <Image src={photoUrl} height="50" width="50" alt="uploaded photo" />
-      </label>
+      )}
+
+      {/* save functionality */}
       <Button
+        sx={{
+          mt: '1.5rem',
+          mb: '2rem',
+          float: 'right',
+        }}
         variant="contained"
+        disableElevation
         onClick={async () => {
           await createPersonalInformationFromApi();
         }}

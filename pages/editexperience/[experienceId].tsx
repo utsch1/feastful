@@ -1,3 +1,20 @@
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import {
+  Box,
+  Button,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  MenuItem,
+  SelectChangeEvent,
+  SxProps,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -26,6 +43,8 @@ type Props = {
 
 export default function EditExperience(props: Props) {
   console.log(props);
+  const characterLimitHeadline = 50;
+  const characterLimitDescription = 1000;
   const [experience, setExperience] = useState<Experience[]>([]);
   const [headline, setHeadline] = useState(props.experience.headline);
   const [description, setDescription] = useState(props.experience.description);
@@ -40,6 +59,18 @@ export default function EditExperience(props: Props) {
   const [photoUrl, setPhotoUrl] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
+
+  const popperSx: SxProps = {
+    '& .MuiPaper-root': {
+      border: '1px solid #A57B78',
+      padding: 2,
+      marginTop: 1,
+      backgroundColor: 'primary.main',
+    },
+    '& .MuiCalendarPicker-root': {
+      backgroundColor: '#FFF',
+    },
+  };
 
   async function getExperienceFromApiById(id: number) {
     const response = await fetch(`/api/user/experiences/${id}`);
@@ -88,6 +119,22 @@ export default function EditExperience(props: Props) {
   //   });
   // }, []);
 
+  const handleChangeCuisine = (event: SelectChangeEvent) => {
+    setCuisine(event.target.value as number);
+  };
+
+  const handleChangePostalCode = (event: SelectChangeEvent) => {
+    setPostalCode(event.target.value as number);
+  };
+
+  const handleChangeLanguages = (event: SelectChangeEvent) => {
+    setLanguage(event.target.value as number);
+  };
+
+  const handleChangeEventDate = (newValue: dayjs | null) => {
+    setEventDate(newValue);
+  };
+
   const selectImage = (event: any) => {
     setImage(event.currentTarget.files[0]);
   };
@@ -118,141 +165,243 @@ export default function EditExperience(props: Props) {
           content="Fill out the form to offer a cooking class"
         />
       </Head>
-
-      <h1>Create your cooking class</h1>
+      <Typography variant="h1">Update your cooking class</Typography>
       {errors.map((error) => {
         return <p key={error.message}>{error.message}</p>;
       })}
-      <label htmlFor="cooking-class-headline">
+      {/* input for headline */}
+      <InputLabel htmlFor="cooking-class-headline" sx={{ color: '#000' }}>
         Headline*
-        <span>Maximum 50 characters</span>
-        <br />
-        <input
-          value={headline}
-          maxLength={50}
-          onChange={(event) => {
-            setHeadline(event.currentTarget.value);
-          }}
-          required
-        />
-      </label>
-      <br />
-      <label htmlFor="cooking-class-description">
+      </InputLabel>
+      <TextField
+        fullWidth
+        id="cooking-class-headline"
+        variant="outlined"
+        inputProps={{
+          maxLength: characterLimitHeadline,
+        }}
+        required
+        type="text"
+        size="small"
+        color="secondary"
+        margin="none"
+        value={headline}
+        onChange={(event) => {
+          setHeadline(event.currentTarget.value);
+        }}
+      />
+      <FormHelperText id="maximum-50-characters" sx={{ color: '#000' }}>
+        {`${headline.length}/${characterLimitHeadline}`}
+      </FormHelperText>
+      {/* input for description */}
+      <InputLabel htmlFor="cooking-class-description" sx={{ color: '#000' }}>
         Description*
-        <span>Maximum 1000 characters</span>
-        <br />
-        <textarea
-          value={description}
-          maxLength={1000}
-          rows={6}
-          cols={145}
-          onChange={(event) => {
-            setDescription(event.currentTarget.value);
-          }}
-          required
-        />
-      </label>
-      <br />
-      <label htmlFor="cooking-class-price-per-person">
-        Price per person*
-        <br />
-        <input
-          type="number"
-          value={price}
-          onChange={(event) => {
-            setPrice(Number(event.currentTarget.value));
-          }}
-          required
-        />
-      </label>
-      <br />
-      <label htmlFor="cuisine">
-        Cuisine*
-        <br />
-        <select
-          value={cuisine}
-          onChange={(event) => {
-            setCuisine(Number(event.currentTarget.value));
-          }}
-          required
-        >
-          <option value="Choose cuisine"> -- Choose cuisine -- </option>
-          {props.cuisines.map((option) => {
-            return (
-              <option key={option.id} value={option.id}>
+      </InputLabel>
+      <TextField
+        fullWidth
+        multiline
+        id="cooking-class-description"
+        variant="outlined"
+        inputProps={{
+          maxLength: characterLimitDescription,
+        }}
+        required
+        type="text"
+        size="small"
+        color="secondary"
+        margin="none"
+        value={description}
+        onChange={(event) => {
+          setDescription(event.currentTarget.value);
+        }}
+      />
+      <FormHelperText id="maximum-1000-characters" sx={{ color: '#000' }}>
+        {`${description.length}/${characterLimitDescription}`}
+      </FormHelperText>
+      <Grid container item direction="row" spacing={2} columns={12}>
+        <Grid container item direction="column" xs={12} sm={6}>
+          {/* input for price */}
+          <InputLabel htmlFor="cooking-class-price" sx={{ color: '#000' }}>
+            Price per person*
+          </InputLabel>
+          <TextField
+            id="cooking-class-price"
+            variant="outlined"
+            required
+            size="small"
+            color="secondary"
+            margin="none"
+            type="number"
+            value={price}
+            onChange={(event) => {
+              setPrice(event.currentTarget.value);
+            }}
+          />
+        </Grid>
+        <Grid container item direction="column" xs={12} sm={6}>
+          {/* input for cuisine */}
+          <InputLabel htmlFor="cooking-class-cuisine" sx={{ color: '#000' }}>
+            Cuisine*
+          </InputLabel>
+          <TextField
+            select
+            id="cooking-class-cuisine"
+            required
+            size="small"
+            color="secondary"
+            margin="none"
+            value={cuisine}
+            defaultValue={cuisine}
+            onChange={handleChangeCuisine}
+          >
+            {props.cuisines.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
                 {option.cuisine}
-              </option>
-            );
-          })}
-        </select>
-      </label>
-      <br />
-      <label htmlFor="postal-code">
-        Postal Code*
-        <br />
-        <select
-          value={postalCode}
-          onChange={(event) => {
-            setPostalCode(Number(event.currentTarget.value));
-          }}
-          required
-        >
-          <option value="Choose postal code"> -- Choose postal code -- </option>
-          {props.postalCodes.map((option) => {
-            return (
-              <option key={option.id} value={option.id}>
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+      </Grid>
+      <Grid container item direction="row" spacing={2} columns={12}>
+        <Grid container item direction="column" xs={12} sm={6}>
+          {/* input for postal code */}
+          <InputLabel
+            htmlFor="cooking-class-postal-code"
+            sx={{ color: '#000' }}
+          >
+            Postal Code*
+          </InputLabel>
+          <TextField
+            select
+            id="cooking-class-postal-code"
+            required
+            size="small"
+            color="secondary"
+            margin="none"
+            value={postalCode}
+            defaultValue={postalCode}
+            onChange={handleChangePostalCode}
+          >
+            {props.postalCodes.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
                 {option.postalCode}
-              </option>
-            );
-          })}
-        </select>
-      </label>
-      <br />
-      <label htmlFor="postal-code">
-        Languages
-        <br />
-        <select
-          value={language}
-          onChange={(event) => {
-            setLanguage(Number(event.currentTarget.value));
-          }}
-        >
-          <option value="Choose language"> -- Choose language -- </option>
-          {props.languages.map((option) => {
-            return (
-              <option key={option.id} value={option.id}>
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+
+        <Grid container item direction="column" xs={12} sm={6}>
+          {/* input for languages */}
+          <InputLabel htmlFor="cooking-class-languages" sx={{ color: '#000' }}>
+            Languages*
+          </InputLabel>
+          <TextField
+            select
+            id="cooking-class-languages"
+            required
+            size="small"
+            color="secondary"
+            margin="none"
+            value={language}
+            defaultValue={language}
+            onChange={handleChangeLanguages}
+          >
+            {props.languages.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
                 {option.language}
-              </option>
-            );
-          })}
-        </select>
-      </label>
-      <br />
-      <label htmlFor="date">
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+      </Grid>
+      {/* input for date and time */}
+      <InputLabel htmlFor="cooking-class-event-date" sx={{ color: '#000' }}>
         Date*
-        <br />
-        <input
-          type="datetime-local"
+      </InputLabel>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateTimePicker
+          id="cooking-class-event-date"
           value={eventDate}
-          onChange={(event) => {
-            setEventDate(event.currentTarget.value);
+          components={{ OpenPickerIcon: CalendarMonthIcon }}
+          onChange={handleChangeEventDate}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              size="small"
+              sx={{
+                width: { sm: '49.5%', xs: '100%' },
+                '& .MuiOutlinedInput-root': {
+                  '&:hover fieldset': {
+                    borderColor: 'secondary.main',
+                  },
+                },
+              }}
+            />
+          )}
+          InputProps={{
+            sx: { '& .MuiSvgIcon-root': { color: 'secondary.main' } },
           }}
-          required
+          PopperProps={{
+            sx: popperSx,
+          }}
+          showDaysOutsideCurrentMonth
         />
-      </label>
-      <label htmlFor="photos">
-        Photos
-        <input type="file" onChange={selectImage} />
-        <button onClick={uploadImage}>Upload</button>
-        <Image src={photoUrl} height="50" width="50" alt="uploaded photo" />
-      </label>
-      <button
+      </LocalizationProvider>
+      <br />
+      <Typography>Photo*</Typography>
+      <Grid container xs={12}>
+        <Grid>
+          <Button variant="contained" disableElevation>
+            <InputLabel htmlFor="choose-photo" sx={{ color: '#000' }}>
+              <AddAPhotoIcon fontSize="small" />
+              <input
+                type="file"
+                id="choose-photo"
+                style={{ display: 'none' }}
+                onChange={selectImage}
+              />
+            </InputLabel>
+          </Button>
+          <Button
+            sx={{ ml: 1.5 }}
+            variant="contained"
+            disableElevation
+            onClick={uploadImage}
+          >
+            <FileUploadIcon />
+          </Button>
+        </Grid>
+      </Grid>
+      {/* condition whether there are photo url's available*/}
+      {!photoUrl ? (
+        <div>{''}</div>
+      ) : (
+        <Box
+          component="img"
+          sx={{
+            height: 60,
+            borderRadius: '5px',
+          }}
+          mt={1}
+          mr="2rem"
+          src={photoUrl}
+          alt="uploaded photo"
+        />
+      )}
+      <Button
+        sx={{
+          mt: '1.5rem',
+          mb: '2rem',
+          float: 'right',
+        }}
+        variant="contained"
+        disableElevation
         onClick={async () => {
           await updateExperienceFromApiById(props.experience.id);
         }}
       >
-        Save
-      </button>
+        Update
+      </Button>
     </div>
   );
 }

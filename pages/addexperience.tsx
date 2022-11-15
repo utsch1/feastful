@@ -200,7 +200,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
           setDescription(event.currentTarget.value);
         }}
       />
-      <FormHelperText id="maximum-50-characters" sx={{ color: '#000' }}>
+      <FormHelperText id="maximum-1000-characters" sx={{ color: '#000' }}>
         {`${description.length}/${characterLimitDescription}`}
       </FormHelperText>
       <Grid container item direction="row" spacing={2} columns={12}>
