@@ -58,6 +58,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
   const [price, setPrice] = useState('');
   const [eventDate, setEventDate] = useState(new Date());
   const [image, setImage] = useState('');
+  const [previewImage, setPreviewImage] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
@@ -104,24 +105,39 @@ export default function AddExperience(props: Props & PropsCuisine) {
     await router.push(`/account`);
   }
 
+  // various input functions
   const handleChangeCuisine = (event: SelectChangeEvent) => {
-    setCuisine(event.target.value as string);
+    setCuisine(event.target.value);
   };
 
   const handleChangePostalCode = (event: SelectChangeEvent) => {
-    setPostalCode(event.target.value as string);
+    setPostalCode(event.target.value);
   };
 
   const handleChangeLanguages = (event: SelectChangeEvent) => {
-    setLanguage(event.target.value as string);
+    setLanguage(event.target.value);
   };
 
   const handleChangeEventDate = (newValue: dayjs | null) => {
     setEventDate(newValue);
   };
 
+  // Image upload function incl. image preview function
+
+  function previewImages(image) {
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+
+    reader.onloadend = () => {
+      console.log(previewImage);
+      setPreviewImage(reader.result);
+    };
+  }
+
   const selectImage = (event: any) => {
-    setImage(event.currentTarget.files[0]);
+    const image = event.currentTarget.files[0];
+    setImage(image);
+    previewImages(image);
   };
 
   const uploadImage = async () => {
@@ -355,12 +371,12 @@ export default function AddExperience(props: Props & PropsCuisine) {
             disableElevation
             onClick={uploadImage}
           >
-            <FileUploadIcon />
+            <FileUploadIcon /> UPLOAD
           </Button>
         </Grid>
       </Grid>
       {/* condition whether there are photo url's available*/}
-      {!photoUrl ? (
+      {!previewImage ? (
         <div>{''}</div>
       ) : (
         <Box
@@ -371,7 +387,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
           }}
           mt={1}
           mr="2rem"
-          src={photoUrl}
+          src={previewImage}
           alt="uploaded photo"
         />
       )}

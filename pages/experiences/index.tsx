@@ -5,25 +5,51 @@ import {
   Grid,
   Link,
   MenuItem,
-  Paper,
-  Select,
+  SelectChangeEvent,
   TextField,
   Typography,
 } from '@mui/material';
 import Head from 'next/head';
-import { Experience, getExperiences } from '../../database/experiences';
-import { getPhotos, Photo } from '../../database/photos';
+import { useState } from 'react';
+import {
+  Cuisines,
+  Experience,
+  getCuisines,
+  getExperiences,
+  getLanguages,
+  getPostalCodes,
+  Languages,
+  PostalCodes,
+} from '../../database/experiences';
+import { getPhotos } from '../../database/photos';
 
 type Props = {
   experiences: Experience[];
-  photos: Photo[];
+  postalCodes: PostalCodes[];
+  languages: Languages[];
+  cuisines: Cuisines[];
 };
 
-// const pictureStyles = {
-//   objectFit: 'cover',
-// };
-
 export default function Experiences(props: Props) {
+  const [cuisine, setCuisine] = useState();
+  const [language, setLanguage] = useState();
+  const [postalCode, setPostalCode] = useState();
+  const [cuisineFilter, setCuisineFilter] = useState<number>();
+  const [languageFilter, setLanguageFilter] = useState<number>();
+  const [postalCodeFilter, setPostalCodeFilter] = useState<number>();
+
+  const handleChangeCuisine = (event: SelectChangeEvent) => {
+    setCuisine(event.target.value as string);
+  };
+
+  const handleChangePostalCode = (event: SelectChangeEvent) => {
+    setPostalCode(event.target.value as string);
+  };
+
+  const handleChangeLanguages = (event: SelectChangeEvent) => {
+    setLanguage(event.target.value as string);
+  };
+
   return (
     <div>
       <Head>
@@ -74,8 +100,15 @@ export default function Experiences(props: Props) {
                 },
                 width: '90%',
               }}
+              value={cuisine ? cuisine : ''}
+              defaultValue={cuisine}
+              onChange={handleChangeCuisine}
             >
-              <MenuItem>Test</MenuItem>
+              {props.cuisines.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.cuisine}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
           <Grid
@@ -98,7 +131,15 @@ export default function Experiences(props: Props) {
                 },
                 width: '90%',
               }}
+              value={language ? language : ''}
+              defaultValue={language}
+              onChange={handleChangeLanguages}
             >
+              {props.languages.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.language}
+                </MenuItem>
+              ))}
               <MenuItem>Test</MenuItem>
             </TextField>
           </Grid>
@@ -122,8 +163,15 @@ export default function Experiences(props: Props) {
                 },
                 width: '90%',
               }}
+              value={postalCode ? postalCode : ''}
+              defaultValue={postalCode}
+              onChange={handleChangePostalCode}
             >
-              <MenuItem>Test</MenuItem>
+              {props.postalCodes.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.postalCode}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
           <Grid
@@ -143,6 +191,11 @@ export default function Experiences(props: Props) {
               variant="contained"
               disableElevation
               color="primary"
+              onClick={() => {
+                setCuisineFilter(cuisine);
+                setLanguageFilter(language);
+                setPostalCodeFilter(postalCode);
+              }}
             >
               <SearchIcon />
             </Button>
@@ -194,8 +247,15 @@ export default function Experiences(props: Props) {
                 },
                 width: '90%',
               }}
+              value={cuisine ? cuisine : ''}
+              defaultValue={cuisine}
+              onChange={handleChangeCuisine}
             >
-              <MenuItem>Test</MenuItem>
+              {props.cuisines.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.cuisine}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
           <Grid
@@ -219,8 +279,15 @@ export default function Experiences(props: Props) {
                 },
                 width: '90%',
               }}
+              value={language ? language : ''}
+              defaultValue={language}
+              onChange={handleChangeLanguages}
             >
-              <MenuItem>Test</MenuItem>
+              {props.languages.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.language}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
           <Grid
@@ -244,8 +311,15 @@ export default function Experiences(props: Props) {
                 },
                 width: '90%',
               }}
+              value={postalCode ? postalCode : ''}
+              defaultValue={postalCode}
+              onChange={handleChangePostalCode}
             >
-              <MenuItem>Test</MenuItem>
+              {props.postalCodes.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.postalCode}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
           <Grid
@@ -265,6 +339,11 @@ export default function Experiences(props: Props) {
               variant="contained"
               disableElevation
               color="primary"
+              onClick={() => {
+                setCuisineFilter(cuisine);
+                setLanguageFilter(language);
+                setPostalCodeFilter(postalCode);
+              }}
             >
               <SearchIcon />
             </Button>
@@ -272,9 +351,7 @@ export default function Experiences(props: Props) {
         </Grid>
       </Box>
 
-      <Typography variant="h1" component="h1">
-        Explore cooking lessons
-      </Typography>
+      <Typography variant="h1">Explore cooking lessons</Typography>
 
       <Grid
         container
@@ -286,8 +363,32 @@ export default function Experiences(props: Props) {
         m="0"
         justifyContent={{ xs: 'space-around', md: 'flex-start' }}
       >
-        <>
-          {props.experiences.map((experiences) => {
+        {/* filter function for the experiences */}
+        {props.experiences
+          .filter((experiences) => {
+            // set filter to true first
+            let filter = true;
+
+            // check first whether there is a filter set, then compare the id's --> for each filter
+            if (cuisineFilter && experiences.cuisineId !== cuisineFilter) {
+              filter = false;
+            }
+
+            if (languageFilter && experiences.languagesId !== languageFilter) {
+              filter = false;
+            }
+
+            if (
+              postalCodeFilter &&
+              experiences.postalCodeId !== postalCodeFilter
+            ) {
+              filter = false;
+            }
+
+            return filter;
+          })
+          // map through all experiences / filtered experiences
+          .map((experiences) => {
             return (
               <Grid
                 container
@@ -369,7 +470,6 @@ export default function Experiences(props: Props) {
               </Grid>
             );
           })}
-        </>
       </Grid>
     </div>
   );
@@ -378,6 +478,9 @@ export default function Experiences(props: Props) {
 export async function getServerSideProps() {
   const oldExperiences = await getExperiences();
   const photos = await getPhotos();
+  const cuisines = await getCuisines();
+  const postalCodes = await getPostalCodes();
+  const languages = await getLanguages();
 
   // const photos = await getPhotoUrlByExperienceId(experiences.id);
 
@@ -402,6 +505,11 @@ export async function getServerSideProps() {
   });
 
   return {
-    props: { experiences: allExperiences },
+    props: {
+      experiences: allExperiences,
+      cuisines: cuisines,
+      postalCodes: postalCodes,
+      languages: languages,
+    },
   };
 }

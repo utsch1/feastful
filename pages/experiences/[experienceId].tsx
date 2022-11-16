@@ -2,7 +2,16 @@ import { Box, Button, Grid, Typography } from '@mui/material';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Experience, getExperienceById } from '../../database/experiences';
+import {
+  Cuisines,
+  Experience,
+  getCuisines,
+  getExperienceById,
+  getLanguages,
+  getPostalCodes,
+  Languages,
+  PostalCodes,
+} from '../../database/experiences';
 import { getPhotos, Photo } from '../../database/photos';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
@@ -11,9 +20,28 @@ const pictureStyles = {
 };
 
 type Props = { experience: Experience } | { error: string };
-type PropsPhoto = { photo: Photo };
+type PropsPhoto = {
+  photo: Photo;
+  cuisine: Cuisines;
+  language: Languages;
+  postalCode: PostalCodes;
+};
 
 export default function SingleExperience(props: Props & PropsPhoto) {
+  // change 'undefined' date to timestamp to string to a good looking date
+  const dateAsTimeStamp = Date.parse(props.experience.eventDate);
+  const dateAsString = new Date(dateAsTimeStamp);
+  const newEventDate =
+    dateAsString.getDate() +
+    '/' +
+    (dateAsString.getMonth() + 1) +
+    '/' +
+    dateAsString.getFullYear() +
+    ' ' +
+    dateAsString.getHours() +
+    ':' +
+    ('0' + dateAsString.getMinutes()).slice(-2);
+
   if ('error' in props) {
     return (
       <div>
@@ -27,7 +55,6 @@ export default function SingleExperience(props: Props & PropsPhoto) {
       </div>
     );
   }
-  console.log('date', typeof props.experience.data);
 
   return (
     <div>
@@ -105,21 +132,21 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                 <Grid container item md={6} direction="column">
                   <Typography>
                     Cuisine:
-                    {props.experience.cuisineId}
+                    {props.cuisine.cuisine}
                   </Typography>
                   <Typography>
                     Language:
-                    {props.experience.languagesId}
+                    {props.language.language}
                   </Typography>
                 </Grid>
                 <Grid container item md={6} direction="column">
                   <Typography>
                     Postal Code:
-                    {props.experience.postalCodeId}
+                    {props.postalCode.postalCode}
                   </Typography>
                   <Typography>
                     Event Date:
-                    {props.experience.eventDate}
+                    {newEventDate}
                   </Typography>
                 </Grid>
               </Grid>
@@ -239,6 +266,9 @@ export async function getServerSideProps(
 
   const oldExperience = await getExperienceById(experienceId);
   const photos = await getPhotos();
+  const cuisines = await getCuisines();
+  const languages = await getLanguages();
+  const postalCodes = await getPostalCodes();
 
   const experience = JSON.parse(JSON.stringify(oldExperience));
 
@@ -251,11 +281,29 @@ export async function getServerSideProps(
     };
   }
 
+  const cuisine = cuisines.find(
+    (cuisine) => experience.cuisineId === cuisine.id,
+  );
+
+  const language = languages.find(
+    (language) => experience.languagesId === language.id,
+  );
+
+  const postalCode = postalCodes.find(
+    (postalCode) => experience.postalCodeId === postalCode.id,
+  );
+
   const photoUrl = photos.find(
     (photo) => experience.id === photo.experiencesId,
   );
 
   return {
-    props: { experience: experience, photo: photoUrl },
+    props: {
+      experience: experience,
+      photo: photoUrl,
+      cuisine: cuisine,
+      language: language,
+      postalCode: postalCode,
+    },
   };
 }
