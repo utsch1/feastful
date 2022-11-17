@@ -3,6 +3,7 @@ import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import {
   AppBar,
   Box,
+  css,
   Grid,
   IconButton,
   Menu,
@@ -17,6 +18,11 @@ import { User } from '../database/users';
 type Props = {
   user?: User;
 };
+
+const anchorStyles = css`
+  text-decoration: none;
+  color: #000;
+`;
 
 function Anchor({ children, ...restProps }) {
   // using a instead of Link since we want to force a full refresh
@@ -103,7 +109,7 @@ export default function Header(props: Props) {
                       <Link href="/account">
                         <MenuItem onClick={handleClose}>ACCOUNT</MenuItem>
                       </Link>
-                      <Anchor href="/logout">
+                      <Anchor href="/logout" css={anchorStyles}>
                         <MenuItem onClick={handleClose}>LOGOUT</MenuItem>
                       </Anchor>
                     </>

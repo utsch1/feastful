@@ -406,58 +406,30 @@ export default function Experiences(props: Props) {
                 >
                   {/* condition whether there is a photo uploaded, otherwise use a colored box */}
                   {!experiences.photo ? (
-                    <>
-                      <Box
-                        component="img"
-                        sx={{
-                          width: '100%',
-                          borderRadius: '5px',
-                          backgroundColor: 'primary.main',
-                          // display: { xs: 'none', sm: 'block' },
-                        }}
-                        m={0}
-                        src="/no-photo-available.png"
-                        alt="no photo available"
-                      />
-                      {/* <Box
-                        style={pictureStyles}
-                        sx={{
-                          width: 300,
-                          height: 150,
-                          borderRadius: '5px',
-                          backgroundColor: 'primary.main',
-                          display: { xs: 'block', sm: 'none' },
-                        }}
-                        m={0}
-                      /> */}
-                    </>
+                    <Box
+                      component="img"
+                      sx={{
+                        width: '100%',
+                        borderRadius: '5px',
+                        backgroundColor: 'primary.main',
+                        boxShadow: 2,
+                      }}
+                      m={0}
+                      src="/no-photo-available.png"
+                      alt="no photo available"
+                    />
                   ) : (
-                    <>
-                      <Box
-                        component="img"
-                        sx={{
-                          width: '100%',
-                          borderRadius: '5px',
-                          // display: { xs: 'none', sm: 'block' },
-                        }}
-                        m={0}
-                        src={experiences.photo}
-                        alt="impressions of the cooking lesson"
-                      />
-                      {/* <Box
-                        style={pictureStyles}
-                        component="img"
-                        sx={{
-                          width: 300,
-                          height: 150,
-                          borderRadius: '5px',
-                          display: { xs: 'block', sm: 'none' },
-                        }}
-                        m={0}
-                        src={experiences.photo}
-                        alt="impressions of the cooking lesson"
-                      /> */}
-                    </>
+                    <Box
+                      component="img"
+                      sx={{
+                        width: '100%',
+                        borderRadius: '5px',
+                        boxShadow: 2,
+                      }}
+                      m={0}
+                      src={experiences.photo}
+                      alt="impressions of the cooking lesson"
+                    />
                   )}
                   <Typography variant="h2" mt="0.5rem" noWrap>
                     {experiences.headline}
@@ -481,8 +453,6 @@ export async function getServerSideProps() {
   const cuisines = await getCuisines();
   const postalCodes = await getPostalCodes();
   const languages = await getLanguages();
-
-  // const photos = await getPhotoUrlByExperienceId(experiences.id);
 
   // https://flaviocopes.com/nextjs-serialize-date-json/
   // in order to be able to use dates in frontend

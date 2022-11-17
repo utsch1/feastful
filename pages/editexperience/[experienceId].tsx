@@ -31,6 +31,11 @@ import {
   Languages,
   PostalCodes,
 } from '../../database/experiences';
+import {
+  getPhotoByExperienceId,
+  getPhotos,
+  Photo,
+} from '../../database/photos';
 import { getUserBySessionToken, User } from '../../database/users';
 
 type Props = {
@@ -39,10 +44,10 @@ type Props = {
   languages: Languages[];
   user: User;
   experience: Experience;
+  // photo: Photo;
 };
 
 export default function EditExperience(props: Props) {
-  console.log(props);
   const characterLimitHeadline = 50;
   const characterLimitDescription = 1000;
   const [experience, setExperience] = useState<Experience[]>([]);
@@ -56,6 +61,7 @@ export default function EditExperience(props: Props) {
   const [price, setPrice] = useState(props.experience.price);
   const [eventDate, setEventDate] = useState(props.experience.eventDate);
   const [image, setImage] = useState('');
+  const [previewImage, setPreviewImage] = useState(props.photo);
   const [photoUrl, setPhotoUrl] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
@@ -135,8 +141,22 @@ export default function EditExperience(props: Props) {
     setEventDate(newValue);
   };
 
+  // Image upload function incl. image preview function
+
+  function previewImages(image) {
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+
+    reader.onloadend = () => {
+      console.log(previewImage);
+      setPreviewImage(reader.result);
+    };
+  }
+
   const selectImage = (event: any) => {
-    setImage(event.currentTarget.files[0]);
+    const image = event.currentTarget.files[0];
+    setImage(image);
+    previewImages(image);
   };
 
   const uploadImage = async () => {
@@ -373,7 +393,7 @@ export default function EditExperience(props: Props) {
         </Grid>
       </Grid>
       {/* condition whether there are photo url's available*/}
-      {!photoUrl ? (
+      {!previewImage ? (
         <div>{''}</div>
       ) : (
         <Box
@@ -384,7 +404,7 @@ export default function EditExperience(props: Props) {
           }}
           mt={1}
           mr="2rem"
-          src={photoUrl}
+          src={previewImage}
           alt="uploaded photo"
         />
       )}
@@ -410,6 +430,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
   const id = context.query.experienceId;
   const singleExperience = await getExperienceById(Number(id));
+  // const photos = await getPhotoByExperienceId(experiencesId);
+
+  // https://flaviocopes.com/nextjs-serialize-date-json/
+  // in order to be able to use dates in frontend
   const experience = JSON.parse(JSON.stringify(singleExperience));
 
   const user = token && (await getUserBySessionToken(token));
@@ -417,7 +441,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (!user) {
     return {
       redirect: {
-        destination: '/login?returnTo=/account',
+        destination: '/login?returnTo=/login',
         permanent: false,
       },
     };
@@ -427,19 +451,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const postalCodes = await getPostalCodes();
   const languages = await getLanguages();
 
-  // const foundExperience = JSON.parse(
-  //   JSON.stringify(await getExperienceByUserId(user.id)),
-  // );
-
-  // if (!experience) {
-  //   return {
-  //     props: {
-  //       user: user,
-  //     },
-  //   };
-  // }
-
-  console.log(experience);
+  // console.log(photos);
 
   return {
     props: {
@@ -448,6 +460,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       languages: languages,
       user: user,
       experience: experience,
+      // photo: photoUrl,
     },
   };
 }

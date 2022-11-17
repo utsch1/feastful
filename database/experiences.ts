@@ -101,6 +101,7 @@ export async function getExperienceByUserId(userId: number) {
     AND
       experiences.user_id = ${userId}
   `;
+
   return experience;
 }
 
@@ -114,6 +115,7 @@ export async function getExperienceById(id: number) {
     WHERE
       id = ${id}
   `;
+
   return experience;
 }
 

@@ -13,26 +13,40 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import {
+  getPersonalInformationByUserId,
+  PersonalInformation,
+} from '../database/personalInformation';
 import { getUserBySessionToken, User } from '../database/users';
 import { PersonalInformationResponseBody } from './api/user/personalinformation';
 
 type Props = {
   user: User;
+  personalInformation: PersonalInformation;
 };
 
 export default function AddPersonalInformation(props: Props) {
   const characterLimitPersonalInformation = 500;
-  const [firstName, setFirstName] = useState('');
-  const [personalInformation, setPersonalInformation] = useState('');
+  // const [personalInformationApi, setPersonalInformationApi] = useState(
+  //   props.personalInformation || [],
+  // );
+  const [firstName, setFirstName] = useState(
+    props.personalInformation.firstName,
+  );
+  const [personalInformation, setPersonalInformation] = useState(
+    props.personalInformation.personalInformation,
+  );
   const [image, setImage] = useState('');
-  const [previewImage, setPreviewImage] = useState('');
+  const [previewImage, setPreviewImage] = useState(
+    props.personalInformation.photoUrl,
+  );
   const [photoUrl, setPhotoUrl] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
 
-  async function createPersonalInformationFromApi() {
+  async function updatePersonalInformationFromApi() {
     const response = await fetch('/api/user/personalinformation', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'content-type': 'application/json',
       },
@@ -203,7 +217,7 @@ export default function AddPersonalInformation(props: Props) {
         variant="contained"
         disableElevation
         onClick={async () => {
-          await createPersonalInformationFromApi();
+          await updatePersonalInformationFromApi();
         }}
       >
         Save
@@ -220,15 +234,32 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (!user) {
     return {
       redirect: {
-        destination: '/login?returnTo=/account',
+        destination: '/login?returnTo=/login',
         permanent: false,
       },
     };
   }
 
+  const personalInformationArray = await getPersonalInformationByUserId(
+    user.id,
+    token,
+  );
+
+  if (!personalInformationArray) {
+    return {
+      redirect: {
+        destination: '/account',
+        permanent: false,
+      },
+    };
+  }
+
+  const personalInformation = personalInformationArray[0];
+
   return {
     props: {
       user: user,
+      personalInformation: personalInformation,
     },
   };
 }

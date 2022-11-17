@@ -12,6 +12,10 @@ import {
   Languages,
   PostalCodes,
 } from '../../database/experiences';
+import {
+  getPersonalInformation,
+  PersonalInformation,
+} from '../../database/personalInformation';
 import { getPhotos, Photo } from '../../database/photos';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
@@ -25,6 +29,7 @@ type PropsPhoto = {
   cuisine: Cuisines;
   language: Languages;
   postalCode: PostalCodes;
+  personalInformation: PersonalInformation;
 };
 
 export default function SingleExperience(props: Props & PropsPhoto) {
@@ -42,6 +47,11 @@ export default function SingleExperience(props: Props & PropsPhoto) {
     ':' +
     ('0' + dateAsString.getMinutes()).slice(-2);
 
+  //change first letter of user first name to uppercase
+  const firstName =
+    props.personalInformation.firstName.charAt(0).toUpperCase() +
+    props.personalInformation.firstName.slice(1);
+
   if ('error' in props) {
     return (
       <div>
@@ -49,9 +59,13 @@ export default function SingleExperience(props: Props & PropsPhoto) {
           <title>Cooking lesson not found</title>
           <meta name="description" content="Cooking lesson not found" />
         </Head>
-        <h1>{props.error}</h1>
-        Sorry, this cooking lesson is already in the past. Please explore other
-        cooking lessons <Link href="/experiences">here</Link>.
+        <Typography variant="h1">{props.error}</Typography>
+        <Typography>
+          We are sorry, this cooking lesson is already in the past or has been
+          removed. Please explore other cooking lessons{' '}
+          <Link href="/experiences">here</Link>
+        </Typography>
+        .
       </div>
     );
   }
@@ -116,7 +130,7 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                 sx={{ height: 'auto' }}
               >
                 <Typography variant="h2" component="h2" m={0} mt="0.5rem">
-                  Cooking lesson with Ute
+                  Cooking lesson with {firstName}
                 </Typography>
                 <Typography mb="1rem" mt="0.5rem">
                   {props.experience.price}€ /person
@@ -197,7 +211,7 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                     mb="3rem"
                     align="center"
                   >
-                    Get to know Ute
+                    Get to know {firstName}
                     <Box
                       component="img"
                       sx={{
@@ -205,18 +219,14 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                         width: 70,
                         borderRadius: '50%',
                       }}
-                      src="/Ute.JPG"
+                      src={props.personalInformation.photoUrl}
                       alt="photo of user"
                       position="absolute"
                       right="80px"
                     />
                   </Typography>
                   <Typography align="justify">
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                    diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                    aliquyam erat, sed diam voluptua. At vero eos et accusam et
-                    justo duo dolores et ea rebum. Stet clita kasd gubergren, no
-                    sea takimata sanctus est Lorem ipsum dolor sit amet.
+                    {props.personalInformation.personalInformation}
                   </Typography>
                   <Button
                     sx={{
@@ -269,6 +279,7 @@ export async function getServerSideProps(
   const cuisines = await getCuisines();
   const languages = await getLanguages();
   const postalCodes = await getPostalCodes();
+  const personalInformations = await getPersonalInformation();
 
   const experience = JSON.parse(JSON.stringify(oldExperience));
 
@@ -297,6 +308,10 @@ export async function getServerSideProps(
     (photo) => experience.id === photo.experiencesId,
   );
 
+  const personalInformation = personalInformations.find(
+    (information) => experience.userId === information.userId,
+  );
+
   return {
     props: {
       experience: experience,
@@ -304,6 +319,7 @@ export async function getServerSideProps(
       cuisine: cuisine,
       language: language,
       postalCode: postalCode,
+      personalInformation: personalInformation,
     },
   };
 }

@@ -2,7 +2,7 @@
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getValidSessionByToken } from '../../../database/sessions';
-import { getUserBySessionToken } from '../../../database/users';
+import { deleteUserById, getUserBySessionToken } from '../../../database/users';
 
 export default async function handler(
   request: NextApiRequest,
@@ -35,5 +35,17 @@ export default async function handler(
     response.status(200).json({ user: user });
   } else {
     response.status(405).json({ errors: [{ message: 'Method not allowed' }] });
+  }
+
+  if (request.method === 'DELETE') {
+    const deletedUser = await deleteUserById(userId);
+
+    if (!deletedUser) {
+      return response.status(404).json({ message: 'Not a valid Id' });
+    }
+
+    console.log(deletedUser);
+
+    return response.status(200).json(deletedUser);
   }
 }

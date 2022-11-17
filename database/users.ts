@@ -67,3 +67,16 @@ export async function getUserBySessionToken(token: string) {
 
   return user;
 }
+
+// Delete user by ID
+export async function deleteUserById(id: number) {
+  const [user] = await sql<User[]>`
+    DELETE FROM
+      users
+    WHERE
+      id = ${id}
+    RETURNING
+      *
+  `;
+  return user;
+}

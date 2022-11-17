@@ -57,7 +57,8 @@ export default function Login(props: Props) {
     const returnTo = router.query.returnTo;
     if (
       returnTo &&
-      !Array.isArray(returnTo) && // Security: Validate returnTo parameter against valid path
+      !Array.isArray(returnTo) &&
+      // Security: Validate returnTo parameter against valid path
       // (because this is untrusted user input)
       /^\/[a-zA-Z0-9-?=/]*$/.test(returnTo)
     ) {
@@ -67,7 +68,7 @@ export default function Login(props: Props) {
     // refresh the user on state
     await props.refreshUserProfile();
     // redirect user to user profile
-    await router.push(`/account`);
+    await router.push(`/addpersonalinformation`);
   }
 
   // login handler
@@ -263,7 +264,7 @@ export default function Login(props: Props) {
               <Paper elevation={0}>
                 <TextField
                   fullWidth
-                  type="password"
+                  type="email"
                   id="registration-email"
                   variant="outlined"
                   margin="none"

@@ -351,7 +351,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
       </LocalizationProvider>{' '}
       <br />
       {/* Photo upload */}
-      <Typography>Photo*</Typography>
+      <Typography variant="body">Photo*</Typography>
       <Grid container xs={12}>
         <Grid>
           <Button variant="contained" disableElevation>

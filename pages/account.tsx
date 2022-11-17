@@ -23,6 +23,17 @@ export default function UserProfile(props: Props) {
   //   setNewExperiences(props.experiences);
   // }, [props.experiences]);
 
+  async function deleteUserFromApiById(id: number) {
+    const response = await fetch(`/api/user/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: id }),
+    });
+    const deletedUser = (await response.json()) as User;
+  }
+
   async function deleteExperienceFromApiById(id: number) {
     const response = await fetch(`/api/user/experiences/${id}`, {
       method: 'DELETE',
@@ -125,17 +136,10 @@ export default function UserProfile(props: Props) {
           })}
         </>
       </Grid>
-      <Grid container mt="1rem">
-        <Grid container item xs={10} mb="0.5rem">
-          <Typography variant="h2" component="h3">
-            Personal information
-          </Typography>
-        </Grid>
-        <Grid container item xs={2} justifyContent="flex-end">
-          <Link href="/addpersonalinformation">
-            <AddCircleIcon color="secondary" />
-          </Link>
-        </Grid>
+      <Grid container item xs={10} mb="0.5rem" mt="1rem">
+        <Typography variant="h2" component="h3">
+          Personal information
+        </Typography>
       </Grid>
       <Grid
         container
@@ -149,13 +153,13 @@ export default function UserProfile(props: Props) {
         }}
       >
         <Grid item xs={7} display="flex" alignItems="center">
-          <Typography>Let people get to know you</Typography>
+          <Typography variant="body">Let people get to know you</Typography>
         </Grid>
         <Grid container item xs={5} justifyContent="flex-end">
           <Link
             underline="none"
             component="button"
-            href="/addpersonalinformation"
+            href="/editpersonalinformation"
           >
             <Button
               variant="contained"
@@ -177,6 +181,7 @@ export default function UserProfile(props: Props) {
         variant="contained"
         disableElevation
         aria-label="delete account"
+        onClick={async () => await deleteUserFromApiById(user.id)}
       >
         Delete account
       </Button>

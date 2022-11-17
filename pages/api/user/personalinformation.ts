@@ -48,11 +48,11 @@ export default async function personalInformationHandler(
     const userId = request.body?.userId;
     const firstName = request.body?.firstName;
     const personalInformation = request.body?.personalInformation;
-    // const photoId = request.body?.photoId;
+    const photoUrl = request.body?.photoUrl;
 
-    if (!(firstName && personalInformation)) {
+    if (!(firstName && personalInformation && photoUrl)) {
       return response.status(400).json({
-        message: 'first name and personal information must be filles out',
+        message: 'first name and personal information must be filled out',
       });
     }
 
@@ -61,9 +61,8 @@ export default async function personalInformationHandler(
       userId,
       firstName,
       personalInformation,
+      photoUrl,
     );
-
-    // const newPhoto = await createPhotoUrl(photoUrl, newExperience.id);
 
     // 3. response with the created experience
     return response.status(200).json({ newPersonalInformation });

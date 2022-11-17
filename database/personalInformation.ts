@@ -1,5 +1,4 @@
 import { sql } from './connect';
-import { Photo } from './photos';
 import { User } from './users';
 
 export type PersonalInformation = {
@@ -7,7 +6,7 @@ export type PersonalInformation = {
   userId: number;
   firstName: string;
   personalInformation: string;
-  photoId: Photo['id'];
+  photoUrl: string;
 };
 
 // Get personal information
@@ -23,12 +22,13 @@ export async function createPersonalInformation(
   userId: User['id'],
   firstName: string,
   personalInformation: string,
+  photoUrl: string,
 ) {
   const [information] = await sql<PersonalInformation[]>`
   INSERT INTO personalInformation
-    (user_id, first_name, personal_information)
+    (user_id, first_name, personal_information, photo_url)
   VALUES
-    (${userId}, ${firstName}, ${personalInformation})
+    (${userId}, ${firstName}, ${personalInformation}, ${photoUrl})
   RETURNING
     *
   `;
@@ -36,18 +36,21 @@ export async function createPersonalInformation(
 }
 
 // Get personal information by user ID
-export async function getPersonalInformationByUserId(userId: number) {
+export async function getPersonalInformationByUserId(
+  userId: number,
+  token: string,
+) {
+  if (!token) return undefined;
   const personalInformation = await sql<PersonalInformation[]>`
     SELECT
       personalInformation.id AS id,
       users.id AS user_id,
       personalInformation.first_name AS first_name,
       personalInformation.personal_information AS personal_information,
-      photos.id AS photo_id
+      personalInformation.photo_url AS photo_url
     FROM
       personalInformation,
-      users,
-      photos
+      users
     WHERE
       users.id = ${userId}
     AND
