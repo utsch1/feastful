@@ -58,3 +58,26 @@ export async function getPersonalInformationByUserId(
   `;
   return personalInformation;
 }
+
+// Update experience by ID
+export async function updatePersonalInformation(
+  userId: number,
+  firstName: string,
+  personalInformation: string,
+  photoUrl: string,
+) {
+  const [information] = await sql<PersonalInformation[]>`
+    UPDATE
+      personalInformation
+    SET
+      user_id = ${userId},
+      first_name = ${firstName},
+      personal_information = ${personalInformation},
+      photo_url = ${photoUrl}
+    WHERE
+      personalInformation.user_id = ${userId}
+    RETURNING
+      *
+  `;
+  return information;
+}

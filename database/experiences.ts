@@ -147,9 +147,9 @@ export async function updateExperienceById(
   id: number,
   headline: string,
   description: string,
-  cuisineId: Cuisines['id'],
-  languagesId: Languages['id'],
-  postalCodeId: PostalCodes['id'],
+  cuisineId: number,
+  languagesId: number,
+  postalCodeId: number,
   price: number,
   eventDate: Date,
 ) {

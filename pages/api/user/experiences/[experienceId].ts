@@ -58,7 +58,6 @@ export default async function handler(
     const eventDate = new Date(request.body?.eventDate);
     const photoUrl = request.body?.photoUrl;
 
-    // Check all the information to create the animal exists
     if (
       !(
         headline &&
@@ -67,21 +66,17 @@ export default async function handler(
         languagesId &&
         postalCodeId &&
         price &&
-        eventDate &&
-        photoUrl
+        eventDate
       )
     ) {
       return response.status(400).json({
         message:
-          'property headline, description, cuisine, languages, postal code, price, event date or photo missing',
+          'property headline, description, cuisine, languages, postal code, price or event date missing',
       });
     }
 
-    // TODO: add type checking to the api
-
     // Create the experience using the database util function
     const newExperience = await updateExperienceById(
-      experienceId,
       headline,
       description,
       cuisineId,
@@ -89,6 +84,7 @@ export default async function handler(
       postalCodeId,
       price,
       eventDate,
+      photoUrl,
     );
 
     if (!newExperience) {

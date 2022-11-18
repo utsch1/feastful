@@ -3,6 +3,7 @@ import {
   createPersonalInformation,
   getPersonalInformation,
   PersonalInformation,
+  updatePersonalInformation,
 } from '../../../database/personalInformation';
 import { getValidSessionByToken } from '../../../database/sessions';
 
@@ -66,6 +67,38 @@ export default async function personalInformationHandler(
 
     // 3. response with the created experience
     return response.status(200).json({ newPersonalInformation });
+  }
+
+  if (request.method === 'PUT') {
+    if (!request.cookies.sessionToken) {
+      response
+        .status(400)
+        .json({ errors: [{ message: 'No session token passed' }] });
+      return;
+    }
+    const userId = request.body?.userId;
+    const firstName = request.body?.firstName;
+    const personalInformation = request.body?.personalInformation;
+    const photoUrl = request.body?.photoUrl;
+
+    if (!(firstName && personalInformation && photoUrl)) {
+      return response.status(400).json({
+        message: 'first name and personal information must be filled out',
+      });
+    }
+
+    // Create new personal information
+    const updatedPersonalInformation = await updatePersonalInformation(
+      userId,
+      firstName,
+      personalInformation,
+      photoUrl,
+    );
+
+    // response with updated school
+    return response
+      .status(200)
+      .json({ personalInformation: updatedPersonalInformation });
   }
 
   return response.status(400).json({ message: 'Method not allowed' });

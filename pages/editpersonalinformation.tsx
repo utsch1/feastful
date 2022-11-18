@@ -40,7 +40,7 @@ export default function AddPersonalInformation(props: Props) {
   const [previewImage, setPreviewImage] = useState(
     props.personalInformation.photoUrl,
   );
-  const [photoUrl, setPhotoUrl] = useState('');
+  const [photoUrl, setPhotoUrl] = useState(props.personalInformation.photoUrl);
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
 
