@@ -1,3 +1,7 @@
+import EventIcon from '@mui/icons-material/Event';
+import HomeIcon from '@mui/icons-material/Home';
+import LanguageIcon from '@mui/icons-material/Language';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
@@ -17,11 +21,12 @@ import {
   PersonalInformation,
 } from '../../database/personalInformation';
 import { getPhotos, Photo } from '../../database/photos';
+import { getUser, User } from '../../database/users';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
-const pictureStyles = {
-  objectFit: 'cover',
-};
+// const pictureStyles = {
+//   objectFit: 'cover',
+// };
 
 type Props = { experience: Experience } | { error: string };
 type PropsPhoto = {
@@ -30,6 +35,7 @@ type PropsPhoto = {
   language: Languages;
   postalCode: PostalCodes;
   personalInformation: PersonalInformation;
+  emailContact: User;
 };
 
 export default function SingleExperience(props: Props & PropsPhoto) {
@@ -83,7 +89,7 @@ export default function SingleExperience(props: Props & PropsPhoto) {
       <div>
         <div key={`experience-${props.experience.id}`}>
           <Typography variant="h1">{props.experience.headline}</Typography>
-          <Grid container md={12} m="0">
+          <Grid container m="0">
             <Grid
               container
               item
@@ -91,35 +97,26 @@ export default function SingleExperience(props: Props & PropsPhoto) {
               display="flex"
               justifyContent="space-between"
             >
-              <Box
-                style={pictureStyles}
-                component="img"
-                sx={{
-                  width: '49%',
-                  height: 200,
-                  borderRadius: '5px',
-                }}
-                m={0}
-                src={props.photo.photoUrl}
-                alt="impressions of the cooking lesson"
-              />
-              {/* </Grid>
-            <Grid container item md={6}> */}
-              <Box
-                style={pictureStyles}
-                component="img"
-                sx={{
-                  width: '49%',
-                  height: 200,
-                  borderRadius: '5px',
-                }}
-                m={0}
-                mb="1rem"
-                src={props.photo.photoUrl}
-                alt="impressions of the cooking lesson"
-              />
+              {/* condition whether there is a photo uploaded, otherwise use a colored box */}
+              {!props.photo.photoUrl ? (
+                <div>{''}</div>
+              ) : (
+                <Box
+                  // style={pictureStyles}
+                  component="img"
+                  sx={{
+                    width: '100%',
+                    height: 200,
+                    borderRadius: '5px',
+                    objectFit: 'cover',
+                  }}
+                  m={0}
+                  src={props.photo.photoUrl}
+                  alt="impressions of the cooking lesson"
+                />
+              )}
             </Grid>
-            <Grid container item md={6.5}>
+            <Grid container item md={12}>
               <Grid
                 container
                 item
@@ -128,90 +125,81 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                 justifyContent="space-between"
                 alignItems="flex-start"
                 sx={{ height: 'auto' }}
+                mt="1rem"
               >
-                <Typography variant="h2" component="h2" m={0} mt="0.5rem">
+                <Typography variant="h2" component="h2">
                   Cooking lesson with {firstName}
                 </Typography>
-                <Typography mb="1rem" mt="0.5rem">
+                <Typography variant="h2" component="body2">
                   {props.experience.price}€ /person
                 </Typography>
               </Grid>
               <Grid
                 container
                 item
-                md={12}
                 display="flex"
-                justifyContent="space-between"
+                spacing={1}
+                justifyContent="center"
+                mt="1rem"
               >
-                <Grid container item md={6} direction="column">
-                  <Typography>
-                    Cuisine:
+                <Grid container item xs={6} md={3}>
+                  <RestaurantIcon color="secondary" sx={{ width: '100%' }} />
+                  <Typography align="center" sx={{ width: '100%' }}>
                     {props.cuisine.cuisine}
                   </Typography>
-                  <Typography>
-                    Language:
+                </Grid>
+                <Grid container item xs={6} md={3}>
+                  <LanguageIcon color="secondary" sx={{ width: '100%' }} />
+                  <Typography align="center" sx={{ width: '100%' }}>
                     {props.language.language}
                   </Typography>
                 </Grid>
-                <Grid container item md={6} direction="column">
-                  <Typography>
-                    Postal Code:
+                <Grid container item xs={6} md={3}>
+                  <HomeIcon color="secondary" sx={{ width: '100%' }} />
+                  <Typography align="center" sx={{ width: '100%' }}>
                     {props.postalCode.postalCode}
                   </Typography>
-                  <Typography>
-                    Event Date:
+                </Grid>
+                <Grid container item xs={6} md={3}>
+                  <EventIcon color="secondary" sx={{ width: '100%' }} />
+                  <Typography align="center" sx={{ width: '100%' }}>
                     {newEventDate}
                   </Typography>
                 </Grid>
               </Grid>
-              <Grid
-                container
-                item
-                md={12}
-                display="flex"
-                alignItems="flex-start"
-                sx={{ minHeight: '150px' }}
-              >
-                <Typography mt="1rem" mb="1rem" align="justify">
+              <Grid container item>
+                <Typography mt="1rem" align="justify">
                   {props.experience.description}
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item md={0.5} />
 
-            <Grid container item md={5} justifyContent="center">
+            <Grid
+              container
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
               <Box
                 sx={{
-                  width: '100%',
+                  width: { xs: '100%', sm: '75%', md: '50%' },
                   height: 'auto',
                   backgroundColor: 'primary.main',
                   borderRadius: '5px',
                   boxShadow: 25,
                 }}
-                display="flex"
-                mt="0.5rem"
-                mb="1rem"
-                p="0.5rem"
-                justifyContent="center"
+                mt="2rem"
+                mb="2rem"
+                p="1rem"
               >
-                <Grid
-                  container
-                  item
-                  md={12}
-                  pl="0.5rem"
-                  pr="0.5rem"
-                  direction="column"
-                  display="flex"
-                  justifyContent="space-between"
-                >
-                  <Typography
-                    variant="h2"
-                    component="h2"
-                    mt="0.5rem"
-                    mb="3rem"
-                    align="center"
+                <Grid container justifyContent="center">
+                  <Grid
+                    container
+                    item
+                    md={12}
+                    display="flex"
+                    alignItems="center"
                   >
-                    Get to know {firstName}
                     <Box
                       component="img"
                       sx={{
@@ -221,36 +209,30 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                       }}
                       src={props.personalInformation.photoUrl}
                       alt="photo of user"
-                      position="absolute"
-                      right="80px"
                     />
-                  </Typography>
-                  <Typography align="justify">
+                    <Typography variant="h2" component="h2" ml="1rem">
+                      Get to know {firstName}
+                    </Typography>
+                  </Grid>
+                  <Typography align="justify" mt="1rem">
                     {props.personalInformation.personalInformation}
                   </Typography>
-                  <Button
-                    sx={{
-                      m: 'auto',
-                      mt: '1rem',
-                      mb: '1rem',
-                    }}
-                    color="secondary"
-                    variant="contained"
-                    disableElevation
-                    aria-label="button for contacting via email"
-                  >
-                    Contact
-                  </Button>
+                  <Link href={`mailto:${props.emailContact.email}`}>
+                    <Button
+                      sx={{
+                        m: 'auto',
+                        mt: '1rem',
+                        mb: '1rem',
+                      }}
+                      color="secondary"
+                      variant="contained"
+                      disableElevation
+                      aria-label="button for contacting via email"
+                    >
+                      Contact
+                    </Button>
+                  </Link>
                 </Grid>
-                {/* <Grid
-                  container
-                  item
-                  md={3}
-                  display="flex"
-                  justifyContent="center"
-                >
-
-                </Grid> */}
               </Box>
             </Grid>
           </Grid>
@@ -280,6 +262,7 @@ export async function getServerSideProps(
   const languages = await getLanguages();
   const postalCodes = await getPostalCodes();
   const personalInformations = await getPersonalInformation();
+  const contactInformation = await getUser();
 
   const experience = JSON.parse(JSON.stringify(oldExperience));
 
@@ -312,6 +295,14 @@ export async function getServerSideProps(
     (information) => experience.userId === information.userId,
   );
 
+  if (!contactInformation) {
+    return undefined;
+  }
+
+  const emailContact = contactInformation.id === personalInformation?.userId;
+
+  // const emailContact = contactInformation?.id === personalInformation?.userId;
+
   return {
     props: {
       experience: experience,
@@ -320,6 +311,7 @@ export async function getServerSideProps(
       language: language,
       postalCode: postalCode,
       personalInformation: personalInformation,
+      emailContact: emailContact,
     },
   };
 }

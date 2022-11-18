@@ -355,9 +355,6 @@ export default function Experiences(props: Props) {
 
       <Grid
         container
-        xs={12}
-        sm={12}
-        md={12}
         spacing={{ xs: 0, sm: 2, md: 2 }}
         display="flex"
         m="0"

@@ -31,9 +31,7 @@ export default function Footer() {
     <footer css={footerStyles}>
       <span>© UTE GREINER 2022</span>
       <span>
-        <Link href="/credits">CREDITS</Link>
         <Link href="/about">ABOUT</Link>
-        <Link href="/impressum">IMPRESSUM</Link>
       </span>
     </footer>
   );
