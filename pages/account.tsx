@@ -104,11 +104,7 @@ export default function UserProfile(props: Props) {
                     <Typography>{experience.headline}</Typography>
                   </Grid>
                   <Grid container item xs={12} sm={5} justifyContent="flex-end">
-                    <Link
-                      underline="none"
-                      component="button"
-                      href={`/editexperience/${experience.id}`}
-                    >
+                    <Link href={`/editexperience/${experience.id}`}>
                       <Button
                         variant="contained"
                         disableElevation

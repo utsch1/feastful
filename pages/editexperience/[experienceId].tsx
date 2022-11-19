@@ -12,6 +12,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -43,15 +44,17 @@ export default function EditExperience(props: Props) {
   const [experience, setExperience] = useState<Experience[]>([]);
   const [headline, setHeadline] = useState(props.experience.headline);
   const [description, setDescription] = useState(props.experience.description);
-  const [cuisine, setCuisine] = useState(props.experience.cuisineId);
+  const [cuisine, setCuisine] = useState(Number(props.experience.cuisineId));
   const [language, setLanguage] = useState(
     Number(props.experience.languagesId),
   );
-  const [postalCode, setPostalCode] = useState(props.experience.postalCodeId);
-  const [price, setPrice] = useState(props.experience.price);
+  const [postalCode, setPostalCode] = useState(
+    Number(props.experience.postalCodeId),
+  );
+  const [price, setPrice] = useState(Number(props.experience.price));
   const [eventDate, setEventDate] = useState(props.experience.eventDate);
   const [image, setImage] = useState('');
-  const [previewImage, setPreviewImage] = useState(props.photo);
+  const [previewImage, setPreviewImage] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
@@ -67,13 +70,6 @@ export default function EditExperience(props: Props) {
       backgroundColor: '#FFF',
     },
   };
-
-  async function getExperienceFromApiById(id: number) {
-    const response = await fetch(`/api/user/experiences/${id}`);
-    const experienceFromApi = await response.json();
-
-    setExperience(experienceFromApi);
-  }
 
   async function updateExperienceFromApiById(id: number) {
     const response = await fetch(`/api/user/experience/${id}`, {
@@ -96,11 +92,11 @@ export default function EditExperience(props: Props) {
 
     const updatedExperienceFromApi = (await response.json()) as Experience;
 
-    const newState = experience.map((experience) => {
-      if (experience.id === updatedExperienceFromApi.id) {
+    const newState = experience.map((singleExperience) => {
+      if (singleExperience.id === updatedExperienceFromApi.id) {
         return updatedExperienceFromApi;
       } else {
-        return experience;
+        return singleExperience;
       }
     });
 
@@ -121,7 +117,7 @@ export default function EditExperience(props: Props) {
     setLanguage(event.target.value as number);
   };
 
-  const handleChangeEventDate = (newValue: dayjs | null) => {
+  const handleChangeEventDate = (newValue: Dayjs | null) => {
     setEventDate(newValue);
   };
 

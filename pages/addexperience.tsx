@@ -12,10 +12,9 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { createRef, useState } from 'react';
 import {
@@ -110,7 +109,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
     setLanguage(event.target.value);
   };
 
-  const handleChangeEventDate = (newValue: dayjs | null) => {
+  const handleChangeEventDate = (newValue: Dayjs | null) => {
     setEventDate(newValue);
   };
 
