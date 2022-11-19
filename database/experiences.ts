@@ -32,7 +32,12 @@ export type PostalCodes = {
 // Get all experiences
 export async function getExperiences() {
   const experiences = await sql<Experience[]>`
-    SELECT * FROM experiences
+    SELECT
+      *
+    FROM
+      experiences
+    WHERE
+      experiences.event_date > now()
   `;
   return experiences;
 }
@@ -114,6 +119,8 @@ export async function getExperienceById(id: number) {
       experiences
     WHERE
       id = ${id}
+    -- AND
+    --   experiences.event_date  > now()
   `;
 
   return experience;

@@ -1,14 +1,13 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import { Fragment, useState } from 'react';
+import Link from 'next/link';
+import { Fragment, useEffect, useState } from 'react';
 import { Experience, getExperiencesByUserId } from '../database/experiences';
 import { getUserBySessionToken, User } from '../database/users';
 
@@ -21,20 +20,20 @@ export default function UserProfile(props: Props) {
   const [newExperiences, setNewExperiences] = useState<Experience[]>([]);
 
   // Load all experiences into state on first render and every time props.experiences changes
-  // useEffect(() => {
-  //   setNewExperiences(props.experiences);
-  // }, [props.experiences]);
+  useEffect(() => {
+    setNewExperiences(props.experiences);
+  }, [props.experiences]);
 
-  async function deleteUserFromApiById(id: number) {
-    const response = await fetch(`/api/user/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: id }),
-    });
-    const deletedUser = (await response.json()) as User;
-  }
+  // async function deleteUserFromApiById(id: number) {
+  //   const response = await fetch(`/api/user/${id}`, {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ id: id }),
+  //   });
+  //   const deletedUser = (await response.json()) as User;
+  // }
 
   async function deleteExperienceFromApiById(id: number) {
     const response = await fetch(`/api/user/experiences/${id}`, {
@@ -53,8 +52,6 @@ export default function UserProfile(props: Props) {
     setNewExperiences(filteredExperiences);
   }
 
-  console.log(props.experiences);
-
   if (!props.user) {
     return (
       <>
@@ -62,7 +59,7 @@ export default function UserProfile(props: Props) {
           <title>User not found</title>
           <meta name="description" content="User not found" />
         </Head>
-        <h1>404 - User not found</h1>
+        <Typography variant="h1">404 - User not found</Typography>
       </>
     );
   }
@@ -71,8 +68,9 @@ export default function UserProfile(props: Props) {
     <>
       <Head>
         <title>Account</title>
-        <meta name="description" content="Account overview" />
+        <meta name="description" content="Account" />
       </Head>
+      {/* <div>Hi, {props.user.email}</div> */}
       <Typography variant="h1">Your account overview</Typography>
       <Grid container>
         <Grid container item xs={10} mb="0.5rem">
@@ -108,6 +106,7 @@ export default function UserProfile(props: Props) {
                   <Grid container item xs={12} sm={5} justifyContent="flex-end">
                     <Link
                       underline="none"
+                      component="button"
                       href={`/editexperience/${experience.id}`}
                     >
                       <Button
@@ -153,7 +152,7 @@ export default function UserProfile(props: Props) {
         }}
       >
         <Grid item xs={7} display="flex" alignItems="center">
-          <Typography variant="body">Let people get to know you</Typography>
+          <Typography variant="body1">Let people get to know you</Typography>
         </Grid>
         <Grid container item xs={5} justifyContent="flex-end">
           <Link

@@ -216,7 +216,10 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                   <Typography align="justify" mt="1rem">
                     {props.personalInformation.personalInformation}
                   </Typography>
-                  <Link href={`mailto:${props.emailContact.email}`}>
+                  <Link
+                    href={`mailto:${props.emailContact.email}`}
+                    underline="none"
+                  >
                     <Button
                       sx={{
                         m: 'auto',

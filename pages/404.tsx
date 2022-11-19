@@ -5,7 +5,7 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Head from 'next/head';
 
-export default function NotAvailable() {
+export default function Custom404() {
   return (
     <div>
       <Head>
@@ -38,11 +38,11 @@ export default function NotAvailable() {
             alignItems="center"
             direction="column"
           >
-            <Typography sx={{ fontSize: '70px', mt: '2rem' }} variant="body">
+            <Typography sx={{ fontSize: '70px', mt: '2rem' }} variant="body1">
               OOOPS!
             </Typography>
             <Typography variant="h1">404 - PAGE NOT FOUND!</Typography>
-            <Typography variant="body" component="div" align="center">
+            <Typography variant="body1" component="div" align="center">
               The page you were looking for might have been removed, <br />
               had its name changed or is temporarily unavailable
             </Typography>

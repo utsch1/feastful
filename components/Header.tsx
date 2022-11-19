@@ -104,7 +104,11 @@ export default function Header(props: Props) {
                 <div>
                   {props.user ? (
                     <>
-                      <Link href="/account">
+                      <Link
+                        href="/account"
+                        underline="none"
+                        color="text.primary"
+                      >
                         <MenuItem onClick={handleClose}>ACCOUNT</MenuItem>
                       </Link>
                       <Anchor href="/logout" css={anchorStyles}>
