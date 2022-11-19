@@ -297,11 +297,9 @@ export async function getServerSideProps(
     (information) => experience.userId === information.userId,
   );
 
-  if (!contactInformation) {
-    return undefined;
-  }
-
-  const emailContact = contactInformation.id === personalInformation?.userId;
+  const emailContact = contactInformation.find(
+    (information) => personalInformation.userId === information.id,
+  );
 
   return {
     props: {

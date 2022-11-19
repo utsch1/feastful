@@ -77,7 +77,6 @@ export async function getUser() {
     FROM
       users
   `;
-  console.log(user);
   return user;
 }
 
