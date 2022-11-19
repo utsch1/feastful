@@ -1,14 +1,12 @@
 import SearchIcon from '@mui/icons-material/Search';
-import {
-  Box,
-  Button,
-  Grid,
-  Link,
-  MenuItem,
-  SelectChangeEvent,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { SelectChangeEvent } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import Head from 'next/head';
 import { useState } from 'react';
 import {

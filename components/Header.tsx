@@ -1,17 +1,15 @@
-import { AccountCircle } from '@mui/icons-material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
-import {
-  AppBar,
-  Box,
-  css,
-  Grid,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from '@mui/material';
-import Link from 'next/link';
+import { css } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import React from 'react';
 import { User } from '../database/users';
 
@@ -55,7 +53,7 @@ export default function Header(props: Props) {
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             <Link href="/experiences" underline="none" color="inherit">
-              <Typography variant="body">EXPERIENCES</Typography>
+              <Typography>EXPERIENCES</Typography>
             </Link>
           </Grid>
           <Grid

@@ -1,6 +1,9 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 import Head from 'next/head';
-import Link from 'next/link';
 
 export default function NotAvailable() {
   return (

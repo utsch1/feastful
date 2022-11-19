@@ -1,22 +1,15 @@
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import {
-  Box,
-  FormControl,
-  FormHelperText,
-  Grid,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  SxProps,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { SelectChangeEvent, SxProps } from '@mui/material';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import FormHelperText from '@mui/material/FormHelperText';
+import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -24,7 +17,6 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-// import * as React from 'react';
 import { createRef, useState } from 'react';
 import {
   Cuisines,

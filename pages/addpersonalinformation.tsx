@@ -1,14 +1,12 @@
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import {
-  Box,
-  FormHelperText,
-  Grid,
-  InputLabel,
-  TextField,
-  Typography,
-} from '@mui/material';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import FormHelperText from '@mui/material/FormHelperText';
+import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';

@@ -1,11 +1,13 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, Grid, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import { Fragment, useState } from 'react';
 import { Experience, getExperiencesByUserId } from '../database/experiences';
 import { getUserBySessionToken, User } from '../database/users';
@@ -68,10 +70,9 @@ export default function UserProfile(props: Props) {
   return (
     <>
       <Head>
-        <title>Personal Information</title>
-        <meta name="description" content="Biography of the person" />
+        <title>Account</title>
+        <meta name="description" content="Account overview" />
       </Head>
-      {/* <div>Hi, {props.user.email}</div> */}
       <Typography variant="h1">Your account overview</Typography>
       <Grid container>
         <Grid container item xs={10} mb="0.5rem">
@@ -107,7 +108,6 @@ export default function UserProfile(props: Props) {
                   <Grid container item xs={12} sm={5} justifyContent="flex-end">
                     <Link
                       underline="none"
-                      component="button"
                       href={`/editexperience/${experience.id}`}
                     >
                       <Button

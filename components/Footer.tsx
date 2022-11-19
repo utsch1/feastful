@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import Link from 'next/link';
+import Link from '@mui/material/Link';
 
 const footerStyles = css`
   width: 100%;
@@ -31,7 +31,7 @@ export default function Footer() {
     <footer css={footerStyles}>
       <span>© UTE GREINER 2022</span>
       <span>
-        <Link href="/about">ABOUT</Link>
+        <Link href="/credits">CREDITS</Link>
       </span>
     </footer>
   );

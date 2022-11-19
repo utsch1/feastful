@@ -1,17 +1,15 @@
 import { Person } from '@mui/icons-material';
 import KeyIcon from '@mui/icons-material/Key';
-import {
-  Box,
-  Button,
-  Divider,
-  FormGroup,
-  Grid,
-  InputAdornment,
-  InputLabel,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';

@@ -2,10 +2,13 @@ import EventIcon from '@mui/icons-material/Event';
 import HomeIcon from '@mui/icons-material/Home';
 import LanguageIcon from '@mui/icons-material/Language';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import {
   Cuisines,
   Experience,
@@ -23,10 +26,6 @@ import {
 import { getPhotos, Photo } from '../../database/photos';
 import { getUser, User } from '../../database/users';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
-
-// const pictureStyles = {
-//   objectFit: 'cover',
-// };
 
 type Props = { experience: Experience } | { error: string };
 type PropsPhoto = {
@@ -300,8 +299,6 @@ export async function getServerSideProps(
   }
 
   const emailContact = contactInformation.id === personalInformation?.userId;
-
-  // const emailContact = contactInformation?.id === personalInformation?.userId;
 
   return {
     props: {
