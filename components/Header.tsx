@@ -29,7 +29,6 @@ function Anchor({ children, ...restProps }: any) {
 
 export default function Header(props: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -45,7 +44,7 @@ export default function Header(props: Props) {
       sx={{ height: '5rem', pl: '3rem', pr: '3rem', boxShadow: 0 }}
     >
       <Toolbar disableGutters={true}>
-        <Grid container xs={12} alignItems="center" height="5rem">
+        <Grid container alignItems="center" height="5rem">
           <Grid
             container
             item
@@ -98,6 +97,7 @@ export default function Header(props: Props) {
                   vertical: 'top',
                   horizontal: 'right',
                 }}
+                sx={{ mt: '2.5rem' }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
@@ -116,7 +116,7 @@ export default function Header(props: Props) {
                       </Anchor>
                     </>
                   ) : (
-                    <Link href="/login">
+                    <Link href="/login" underline="none" color="black">
                       <MenuItem onClick={handleClose}>LOGIN</MenuItem>
                     </Link>
                   )}

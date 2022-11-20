@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { User } from '../database/users';
 import Footer from './Footer';
 import Header from './Header';
+import HeaderLandingPage from './HeaderLandingPage';
 
 type ChildrenProps = {
   children: JSX.Element;
@@ -23,6 +24,8 @@ const mainStyles = css`
 export default function Layout(props: Props & ChildrenProps) {
   const router = useRouter();
   const showHeaderAndFooter = router.pathname === '/' ? false : true;
+  const headerLandingPage = router.pathname === '/' ? true : false;
+
   return (
     <>
       <Head>
@@ -30,6 +33,7 @@ export default function Layout(props: Props & ChildrenProps) {
       </Head>
 
       {showHeaderAndFooter && <Header user={props.user} />}
+      {headerLandingPage && <HeaderLandingPage />}
 
       <main css={mainStyles}>{props.children}</main>
 

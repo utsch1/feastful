@@ -69,10 +69,10 @@ export default function Experiences(props: Props) {
         mt="1rem"
         pl="1rem"
         pr="1rem"
+
       >
         <Grid
           container
-          md={12}
           columnSpacing={1}
           display="flex"
           justifyContent="space-around"
