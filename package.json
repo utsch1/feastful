@@ -10,9 +10,6 @@
     "migrate": "dotenv ley"
   },
   "dependencies": {
-    "@cloudinary/react": "^1.5.0",
-    "@cloudinary/url-gen": "^1.8.6",
-    "@emotion/cache": "^11.10.5",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.9",
@@ -20,8 +17,11 @@
     "@mui/x-date-pickers": "^5.0.8",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie": "^0.5.1",
+    "@types/dotenv-safe": "^8.1.2",
+    "@types/node": "18.11.9",
+    "@types/react": "18.0.25",
+    "@upleveled/eslint-config-upleveled": "^3.4.4",
     "bcrypt": "^5.1.0",
-    "cloudinary-build-url": "^0.2.4",
     "cookie": "^0.5.0",
     "dayjs": "^1.11.6",
     "dotenv-cli": "^6.0.0",
@@ -31,12 +31,8 @@
     "postgres": "https://github.com/porsager/postgres",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "@types/dotenv-safe": "^8.1.2",
-    "@types/node": "18.11.9",
-    "@types/react": "18.0.25",
-    "typescript": "4.9.3",
-    "@upleveled/eslint-config-upleveled": "^3.4.4",
-    "sharp": "^0.31.1"
+    "sharp": "^0.31.1",
+    "typescript": "4.9.3"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.19.1",
