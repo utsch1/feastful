@@ -79,10 +79,12 @@ export default async function handler(
       eventDate,
     );
 
-    const newPhoto = await createPhotoUrl(photoUrl, newExperience.id);
+    if (newExperience) {
+      const newPhoto = await createPhotoUrl(photoUrl, newExperience.id);
 
-    // 3. response with the created experience
-    return response.status(200).json({ newExperience, newPhoto });
+      // 3. response with the created experience
+      return response.status(200).json({ newExperience, newPhoto });
+    }
   }
 
   return response.status(400).json({ message: 'Method not allowed' });

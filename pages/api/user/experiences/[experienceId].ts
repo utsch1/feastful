@@ -47,53 +47,54 @@ export default async function handler(
     return response.status(200).json(experience);
   }
 
-  if (request.method === 'PUT') {
-    // NOT getting the id from the body since is already on the query
-    const headline = request.body?.headline;
-    const description = request.body?.description;
-    const cuisineId = request.body?.cuisine;
-    const languagesId = request.body?.language;
-    const postalCodeId = request.body?.postalCode;
-    const price = request.body?.price;
-    const eventDate = new Date(request.body?.eventDate);
-    const photoUrl = request.body?.photoUrl;
+  // if (request.method === 'PUT') {
+  //   // NOT getting the id from the body since is already on the query
+  //   const headline = request.body?.headline;
+  //   const description = request.body?.description;
+  //   const cuisineId = request.body?.cuisine;
+  //   const languagesId = request.body?.language;
+  //   const postalCodeId = request.body?.postalCode;
+  //   const price = request.body?.price;
+  //   const eventDate = new Date(request.body?.eventDate);
+  //   const photoUrl = request.body?.photoUrl;
 
-    if (
-      !(
-        headline &&
-        description &&
-        cuisineId &&
-        languagesId &&
-        postalCodeId &&
-        price &&
-        eventDate
-      )
-    ) {
-      return response.status(400).json({
-        message:
-          'property headline, description, cuisine, languages, postal code, price or event date missing',
-      });
-    }
+  //   if (
+  //     !(
+  //       headline &&
+  //       description &&
+  //       cuisineId &&
+  //       languagesId &&
+  //       postalCodeId &&
+  //       price &&
+  //       eventDate
+  //     )
+  //   ) {
+  //     return response.status(400).json({
+  //       message:
+  //         'property headline, description, cuisine, languages, postal code, price or event date missing',
+  //     });
+  //   }
 
-    // Create the experience using the database util function
-    const newExperience = await updateExperienceById(
-      headline,
-      description,
-      cuisineId,
-      languagesId,
-      postalCodeId,
-      price,
-      eventDate,
-      photoUrl,
-    );
+  // Create the experience using the database util function
+  // To make this function work, the id must be passed
+  //   const newExperience = await updateExperienceById(
+  //     id,
+  //     headline,
+  //     description,
+  //     cuisineId,
+  //     languagesId,
+  //     postalCodeId,
+  //     price,
+  //     eventDate,
+  //   );
 
-    if (!newExperience) {
-      return response.status(404).json({ message: 'Not a valid Id' });
-    }
+  //   if (!newExperience) {
+  //     return response.status(404).json({ message: 'Not a valid Id' });
+  //   }
 
-    // response with the new created experience
-    return response.status(200).json(newExperience);
-  }
+  //   // response with the new created experience
+  //   return response.status(200).json(newExperience);
+  // }
 
   if (request.method === 'DELETE') {
     const deletedExperience = await deleteExperienceById(experienceId);
@@ -101,8 +102,6 @@ export default async function handler(
     if (!deletedExperience) {
       return response.status(404).json({ message: 'Not a valid Id' });
     }
-
-    console.log(deletedExperience);
 
     return response.status(200).json(deletedExperience);
   }

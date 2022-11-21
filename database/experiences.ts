@@ -4,14 +4,14 @@ import { User } from './users';
 export type Experience = {
   id: number;
   userId: number;
-  headline: string;
-  description: string;
-  cuisineId: number;
+  headline: string | null;
+  description: string | null;
+  cuisineId: number | null;
   languagesId: number | null;
-  postalCodeId: number;
-  price: number;
-  createdAt: Date;
-  eventDate: Date;
+  postalCodeId: number | null;
+  price: number | null;
+  createdAt: Date | null;
+  eventDate: Date | null;
 };
 
 export type Cuisines = {
@@ -63,10 +63,14 @@ export async function createExperience(
   `;
   return experience;
 }
-
+export type ExperienceIDUserIDHeadline = {
+  id: number;
+  userId: number;
+  headline: string;
+};
 // Get all experiences by user ID
 export async function getExperiencesByUserId(userId: number) {
-  const experiences = await sql<Experience[]>`
+  const experiences = await sql<ExperienceIDUserIDHeadline[]>`
     SELECT
       experiences.id AS id,
       users.id AS user_id,

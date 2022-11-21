@@ -1,7 +1,7 @@
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { SelectChangeEvent, SxProps } from '@mui/material';
+import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -125,9 +125,9 @@ export default function AddExperience(props: Props & PropsCuisine) {
       body: data,
     })
       .then((response) => response.json())
-      .then((data) => {
-        setPhotoUrl(data.url);
-        console.log(data);
+      .then((urlData) => {
+        setPhotoUrl(urlData.url);
+        console.log(urlData);
       })
       .catch((error) => console.log(error));
   };
