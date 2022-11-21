@@ -66,20 +66,20 @@ export default function AddPersonalInformation(props: Props) {
 
   // Image upload function incl. image preview function
 
-  function previewImages(image) {
+  function previewImages(imagePreview: any) {
     const reader = new FileReader();
-    reader.readAsDataURL(image);
+    reader.readAsDataURL(imagePreview);
 
     reader.onloadend = () => {
       console.log(previewImage);
-      setPreviewImage(reader.result);
+      setPreviewImage(reader.result as string);
     };
   }
 
   const selectImage = (event: any) => {
-    const image = event.currentTarget.files[0];
-    setImage(image);
-    previewImages(image);
+    const imagePreview = event.currentTarget.files[0];
+    setImage(imagePreview);
+    previewImages(imagePreview);
   };
 
   const uploadImage = async () => {
@@ -92,9 +92,9 @@ export default function AddPersonalInformation(props: Props) {
       body: data,
     })
       .then((response) => response.json())
-      .then((data) => {
-        setPhotoUrl(data.url);
-        console.log(data);
+      .then((urlData) => {
+        setPhotoUrl(urlData.url);
+        console.log(urlData);
       })
       .catch((error) => console.log(error));
   };
@@ -187,7 +187,7 @@ export default function AddPersonalInformation(props: Props) {
       </Grid>
       {/* condition whether there are photo url's available*/}
       {!previewImage ? (
-        <div>{''}</div>
+        <div> </div>
       ) : (
         <Box
           component="img"

@@ -152,8 +152,8 @@ export default function UserProfile(props: Props) {
         </Grid>
         <Grid container item xs={5} justifyContent="flex-end">
           <Link
-            underline="none"
-            component="button"
+            // underline="none"
+            // component="button"
             href="/editpersonalinformation"
           >
             <Button

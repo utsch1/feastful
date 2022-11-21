@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Dayjs } from 'dayjs';
+import defaultDayjs from 'dayjs';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -33,6 +33,7 @@ type Props = {
   languages: Languages[];
   user: User;
 };
+type Dayjs = defaultDayjs.Dayjs;
 
 type PropsCuisine = {
   cuisines: Cuisines[] | null;
@@ -47,7 +48,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
   const [language, setLanguage] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [price, setPrice] = useState('');
-  const [eventDate, setEventDate] = useState(new Date());
+  const [eventDate, setEventDate] = useState<Dayjs | null>();
   const [image, setImage] = useState('');
   const [previewImage, setPreviewImage] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
@@ -96,39 +97,22 @@ export default function AddExperience(props: Props & PropsCuisine) {
     await router.push(`/account`);
   }
 
-  // various input functions
-  const handleChangeCuisine = (event: SelectChangeEvent) => {
-    setCuisine(event.target.value);
-  };
-
-  const handleChangePostalCode = (event: SelectChangeEvent) => {
-    setPostalCode(event.target.value);
-  };
-
-  const handleChangeLanguages = (event: SelectChangeEvent) => {
-    setLanguage(event.target.value);
-  };
-
-  const handleChangeEventDate = (newValue: Dayjs | null) => {
-    setEventDate(newValue);
-  };
-
   // Image upload function incl. image preview function
 
-  function previewImages(image) {
+  function previewImages(imagePreview: any) {
     const reader = new FileReader();
-    reader.readAsDataURL(image);
+    reader.readAsDataURL(imagePreview);
 
     reader.onloadend = () => {
       console.log(previewImage);
-      setPreviewImage(reader.result);
+      setPreviewImage(reader.result as string);
     };
   }
 
   const selectImage = (event: any) => {
-    const image = event.currentTarget.files[0];
-    setImage(image);
-    previewImages(image);
+    const imagePreview = event.currentTarget.files[0];
+    setImage(imagePreview);
+    previewImages(imagePreview);
   };
 
   const uploadImage = async () => {
@@ -245,7 +229,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
             margin="none"
             value={cuisine ? cuisine : ''}
             defaultValue={cuisine}
-            onChange={handleChangeCuisine}
+            onChange={(e) => setCuisine(e.target.value)}
           >
             {props.cuisines?.map((option) => (
               <MenuItem key={option.id} value={option.id}>
@@ -273,7 +257,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
             margin="none"
             value={postalCode ? postalCode : ''}
             defaultValue={postalCode}
-            onChange={handleChangePostalCode}
+            onChange={(e) => setPostalCode(e.target.value)}
           >
             {props.postalCodes.map((option) => (
               <MenuItem key={option.id} value={option.id}>
@@ -297,7 +281,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
             margin="none"
             value={language ? language : ''}
             defaultValue={language}
-            onChange={handleChangeLanguages}
+            onChange={(e) => setLanguage(e.target.value)}
           >
             {props.languages.map((option) => (
               <MenuItem key={option.id} value={option.id}>
@@ -313,10 +297,12 @@ export default function AddExperience(props: Props & PropsCuisine) {
       </InputLabel>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateTimePicker
-          id="cooking-class-event-date"
           value={eventDate}
           components={{ OpenPickerIcon: CalendarMonthIcon }}
-          onChange={handleChangeEventDate}
+          // onChange={handleChangeEventDate}
+          onChange={(newValue) => {
+            setEventDate(newValue);
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -368,7 +354,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
       </Grid>
       {/* condition whether there are photo url's available*/}
       {!previewImage ? (
-        <div>{''}</div>
+        <div>''</div>
       ) : (
         <Box
           component="img"
