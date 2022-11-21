@@ -1,7 +1,7 @@
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { SelectChangeEvent, SxProps } from '@mui/material';
+import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -118,15 +118,14 @@ export default function EditExperience(props: Props) {
     reader.readAsDataURL(imagePreview);
 
     reader.onloadend = () => {
-      console.log(previewImage);
-      setPreviewImage(reader.result);
+      setPreviewImage(String(reader.result));
     };
   }
 
   const selectImage = (event: any) => {
-    const image = event.currentTarget.files[0];
-    setImage(image);
-    previewImages(image);
+    const selectedImage = event.currentTarget.files[0];
+    setImage(selectedImage);
+    previewImages(selectedImage);
   };
 
   const uploadImage = async () => {
@@ -139,9 +138,9 @@ export default function EditExperience(props: Props) {
       body: data,
     })
       .then((response) => response.json())
-      .then((data) => {
-        setPhotoUrl(data.url);
-        console.log(data);
+      .then((tempData) => {
+        setPhotoUrl(tempData.url);
+        console.log(tempData);
       })
       .catch((error) => console.log(error));
   };
@@ -412,6 +411,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // https://flaviocopes.com/nextjs-serialize-date-json/
   // in order to be able to use dates in frontend
   const experience = JSON.parse(JSON.stringify(singleExperience));
+  if (experience.description == null) {
+    experience.description = ' ';
+  }
 
   const user = token && (await getUserBySessionToken(token));
 

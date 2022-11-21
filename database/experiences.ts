@@ -5,8 +5,8 @@ import { User } from './users';
 export type Experience = {
   id: number;
   userId: number;
-  headline: string | null;
-  description: string | null;
+  headline: string;
+  description: string;
   cuisineId: number | null;
   languagesId: number | null;
   postalCodeId: number | null;
