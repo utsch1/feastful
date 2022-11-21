@@ -151,7 +151,7 @@ export default function AddPersonalInformation(props: Props) {
 
       {/* Photo upload */}
       <Typography>Photo*</Typography>
-      <Grid container xs={12}>
+      <Grid container>
         <Grid>
           <Button variant="contained" disableElevation>
             <InputLabel htmlFor="choose-photo" sx={{ color: '#000' }}>

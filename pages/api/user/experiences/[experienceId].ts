@@ -25,7 +25,7 @@ export default async function handler(
 
   console.log('experience id:', experienceId);
 
-  // check if the id is a number
+  // Check if the ID is a number
   if (!experienceId) {
     return response.status(404).json({ message: 'Not a valid Id' });
   }

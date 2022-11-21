@@ -16,7 +16,7 @@ import { Dayjs } from 'dayjs';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { createRef, useState } from 'react';
+import { useState } from 'react';
 import {
   Cuisines,
   getCuisines,
@@ -343,7 +343,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
       <br />
       {/* Photo upload */}
       <Typography variant="body1">Photo</Typography>
-      <Grid container xs={12}>
+      <Grid container>
         <Grid>
           <Button variant="contained" disableElevation>
             <InputLabel htmlFor="choose-photo" sx={{ color: '#000' }}>

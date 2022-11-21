@@ -6,6 +6,7 @@ type Session = {
   token: string;
 };
 
+// Create session
 export async function createSession(userId: User['id'], token: string) {
   const [session] = await sql<Session[]>`
   INSERT INTO sessions
@@ -22,6 +23,7 @@ export async function createSession(userId: User['id'], token: string) {
   return session!;
 }
 
+// Get valid session by token
 export async function getValidSessionByToken(token: Session['token']) {
   if (!token) return undefined;
 
@@ -40,6 +42,7 @@ export async function getValidSessionByToken(token: Session['token']) {
   return session;
 }
 
+// Delete session (expired)
 export async function deleteExpiredSessions() {
   const sessions = await sql<Session[]>`
   DELETE FROM
@@ -54,6 +57,7 @@ export async function deleteExpiredSessions() {
   return sessions;
 }
 
+// Delete session by token
 export async function deleteSessionByToken(token: string) {
   const [session] = await sql<Session[]>`
   DELETE FROM

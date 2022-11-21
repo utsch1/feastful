@@ -1,5 +1,5 @@
-import { Person } from '@mui/icons-material';
 import KeyIcon from '@mui/icons-material/Key';
+import Person from '@mui/icons-material/Person';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';

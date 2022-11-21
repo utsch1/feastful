@@ -1,8 +1,8 @@
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import { Link } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 import Toolbar from '@mui/material/Toolbar';
 
 export default function HeaderLandingPage() {

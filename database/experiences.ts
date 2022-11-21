@@ -126,7 +126,7 @@ export async function getExperienceById(id: number) {
   return experience;
 }
 
-// Get a single experience by id and valid session token
+// Get a single experience by ID and valid session token
 export async function getExperienceByIdAndValidSessionToken(
   id: number,
   token: string | undefined,

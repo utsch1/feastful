@@ -126,7 +126,7 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                 sx={{ height: 'auto' }}
                 mt="1rem"
               >
-                <Typography variant="h2" component="h2">
+                <Typography variant="h2">
                   Cooking lesson with {firstName}
                 </Typography>
                 <Typography variant="h2" component="body2">

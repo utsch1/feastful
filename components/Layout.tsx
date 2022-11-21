@@ -22,6 +22,7 @@ const mainStyles = css`
 `;
 
 export default function Layout(props: Props & ChildrenProps) {
+  // Constants for two different nav bars
   const router = useRouter();
   const showHeaderAndFooter = router.pathname === '/' ? false : true;
   const headerLandingPage = router.pathname === '/' ? true : false;

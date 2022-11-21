@@ -25,9 +25,6 @@ type Props = {
 
 export default function AddPersonalInformation(props: Props) {
   const characterLimitPersonalInformation = 500;
-  // const [personalInformationApi, setPersonalInformationApi] = useState(
-  //   props.personalInformation || [],
-  // );
   const [firstName, setFirstName] = useState(
     props.personalInformation.firstName,
   );
@@ -164,8 +161,8 @@ export default function AddPersonalInformation(props: Props) {
       </FormHelperText>
 
       {/* Photo upload */}
-      <Typography>Photo*</Typography>
-      <Grid container xs={12}>
+      <Typography>Photo</Typography>
+      <Grid container>
         <Grid>
           <Button variant="contained" disableElevation>
             <InputLabel htmlFor="choose-photo" sx={{ color: '#000' }}>

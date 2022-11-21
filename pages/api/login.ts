@@ -56,11 +56,6 @@ export default async function handler(
       session.token,
     );
 
-    // const userWithoutPassword = await createUser(
-    //   request.body.email,
-    //   isValidPassword,
-    // );
-
     // response
     response
       .status(200)

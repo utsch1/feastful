@@ -7,6 +7,7 @@ export type Photo = {
   experiencesId: Experience['id'];
 };
 
+// Get all photos
 export async function getPhotos() {
   const photos = await sql<Photo[]>`
     SELECT * FROM photos
@@ -14,6 +15,7 @@ export async function getPhotos() {
   return photos;
 }
 
+// Create photo URL
 export async function createPhotoUrl(
   photoUrl: string,
   experiencesId: Experience['id'],
@@ -29,7 +31,7 @@ export async function createPhotoUrl(
   return photo;
 }
 
-// Get photo by experience Id
+// Get photo by experience ID
 export async function getPhotoByExperienceId(experiencesId: number) {
   const photo = await sql<Photo[]>`
     SELECT

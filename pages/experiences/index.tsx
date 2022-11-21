@@ -69,7 +69,6 @@ export default function Experiences(props: Props) {
         mt="1rem"
         pl="1rem"
         pr="1rem"
-
       >
         <Grid
           container
@@ -216,8 +215,6 @@ export default function Experiences(props: Props) {
       >
         <Grid
           container
-          xs={12}
-          sm={12}
           spacing={1}
           display="flex"
           justifyContent="space-around"

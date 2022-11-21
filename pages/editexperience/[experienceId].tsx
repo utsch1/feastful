@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -349,7 +349,7 @@ export default function EditExperience(props: Props) {
       </LocalizationProvider>
       <br />
       <Typography>Photo*</Typography>
-      <Grid container xs={12}>
+      <Grid container>
         <Grid>
           <Button variant="contained" disableElevation>
             <InputLabel htmlFor="choose-photo" sx={{ color: '#000' }}>

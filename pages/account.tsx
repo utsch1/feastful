@@ -176,7 +176,7 @@ export default function UserProfile(props: Props) {
         variant="contained"
         disableElevation
         aria-label="delete account"
-        onClick={async () => await deleteUserFromApiById(user.id)}
+        // onClick={async () => await deleteUserFromApiById(user.id)}
       >
         Delete account
       </Button>

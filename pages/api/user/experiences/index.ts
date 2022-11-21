@@ -42,7 +42,6 @@ export default async function handler(
       return;
     }
     // 1. make sure the data exist
-
     const userId = request.body?.userId;
     const headline = request.body?.headline;
     const description = request.body?.description;

@@ -29,7 +29,7 @@ export default function Custom404() {
         p="0.5rem"
         justifyContent="center"
       >
-        <Grid container xs={12}>
+        <Grid container>
           <Grid
             container
             item

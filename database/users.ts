@@ -6,6 +6,7 @@ export type User = {
   passwordHash: string;
 };
 
+// Get user by mail
 export async function getUserByEmail(email: string) {
   if (!email) return undefined;
 
@@ -21,6 +22,7 @@ export async function getUserByEmail(email: string) {
   return user;
 }
 
+// Create user
 export async function createUser(email: string, password_hash: string) {
   const [userWithoutPassword] = await sql<{ id: number; email: string }[]>`
   INSERT INTO users
@@ -35,6 +37,7 @@ export async function createUser(email: string, password_hash: string) {
   return userWithoutPassword!;
 }
 
+// Get user with password
 export async function getUserWithPasswordHashByEmail(email: string) {
   if (!email) return undefined;
 
@@ -49,6 +52,7 @@ export async function getUserWithPasswordHashByEmail(email: string) {
   return user;
 }
 
+// Get use by session token
 export async function getUserBySessionToken(token: string) {
   if (!token) return undefined;
 
