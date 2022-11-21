@@ -1,3 +1,4 @@
+import { Dayjs } from 'dayjs';
 import { sql } from './connect';
 import { User } from './users';
 
@@ -11,7 +12,7 @@ export type Experience = {
   postalCodeId: number | null;
   price: number | null;
   createdAt: Date | null;
-  eventDate: Date | null;
+  eventDate: Dayjs | null;
 };
 
 export type Cuisines = {

@@ -52,7 +52,9 @@ export default function EditExperience(props: Props) {
     Number(props.experience.postalCodeId),
   );
   const [price, setPrice] = useState(Number(props.experience.price));
-  const [eventDate, setEventDate] = useState(props.experience.eventDate);
+  const [eventDate, setEventDate] = useState<Dayjs | null>(
+    props.experience.eventDate,
+  );
   const [image, setImage] = useState('');
   const [previewImage, setPreviewImage] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
@@ -105,27 +107,15 @@ export default function EditExperience(props: Props) {
     await router.push(`/account`);
   }
 
-  const handleChangeCuisine = (event: SelectChangeEvent) => {
-    setCuisine(event.target.value as number);
-  };
-
-  const handleChangePostalCode = (event: SelectChangeEvent) => {
-    setPostalCode(event.target.value as number);
-  };
-
-  const handleChangeLanguages = (event: SelectChangeEvent) => {
-    setLanguage(event.target.value as number);
-  };
-
   const handleChangeEventDate = (newValue: Dayjs | null) => {
     setEventDate(newValue);
   };
 
   // Image upload function incl. image preview function
 
-  function previewImages(image) {
+  function previewImages(imagePreview: any) {
     const reader = new FileReader();
-    reader.readAsDataURL(image);
+    reader.readAsDataURL(imagePreview);
 
     reader.onloadend = () => {
       console.log(previewImage);
@@ -155,7 +145,9 @@ export default function EditExperience(props: Props) {
       })
       .catch((error) => console.log(error));
   };
-
+  // if (props.experience.description == null) {
+  //   props.experience.description.length = 0;
+  // }
   return (
     <div>
       <Head>
@@ -234,7 +226,7 @@ export default function EditExperience(props: Props) {
             type="number"
             value={price}
             onChange={(event) => {
-              setPrice(event.currentTarget.value);
+              setPrice(Number(event.currentTarget.value));
             }}
           />
         </Grid>
@@ -252,7 +244,9 @@ export default function EditExperience(props: Props) {
             margin="none"
             value={cuisine}
             defaultValue={cuisine}
-            onChange={handleChangeCuisine}
+            onChange={(event) => {
+              setCuisine(Number(event.currentTarget.value));
+            }}
           >
             {props.cuisines.map((option) => (
               <MenuItem key={option.id} value={option.id}>
@@ -280,7 +274,9 @@ export default function EditExperience(props: Props) {
             margin="none"
             value={postalCode}
             defaultValue={postalCode}
-            onChange={handleChangePostalCode}
+            onChange={(event) => {
+              setPostalCode(Number(event.currentTarget.value));
+            }}
           >
             {props.postalCodes.map((option) => (
               <MenuItem key={option.id} value={option.id}>
@@ -304,7 +300,9 @@ export default function EditExperience(props: Props) {
             margin="none"
             value={language}
             defaultValue={language}
-            onChange={handleChangeLanguages}
+            onChange={(event) => {
+              setLanguage(Number(event.currentTarget.value));
+            }}
           >
             {props.languages.map((option) => (
               <MenuItem key={option.id} value={option.id}>
@@ -320,7 +318,6 @@ export default function EditExperience(props: Props) {
       </InputLabel>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateTimePicker
-          id="cooking-class-event-date"
           value={eventDate}
           components={{ OpenPickerIcon: CalendarMonthIcon }}
           onChange={handleChangeEventDate}
@@ -374,7 +371,7 @@ export default function EditExperience(props: Props) {
       </Grid>
       {/* condition whether there are photo url's available*/}
       {!previewImage ? (
-        <div>{''}</div>
+        <div> </div>
       ) : (
         <Box
           component="img"
