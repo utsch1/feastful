@@ -451,7 +451,7 @@ export async function getServerSideProps() {
   const experiences = JSON.parse(JSON.stringify(oldExperiences));
 
   const allExperiences = experiences.map((experience) => {
-    const photoUrl = photos.find(
+    const photoUrl = photos?.find(
       (photo) => experience.id === photo.experiencesId,
     );
     return {

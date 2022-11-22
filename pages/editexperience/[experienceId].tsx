@@ -370,7 +370,7 @@ export default function EditExperience(props: Props) {
       </Grid>
       {/* condition whether there are photo url's available*/}
       {!previewImage ? (
-        <div> </div>
+        <div>{''}</div>
       ) : (
         <Box
           component="img"

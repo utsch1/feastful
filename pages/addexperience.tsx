@@ -354,7 +354,7 @@ export default function AddExperience(props: Props & PropsCuisine) {
       </Grid>
       {/* condition whether there are photo url's available*/}
       {!previewImage ? (
-        <div>''</div>
+        <div>{''}</div>
       ) : (
         <Box
           component="img"
