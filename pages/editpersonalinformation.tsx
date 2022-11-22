@@ -161,7 +161,7 @@ export default function AddPersonalInformation(props: Props) {
       </FormHelperText>
 
       {/* Photo upload */}
-      <Typography>Photo</Typography>
+      <Typography>Photo*</Typography>
       <Grid container>
         <Grid>
           <Button variant="contained" disableElevation>

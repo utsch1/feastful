@@ -15,7 +15,7 @@ type Props = {
 };
 
 const mainStyles = css`
-  min-height: calc(100vh - 5rem);
+  min-height: calc(100vh - 3rem);
   padding-left: 3rem;
   padding-right: 3rem;
   padding-top: 5rem;

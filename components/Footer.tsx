@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
-import Link from '@mui/material/Link';
+import Link from 'next/link';
 
 const footerStyles = css`
   width: 100%;
-  height: 5rem;
+  height: 3rem;
   background-color: #e7dcda;
   color: #000000;
   display: flex;

@@ -66,15 +66,17 @@ export default function Header(props: Props) {
             </Link>
           </Grid>
           <Grid container item xs={4} justifyContent="center">
-            <Box
-              component="img"
-              sx={{
-                width: 150,
-                height: 21,
-              }}
-              src="/logo.png"
-              alt="Feastful"
-            />
+            <Link href="/">
+              <Box
+                component="img"
+                sx={{
+                  width: 150,
+                  height: 21,
+                }}
+                src="/logo.png"
+                alt="Feastful"
+              />
+            </Link>
           </Grid>
           <Grid container item xs={4} justifyContent="flex-end">
             <div>

@@ -20,17 +20,10 @@ import {
   PostalCodes,
 } from '../../database/experiences';
 import {
-  getPersonalInformation,
   getPersonalInformationByExperienceId,
-  PersonalInformation,
   PersonalInformationWithEmail,
 } from '../../database/personalInformation';
-import {
-  getPhotoByExperienceId,
-  getPhotos,
-  Photo,
-} from '../../database/photos';
-import { getUser, User } from '../../database/users';
+import { getPhotoByExperienceId, Photo } from '../../database/photos';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
 type Props = { experience: Experience } | { error: string };
@@ -40,11 +33,10 @@ type PropsPhoto = {
   language: Languages;
   postalCode: PostalCodes;
   personalInformation: PersonalInformationWithEmail;
-  // emailContact: User;
 };
 
 export default function SingleExperience(props: Props & PropsPhoto) {
-  // change 'undefined' date to timestamp to string to a good looking date
+  // Change 'undefined' date to timestamp to string to a good looking date
   const dateAsTimeStamp = Date.parse(props.experience.eventDate);
   const dateAsString = new Date(dateAsTimeStamp);
   const newEventDate =
@@ -58,14 +50,14 @@ export default function SingleExperience(props: Props & PropsPhoto) {
     ':' +
     ('0' + dateAsString.getMinutes()).slice(-2);
 
-  //change first letter of user first name to uppercase
-  // const firstName =
-  //   props.personalInformation.firstName.charAt(0).toUpperCase() +
-  //   props.personalInformation.firstName.slice(1);
+  // Change first letter of user first name to uppercase
+  const firstName =
+    props.personalInformation.firstName.charAt(0).toUpperCase() +
+    props.personalInformation.firstName.slice(1);
 
   if ('error' in props) {
     return (
-      <div>
+      <>
         <Head>
           <title>Cooking lesson not found</title>
           <meta name="description" content="Cooking lesson not found" />
@@ -74,15 +66,14 @@ export default function SingleExperience(props: Props & PropsPhoto) {
         <Typography>
           We are sorry, this cooking lesson is already in the past or has been
           removed. Please explore other cooking lessons
-          <Link href="/experiences">here</Link>
+          <Link href="/experiences">here.</Link>
         </Typography>
-        .
-      </div>
+      </>
     );
   }
 
   return (
-    <div>
+    <>
       <Head>
         <title>{props.experience.headline}</title>
         <meta
@@ -93,39 +84,19 @@ export default function SingleExperience(props: Props & PropsPhoto) {
 
       {/* <div key={`experience-${props.experience.id}`}> */}
       <Typography variant="h1">{props.experience.headline}</Typography>
+      <Box
+        component="img"
+        sx={{
+          width: '100%',
+          height: 200,
+          borderRadius: '5px',
+          objectFit: 'cover',
+        }}
+        m={0}
+        src={props.photo.photoUrl}
+        alt="impressions of the cooking lesson"
+      />
       <Grid container m="0">
-        {/* <Grid
-          container
-          item
-          md={12}
-          display="flex"
-          justifyContent="space-between"
-        > */}
-        {/* condition whether there is a photo uploaded, otherwise use a colored box */}
-        {/* {!props.photo.photoUrl ? (
-            <Box sx={{
-              width: '100%',
-              height: 1,
-            }}
-            m={0}
-            />
-
-          ) : (
-            <Box
-              // style={pictureStyles}
-              component="img"
-              sx={{
-                width: '100%',
-                height: 200,
-                borderRadius: '5px',
-                objectFit: 'cover',
-              }}
-              m={0}
-              src={props.photo.photoUrl}
-              alt="impressions of the cooking lesson"
-            />
-          )} */}
-        {/* </Grid> */}
         <Grid container item md={12}>
           <Grid
             container
@@ -138,9 +109,9 @@ export default function SingleExperience(props: Props & PropsPhoto) {
             mt="1rem"
           >
             <Typography variant="h2">
-              Cooking lesson with {props.personalInformation.firstName}
+              Cooking lesson with {firstName}
             </Typography>
-            <Typography variant="h2" component="body">
+            <Typography variant="body1">
               {props.experience.price}€ /person
             </Typography>
           </Grid>
@@ -214,8 +185,8 @@ export default function SingleExperience(props: Props & PropsPhoto) {
                   src={props.personalInformation.photoUrl}
                   alt="photo of user"
                 />
-                <Typography variant="h2" component="h2" ml="1rem">
-                  Get to know {props.personalInformation.firstName}
+                <Typography variant="h2" ml="1rem">
+                  Get to know {firstName}
                 </Typography>
               </Grid>
               <Typography align="justify" mt="1rem">
@@ -244,7 +215,7 @@ export default function SingleExperience(props: Props & PropsPhoto) {
         </Grid>
       </Grid>
       {/* </div> */}
-    </div>
+    </>
   );
 }
 
@@ -270,9 +241,6 @@ export async function getServerSideProps(
   const personalInformation = await getPersonalInformationByExperienceId(
     experienceId,
   );
-  // const contactInformation = await getUser();
-
-  console.log(photos);
 
   const experience = JSON.parse(JSON.stringify(oldExperience));
 
@@ -297,18 +265,6 @@ export async function getServerSideProps(
     (postalCode) => experience.postalCodeId === postalCode.id,
   );
 
-  // const photoUrl = photos.find(
-  //   (photo) => experience.id === photo.experiencesId,
-  // );
-
-  // const personalInformation = personalInformations.find(
-  //   (information) => experience.userId === information.userId,
-  // );
-
-  // const emailContact = contactInformation.find(
-  //   (information) => personalInformations.userId === information.id,
-  // );
-
   return {
     props: {
       experience: experience,
@@ -317,7 +273,6 @@ export async function getServerSideProps(
       language: language,
       postalCode: postalCode,
       personalInformation: personalInformation,
-      // emailContact: emailContact,
     },
   };
 }

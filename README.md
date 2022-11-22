@@ -1,34 +1,73 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# feastful - Search for cooking lessons
 
-## Getting Started
+## Description
 
-First, run the development server:
+A fully responsive application to offer as well as look for cooking lessons in Vienna. The application has the following pages.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- A landing page
+- An overview of all cooking lessons that are available in the future, including a filtering function for languages, cuisines and postal codes
+- The single experience page, where information of the lesson is included, as well as the personal information of the host and the possibility to contact the host via email
+- A login / register page, when logged in, the hosts have certain authorizations for certain pages
+- An account page of the hosts, where they can update or delete cooking lessons they offer, update their personal information as well as delete the account (only available when logged in)
+- A page to add personal information (only available when logged in)
+- A page to add experiences (only available when logged in)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- Next.js
+- React
+- JavaScript
+- Emotion/react
+- MaterialUI
+- Cloudinary
+- Figma
+- DrawSQL
+- PostgreSQL
+- Typescript
+- REST API
+- Fly.io
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Screenshots of the Application
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Homepage
 
-## Learn More
+![Screenshot of the homepage](./landingpage.png 'Screenshot of the homepage')
 
-To learn more about Next.js, take a look at the following resources:
+### Single Product Page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![Screenshot of the experience overview](./SinglePlantPage.png 'Screenshot of the experience overview')
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Account Page
 
-## Deploy on Vercel
+![Screenshot of the hosts' account](./SinglePlantPage.png 'Screenshot of the hosts' account')
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Screenshots of further tools used for the planning process
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### DrawSQL
+
+![Screenshot of the database chart](./DrawSQL_Chart.png 'Screenshot of the database chart')
+
+### Figma - responsive website layout
+
+![Screenshot of the desktop layout in Figma](./figma_desktop.png 'Screenshot of the desktop layout in Figma')
+
+![Screenshot of the tablet layout in Figma](./figma_tablet.png 'Screenshot of the tablet layout in Figma')
+
+![Screenshot of the phone layout in Figma](./figma_phone.png 'Screenshot of the phone layout in Figma')
+
+### Figma - API Flowchart
+
+![Screenshot of the API Flowchart in Figma](./API_Chart.png 'Screenshot of the API Flowchart in Figma')
+
+## Setup instructions
+
+- Clone the repository with git clone <repo>
+- Setup the database by downloading and installing PostgreSQL
+- Create a user and a database
+- Create a new file .env
+- Copy the environment variables from .env-example into .env
+- Replace the placeholders xxxxx with your username, password and name of database
+- Install dotenv-cli with yarn add dotenv-cli
+- Run yarn install in your command line
+- Run the migrations with yarn migrate up
+- Start the server by running yarn dev
