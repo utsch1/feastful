@@ -7,12 +7,12 @@ export type Experience = {
   userId: number;
   headline: string;
   description: string;
-  cuisineId: number | null;
-  languagesId: number | null;
-  postalCodeId: number | null;
-  price: number | null;
-  createdAt: Date | null;
-  eventDate: Dayjs | null;
+  cuisineId: number;
+  languagesId: number;
+  postalCodeId: number;
+  price: number;
+  createdAt: Date;
+  eventDate: Date;
 };
 
 export type Cuisines = {
@@ -96,9 +96,10 @@ export async function getExperienceByUserId(userId: number) {
       experiences.headline AS headline,
       experiences.description AS description,
       cuisines.id AS cuisine_id,
-      languages.id AS language_id,
+      languages.id AS languages_id,
       postalCodes.id AS postal_code_id,
       experiences.price AS price,
+      experiences.created_at AS created_at,
       experiences.event_date AS event_date
     FROM
       experiences,

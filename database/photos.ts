@@ -33,7 +33,7 @@ export async function createPhotoUrl(
 
 // Get photo by experience ID
 export async function getPhotoByExperienceId(experiencesId: number) {
-  const photo = await sql<Photo[]>`
+  const [photo] = await sql<Photo[]>`
     SELECT
       photos.id AS id,
       photos.photo_url AS photo_url,

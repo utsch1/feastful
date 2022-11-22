@@ -1,3 +1,4 @@
+import { WhereToVote } from '@mui/icons-material';
 import { sql } from './connect';
 import { User } from './users';
 
@@ -9,11 +10,47 @@ export type PersonalInformation = {
   photoUrl: string;
 };
 
+export type PersonalInformationWithEmail = {
+  id: number;
+  userId: number;
+  firstName: string;
+  personalInformation: string;
+  photoUrl: string;
+  email: string;
+};
+
 // Get personal information
 export async function getPersonalInformation() {
   const information = await sql<PersonalInformation[]>`
     SELECT * FROM personalInformation
   `;
+  console.log('database', information);
+  return information;
+}
+
+// Get personal information
+export async function getPersonalInformationByExperienceId(
+  experienceId: number,
+) {
+  const [information] = await sql<PersonalInformationWithEmail[]>`
+    SELECT
+      personalInformation.id AS id,
+      personalInformation.user_id AS user_id,
+      personalInformation.first_name AS first_name,
+      personalInformation.personal_information AS personal_information,
+      personalInformation.photo_url AS photo_url,
+      users.email AS email
+    FROM
+    personalInformation,
+    experiences,
+    users
+    WHERE
+    experiences.user_id = users.id
+    AND
+    users.id = personalInformation.user_id
+    AND experiences.id = ${experienceId}
+  `;
+
   return information;
 }
 

@@ -1,6 +1,7 @@
 import { CardMedia, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Head from 'next/head';
+import { getCuisines } from '../database/experiences';
 
 export default function Home() {
   return (
@@ -47,4 +48,14 @@ export default function Home() {
       </Box>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const cuisines = await getCuisines();
+
+  return {
+    props: {
+      cuisines: cuisines,
+    },
+  };
 }

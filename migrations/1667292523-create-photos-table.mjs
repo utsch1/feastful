@@ -3,7 +3,7 @@ export async function up(sql) {
     CREATE TABLE photos (
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       photo_url varchar(110) NOT NULL,
-      experiences_id integer REFERENCES experiences (id) ON DELETE CASCADE
+      experiences_id integer REFERENCES experiences (id) ON DELETE CASCADE NOT NULL
     )
   `;
 }

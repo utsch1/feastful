@@ -74,7 +74,7 @@ export async function getUserBySessionToken(token: string) {
 
 // Get user by ID
 export async function getUser() {
-  const user = await sql<User[]>`
+  const user = await sql<{ id: number; email: string }[]>`
     SELECT
       users.id AS id,
       users.email AS email
