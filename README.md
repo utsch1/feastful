@@ -20,12 +20,13 @@ A fully responsive application to offer as well as look for cooking lessons in V
 - Emotion/react
 - MaterialUI
 - Cloudinary
-- Figma
-- DrawSQL
 - PostgreSQL
 - Typescript
 - REST API
 - Fly.io
+- Figma (Design of website, API Flowchart)
+- Notion (Timeline, Break down of to do's)
+- DrawSQL
 
 ## Screenshots of the Application
 
@@ -33,13 +34,13 @@ A fully responsive application to offer as well as look for cooking lessons in V
 
 ![Screenshot of the homepage](./landingpage.png 'Screenshot of the homepage')
 
-### Single Product Page
+### Cooking lesson overview Page
 
-![Screenshot of the experience overview](./SinglePlantPage.png 'Screenshot of the experience overview')
+![Screenshot of the experience overview](./experiencepage.png 'Screenshot of the experience overview')
 
 ### Account Page
 
-![Screenshot of the hosts' account](./SinglePlantPage.png 'Screenshot of the hosts' account')
+![Screenshot of the hosts' account](./accountpage.png 'Screenshot of the hosts' account')
 
 ## Screenshots of further tools used for the planning process
 
@@ -58,6 +59,10 @@ A fully responsive application to offer as well as look for cooking lessons in V
 ### Figma - API Flowchart
 
 ![Screenshot of the API Flowchart in Figma](./API_Chart.png 'Screenshot of the API Flowchart in Figma')
+
+### Notion - Timeline and To Do's Overview
+
+![Screenshot Timeline and To Dos in Notion](./notion.png 'Screenshot Timeline and To Dos in Notion')
 
 ## Setup instructions
 
