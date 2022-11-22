@@ -41,7 +41,12 @@ export default function Header(props: Props) {
   return (
     <AppBar
       position="fixed"
-      sx={{ height: '5rem', pl: '3rem', pr: '3rem', boxShadow: 0 }}
+      sx={{
+        height: '5rem',
+        pl: { xs: '1rem', sm: '3rem' },
+        pr: { xs: '1rem', sm: '3rem' },
+        boxShadow: 0,
+      }}
     >
       <Toolbar disableGutters={true}>
         <Grid container alignItems="center" height="5rem">

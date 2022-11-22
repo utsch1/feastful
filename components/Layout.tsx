@@ -19,6 +19,11 @@ const mainStyles = css`
   padding-left: 3rem;
   padding-right: 3rem;
   padding-top: 5rem;
+
+  @media (max-width: 400px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 `;
 
 export default function Layout(props: Props & ChildrenProps) {

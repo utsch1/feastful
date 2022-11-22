@@ -17,8 +17,8 @@ export default function Home() {
         width="100vw"
         mt="-5rem"
         mb="-5rem"
-        ml="-3rem"
-        mr="-3rem"
+        ml="-1rem"
+        mr="-1rem"
       >
         <CardMedia
           component="img"

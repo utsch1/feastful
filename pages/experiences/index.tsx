@@ -203,14 +203,14 @@ export default function Experiences(props: Props) {
       {/* Filterbar for all other devices width */}
       <Box
         sx={{
-          width: 'calc(100%+6rem)',
+          width: 'calc(100%+2rem)',
           height: 'auto',
           backgroundColor: 'secondary.main',
 
           display: { xs: 'block', sm: 'block', md: 'none' },
         }}
-        ml="-3rem"
-        mr="-3rem"
+        ml="-1rem"
+        mr="-1rem"
         p="1rem"
       >
         <Grid

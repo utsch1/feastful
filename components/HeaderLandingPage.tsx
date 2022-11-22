@@ -11,8 +11,8 @@ export default function HeaderLandingPage() {
       position="fixed"
       sx={{
         height: '5rem',
-        pl: '3rem',
-        pr: '3rem',
+        pl: { xs: '1rem', sm: '3rem' },
+        pr: { xs: '1rem', sm: '3rem' },
         boxShadow: 0,
         background: 'none',
       }}
