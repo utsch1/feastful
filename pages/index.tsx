@@ -17,8 +17,12 @@ export default function Home() {
         width="100vw"
         mt="-5rem"
         mb="-5rem"
-        ml="-1rem"
-        mr="-1rem"
+        sx={{
+          ml: { xs: '-1rem', sm: '-3rem' },
+          mr: { xs: '-1rem', sm: '-3rem' },
+        }}
+        // ml="-1rem"
+        // mr="-1rem"
       >
         <CardMedia
           component="img"

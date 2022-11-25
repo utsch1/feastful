@@ -20,7 +20,7 @@ const mainStyles = css`
   padding-right: 3rem;
   padding-top: 5rem;
 
-  @media (max-width: 400px) {
+  @media (max-width: 600px) {
     padding-left: 1rem;
     padding-right: 1rem;
   }

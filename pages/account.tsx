@@ -24,16 +24,16 @@ export default function UserProfile(props: Props) {
     setNewExperiences(props.experiences);
   }, [props.experiences]);
 
-  // async function deleteUserFromApiById(id: number) {
-  //   const response = await fetch(`/api/user/${id}`, {
-  //     method: 'DELETE',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ id: id }),
-  //   });
-  //   const deletedUser = (await response.json()) as User;
-  // }
+  async function deleteUserFromApiById(id: number) {
+    const response = await fetch(`/api/user/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: id }),
+    });
+    const deletedUser = (await response.json()) as User;
+  }
 
   async function deleteExperienceFromApiById(id: number) {
     const response = await fetch(`/api/user/experiences/${id}`, {

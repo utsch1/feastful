@@ -37,15 +37,14 @@ export default async function handler(
     response.status(405).json({ errors: [{ message: 'Method not allowed' }] });
   }
 
-  // if (request.method === 'DELETE') {
-  //   const deletedUser = await deleteUserById(userId);
+  const userId = Number(request.query.userId);
 
-  //   if (!deletedUser) {
-  //     return response.status(404).json({ message: 'Not a valid Id' });
-  //   }
+  if (request.method === 'DELETE') {
+    const deletedUser = await deleteUserById(userId);
 
-  //   console.log(deletedUser);
-
-  //   return response.status(200).json(deletedUser);
-  // }
+    if (!deletedUser) {
+      return response.status(404).json({ message: 'No user found' });
+    }
+    return response.status(200).json(deletedUser);
+  }
 }

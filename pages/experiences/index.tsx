@@ -208,9 +208,9 @@ export default function Experiences(props: Props) {
           backgroundColor: 'secondary.main',
 
           display: { xs: 'block', sm: 'block', md: 'none' },
+          ml: { xs: '-1rem', sm: '-3rem' },
+          mr: { xs: '-1rem', sm: '-3rem' },
         }}
-        ml="-1rem"
-        mr="-1rem"
         p="1rem"
       >
         <Grid

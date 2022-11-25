@@ -36,6 +36,22 @@ type PropsPhoto = {
 };
 
 export default function SingleExperience(props: Props & PropsPhoto) {
+  // if ('error' in props) {
+  //   return (
+  //     <>
+  //       <Head>
+  //         <title>Cooking lesson not found</title>
+  //         <meta name="description" content="Cooking lesson not found" />
+  //       </Head>
+  //       <Typography variant="h1">{props.error}</Typography>
+  //       <Typography>
+  //         We are sorry, this cooking lesson is already in the past or has been
+  //         removed. Please explore other cooking lessons
+  //         <Link href="/experiences">here.</Link>
+  //       </Typography>
+  //     </>
+  //   );
+  // }
   // Change 'undefined' date to timestamp to string to a good looking date
   const dateAsTimeStamp = Date.parse(props.experience.eventDate);
   const dateAsString = new Date(dateAsTimeStamp);
@@ -54,23 +70,6 @@ export default function SingleExperience(props: Props & PropsPhoto) {
   const firstName =
     props.personalInformation.firstName.charAt(0).toUpperCase() +
     props.personalInformation.firstName.slice(1);
-
-  if ('error' in props) {
-    return (
-      <>
-        <Head>
-          <title>Cooking lesson not found</title>
-          <meta name="description" content="Cooking lesson not found" />
-        </Head>
-        <Typography variant="h1">{props.error}</Typography>
-        <Typography>
-          We are sorry, this cooking lesson is already in the past or has been
-          removed. Please explore other cooking lessons
-          <Link href="/experiences">here.</Link>
-        </Typography>
-      </>
-    );
-  }
 
   return (
     <>
@@ -242,16 +241,17 @@ export async function getServerSideProps(
     experienceId,
   );
 
-  const experience = JSON.parse(JSON.stringify(oldExperience));
-
-  if (typeof experience === 'undefined') {
+  if (typeof oldExperience === 'undefined') {
     context.res.statusCode = 404;
     return {
-      props: {
-        error: 'Cooking lesson not found',
+      redirect: {
+        destination: '/404',
+        permanent: true,
       },
     };
   }
+
+  const experience = JSON.parse(JSON.stringify(oldExperience));
 
   const cuisine = cuisines.find(
     (cuisine) => experience.cuisineId === cuisine.id,

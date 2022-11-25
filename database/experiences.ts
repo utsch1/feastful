@@ -1,4 +1,3 @@
-import { Dayjs } from 'dayjs';
 import { sql } from './connect';
 import { User } from './users';
 
@@ -125,8 +124,8 @@ export async function getExperienceById(id: number) {
       experiences
     WHERE
       id = ${id}
-    -- AND
-    --   experiences.event_date  > now()
+    AND
+      experiences.event_date  > now()
   `;
 
   return experience;
