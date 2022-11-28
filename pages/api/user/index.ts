@@ -37,14 +37,27 @@ export default async function handler(
     response.status(405).json({ errors: [{ message: 'Method not allowed' }] });
   }
 
-  const userId = Number(request.query.userId);
-
   if (request.method === 'DELETE') {
-    const deletedUser = await deleteUserById(userId);
+    const session =
+      request.cookies.sessionToken &&
+      (await getValidSessionByToken(request.cookies.sessionToken));
+
+    if (!session) {
+      response
+        .status(400)
+        .json({ errors: [{ message: 'No valid session token passed' }] });
+      return;
+    }
+
+    const deletedUser = await deleteUserById(request.body.id);
 
     if (!deletedUser) {
       return response.status(404).json({ message: 'No user found' });
     }
     return response.status(200).json(deletedUser);
   }
+
+  return response
+    .status(400)
+    .json({ errors: [{ message: 'Method not allowed' }] });
 }

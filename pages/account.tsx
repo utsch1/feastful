@@ -7,34 +7,43 @@ import Typography from '@mui/material/Typography';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import { Experience, getExperiencesByUserId } from '../database/experiences';
 import { getUserBySessionToken, User } from '../database/users';
 
 type Props = {
-  user?: User;
+  user: User;
   experiences: Experience[];
 };
 
 export default function UserProfile(props: Props) {
-  const [newExperiences, setNewExperiences] = useState<Experience[]>([]);
+  const [experiences, setExperiences] = useState<Experience[]>([]);
+  const router = useRouter();
 
   // Load all experiences into state on first render and every time props.experiences changes
   useEffect(() => {
-    setNewExperiences(props.experiences);
+    setExperiences(props.experiences);
   }, [props.experiences]);
 
+  // delete user from api
   async function deleteUserFromApiById(id: number) {
-    const response = await fetch(`/api/user/${id}`, {
+    if (!window.confirm(`Do you really want to delete this user?`)) {
+      return;
+    }
+    await fetch(`/api/user/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ id: id }),
     });
-    const deletedUser = (await response.json()) as User;
+
+    // redirect user to homepage
+    await router.push(`/`);
   }
 
+  // delete single experience from api
   async function deleteExperienceFromApiById(id: number) {
     const response = await fetch(`/api/user/experiences/${id}`, {
       method: 'DELETE',
@@ -45,23 +54,11 @@ export default function UserProfile(props: Props) {
     });
     const deletedExperience = (await response.json()) as Experience;
 
-    const filteredExperiences = newExperiences.filter((experience) => {
+    const filteredExperiences = experiences.filter((experience) => {
       return experience.id !== deletedExperience.id;
     });
 
-    setNewExperiences(filteredExperiences);
-  }
-
-  if (!props.user) {
-    return (
-      <>
-        <Head>
-          <title>User not found</title>
-          <meta name="description" content="User not found" />
-        </Head>
-        <Typography variant="h1">404 - User not found</Typography>
-      </>
-    );
+    setExperiences(filteredExperiences);
   }
 
   return (
@@ -70,7 +67,6 @@ export default function UserProfile(props: Props) {
         <title>Account</title>
         <meta name="description" content="Account" />
       </Head>
-      {/* <div>Hi, {props.user.email}</div> */}
       <Typography variant="h1">Your account overview</Typography>
       <Grid container>
         <Grid container item xs={10} mb="0.5rem">
@@ -86,7 +82,7 @@ export default function UserProfile(props: Props) {
       </Grid>
       <Grid container>
         <>
-          {props.experiences.map((experience) => {
+          {experiences.map((experience) => {
             return (
               <Fragment key={`experience-${experience.id}`}>
                 <Grid
@@ -176,7 +172,7 @@ export default function UserProfile(props: Props) {
         variant="contained"
         disableElevation
         aria-label="delete account"
-        // onClick={async () => await deleteUserFromApiById(user.id)}
+        onClick={async () => await deleteUserFromApiById(props.user.id)}
       >
         Delete account
       </Button>

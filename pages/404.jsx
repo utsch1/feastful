@@ -5,11 +5,11 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Head from 'next/head';
 
-export default function Custom404() {
+export default function Error() {
   return (
     <div>
       <Head>
-        <title>404</title>
+        <title>404 Error</title>
         <meta name="description" content="404 - content not available" />
         {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
       </Head>
