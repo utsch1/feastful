@@ -27,7 +27,9 @@ import {
   Languages,
   PostalCodes,
 } from '../../database/experiences';
+import { getPhotoByExperienceId, Photo } from '../../database/photos';
 import { getUserBySessionToken, User } from '../../database/users';
+import { ExperienceResponseBody } from '../api/user/experiences';
 
 type Props = {
   cuisines: Cuisines[];
@@ -35,13 +37,13 @@ type Props = {
   languages: Languages[];
   user: User;
   experience: Experience;
-  // photo: Photo;
+  photo: Photo;
 };
 
 export default function EditExperience(props: Props) {
   const characterLimitHeadline = 50;
   const characterLimitDescription = 1000;
-  const [experience, setExperience] = useState<Experience[]>([]);
+  // const [experience, setExperience] = useState<Experience[]>([]);
   const [headline, setHeadline] = useState(props.experience.headline);
   const [description, setDescription] = useState(props.experience.description);
   const [cuisine, setCuisine] = useState(Number(props.experience.cuisineId));
@@ -56,7 +58,7 @@ export default function EditExperience(props: Props) {
     props.experience.eventDate,
   );
   const [image, setImage] = useState('');
-  const [previewImage, setPreviewImage] = useState('');
+  const [previewImage, setPreviewImage] = useState(props.photo.photoUrl);
   const [photoUrl, setPhotoUrl] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
@@ -92,17 +94,14 @@ export default function EditExperience(props: Props) {
       }),
     });
 
-    const updatedExperienceFromApi = (await response.json()) as Experience;
+    const experienceResponseBody =
+      (await response.json()) as ExperienceResponseBody;
 
-    const newState = experience.map((singleExperience) => {
-      if (singleExperience.id === updatedExperienceFromApi.id) {
-        return updatedExperienceFromApi;
-      } else {
-        return singleExperience;
-      }
-    });
-
-    setExperience(newState);
+    // Handle errors
+    if ('errors' in experienceResponseBody) {
+      setErrors(experienceResponseBody.errors);
+      return console.log(experienceResponseBody.errors);
+    }
 
     await router.push(`/account`);
   }
@@ -144,9 +143,7 @@ export default function EditExperience(props: Props) {
       })
       .catch((error) => console.log(error));
   };
-  // if (props.experience.description == null) {
-  //   props.experience.description.length = 0;
-  // }
+
   return (
     <div>
       <Head>
@@ -364,7 +361,7 @@ export default function EditExperience(props: Props) {
             disableElevation
             onClick={uploadImage}
           >
-            <FileUploadIcon />
+            <FileUploadIcon /> UPLOAD
           </Button>
         </Grid>
       </Grid>
@@ -406,15 +403,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
   const id = context.query.experienceId;
   const singleExperience = await getExperienceById(Number(id));
-  // const photos = await getPhotoByExperienceId(experiencesId);
-
-  // https://flaviocopes.com/nextjs-serialize-date-json/
-  // in order to be able to use dates in frontend
-  const experience = JSON.parse(JSON.stringify(singleExperience));
-  if (experience.description == null) {
-    experience.description = ' ';
-  }
-
+  const photos = await getPhotoByExperienceId(Number(id));
   const user = token && (await getUserBySessionToken(token));
 
   if (!user) {
@@ -426,11 +415,25 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
+  // https://flaviocopes.com/nextjs-serialize-date-json/
+  // in order to be able to use dates in frontend
+  const experience = JSON.parse(JSON.stringify(singleExperience));
+  if (experience.description == null) {
+    experience.description = ' ';
+  }
+
+  if (!experience) {
+    return {
+      redirect: {
+        destination: '/account',
+        permanent: false,
+      },
+    };
+  }
+
   const cuisines = await getCuisines();
   const postalCodes = await getPostalCodes();
   const languages = await getLanguages();
-
-  // console.log(photos);
 
   return {
     props: {
@@ -439,7 +442,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       languages: languages,
       user: user,
       experience: experience,
-      // photo: photoUrl,
+      photo: photos,
     },
   };
 }

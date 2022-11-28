@@ -48,3 +48,18 @@ export async function getPhotoByExperienceId(experiencesId: number) {
   `;
   return photo;
 }
+
+// Update photo by experience ID
+export async function updatePhotoById(photoUrl: string, experiencesId: number) {
+  const [photo] = await sql<Photo[]>`
+    UPDATE
+      photos
+    SET
+      photo_url = ${photoUrl}
+    WHERE
+     experiences_id = ${experiencesId}
+    RETURNING
+      *
+  `;
+  return photo;
+}

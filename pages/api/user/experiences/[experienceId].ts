@@ -4,6 +4,7 @@ import {
   getExperienceByIdAndValidSessionToken,
   updateExperienceById,
 } from '../../../../database/experiences';
+import { updatePhotoById } from '../../../../database/photos';
 import { getValidSessionByToken } from '../../../../database/sessions';
 
 export default async function handler(
@@ -45,54 +46,61 @@ export default async function handler(
     return response.status(200).json(experience);
   }
 
-  // if (request.method === 'PUT') {
-  //   // NOT getting the id from the body since is already on the query
-  //   const headline = request.body?.headline;
-  //   const description = request.body?.description;
-  //   const cuisineId = request.body?.cuisine;
-  //   const languagesId = request.body?.language;
-  //   const postalCodeId = request.body?.postalCode;
-  //   const price = request.body?.price;
-  //   const eventDate = new Date(request.body?.eventDate);
-  //   const photoUrl = request.body?.photoUrl;
+  if (request.method === 'PUT') {
+    const headline = request.body?.headline;
+    const description = request.body?.description;
+    const cuisineId = request.body?.cuisine;
+    const languagesId = request.body?.language;
+    const postalCodeId = request.body?.postalCode;
+    const price = request.body?.price;
+    const eventDate = new Date(request.body?.eventDate);
+    const photoUrl = request.body?.photoUrl;
 
-  //   if (
-  //     !(
-  //       headline &&
-  //       description &&
-  //       cuisineId &&
-  //       languagesId &&
-  //       postalCodeId &&
-  //       price &&
-  //       eventDate
-  //     )
-  //   ) {
-  //     return response.status(400).json({
-  //       message:
-  //         'property headline, description, cuisine, languages, postal code, price or event date missing',
-  //     });
-  //   }
+    if (
+      !(
+        headline &&
+        description &&
+        cuisineId &&
+        languagesId &&
+        postalCodeId &&
+        price &&
+        eventDate &&
+        photoUrl
+      )
+    ) {
+      return response.status(400).json({
+        message:
+          'property headline, description, cuisine, languages, postal code, price, event date or photo missing',
+      });
+    }
 
-  // Create the experience using the database util function
-  // To make this function work, the id must be passed
-  //   const newExperience = await updateExperienceById(
-  //     id,
-  //     headline,
-  //     description,
-  //     cuisineId,
-  //     languagesId,
-  //     postalCodeId,
-  //     price,
-  //     eventDate,
-  //   );
+    // Create the experience using the database util function
+    // To make this function work, the id must be passed
+    const updatedExperience = await updateExperienceById(
+      experienceId,
+      headline,
+      description,
+      cuisineId,
+      languagesId,
+      postalCodeId,
+      price,
+      eventDate,
+    );
 
-  //   if (!newExperience) {
-  //     return response.status(404).json({ message: 'Not a valid Id' });
-  //   }
+    // if (!updatedExperience) {
+    //   return response.status(404).json({ message: 'Not a valid Id' });
+    // }
 
-  //   // response with the new created experience
-  //   return response.status(200).json(newExperience);
-  // }
+    if (updatedExperience) {
+      const newPhoto = await updatePhotoById(photoUrl, updatedExperience.id);
+
+      // 3. response with the created experience
+      return response.status(200).json({ updatedExperience, newPhoto });
+    }
+
+    // response with the new created experience
+    return response.status(200).json(updatedExperience);
+  }
 
   if (request.method === 'DELETE') {
     const deletedExperience = await deleteExperienceById(experienceId);
