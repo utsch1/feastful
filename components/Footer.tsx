@@ -11,17 +11,10 @@ const footerStyles = css`
   > span {
     margin-left: 3rem;
     align-self: center;
-  }
 
-  > :last-child {
-    float: right;
-    margin-right: 3rem;
-  }
-
-  > span > a {
-    margin-left: 0.75rem;
-    text-decoration: none;
-    color: #000000;
+    @media (max-width: 600px) {
+      margin-left: 1rem;
+    }
   }
 `;
 

@@ -356,7 +356,8 @@ export default function Experiences(props: Props) {
         spacing={{ xs: 0, sm: 2, md: 2 }}
         display="flex"
         m="0"
-        justifyContent={{ xs: 'space-around', md: 'flex-start' }}
+        // mr="auto"
+        justifyContent={{ xs: 'space-around', sm: 'flex-start' }}
       >
         {/* filter function for the experiences */}
         {props.experiences
