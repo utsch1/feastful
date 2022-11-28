@@ -147,7 +147,7 @@ export default function EditExperience(props: Props) {
   return (
     <div>
       <Head>
-        <title>Experience</title>
+        <title>Edit Experience</title>
         <meta
           name="description"
           content="Fill out the form to offer a cooking class"

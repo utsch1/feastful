@@ -28,7 +28,16 @@ export default function AddPersonalInformation(props: Props) {
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const router = useRouter();
 
-  async function createPersonalInformationFromApi() {
+  // const handleSubmit = (event: any) => {
+  //   event.preventDefault();
+  // };
+
+  async function handleSubmit(
+    event:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement>,
+  ) {
+    event.preventDefault();
     const response = await fetch('/api/user/personalinformation', {
       method: 'POST',
       headers: {
@@ -91,7 +100,7 @@ export default function AddPersonalInformation(props: Props) {
   return (
     <div>
       <Head>
-        <title>Personal Information</title>
+        <title>Add personal information</title>
         <meta
           name="description"
           content="Fill out the form to give more information about you"
@@ -103,109 +112,110 @@ export default function AddPersonalInformation(props: Props) {
         return <p key={error.message}>{error.message}</p>;
       })}
 
-      {/* input for first name */}
-      <InputLabel htmlFor="first-name" sx={{ color: '#000' }}>
-        First Name*
-      </InputLabel>
-      <TextField
-        fullWidth
-        id="first-name"
-        variant="outlined"
-        required
-        type="text"
-        size="small"
-        color="secondary"
-        margin="none"
-        value={firstName}
-        onChange={(event) => {
-          setFirstName(event.currentTarget.value);
-        }}
-      />
-
-      {/* input for personal information */}
-      <InputLabel htmlFor="personal-information" sx={{ color: '#000' }}>
-        Personal Information*
-      </InputLabel>
-      <TextField
-        fullWidth
-        multiline
-        placeholder="You could write about your hobbies, why you started with the cooking lessons, what you like to cook..."
-        id="personal-information"
-        variant="outlined"
-        inputProps={{
-          maxLength: characterLimitPersonalInformation,
-        }}
-        required
-        type="text"
-        size="small"
-        color="secondary"
-        margin="none"
-        value={personalInformation}
-        onChange={(event) => {
-          setPersonalInformation(event.currentTarget.value);
-        }}
-      />
-      <FormHelperText id="maximum-500-characters" sx={{ color: '#000' }}>
-        {`${personalInformation.length}/${characterLimitPersonalInformation}`}
-      </FormHelperText>
-
-      {/* Photo upload */}
-      <Typography>Photo*</Typography>
-      <Grid container>
-        <Grid>
-          <Button variant="contained" disableElevation>
-            <InputLabel htmlFor="choose-photo" sx={{ color: '#000' }}>
-              <AddAPhotoIcon fontSize="small" />
-              <input
-                type="file"
-                id="choose-photo"
-                style={{ display: 'none' }}
-                onChange={selectImage}
-              />
-            </InputLabel>
-          </Button>
-          <Button
-            sx={{ ml: 1.5 }}
-            variant="contained"
-            disableElevation
-            onClick={uploadImage}
-          >
-            <FileUploadIcon /> UPLOAD
-          </Button>
-        </Grid>
-      </Grid>
-      {/* condition whether there are photo url's available*/}
-      {!previewImage ? (
-        <div> </div>
-      ) : (
-        <Box
-          component="img"
-          sx={{
-            height: 60,
-            borderRadius: '5px',
+      <form onSubmit={handleSubmit}>
+        {/* input for first name */}
+        <InputLabel htmlFor="first-name" sx={{ color: '#000' }}>
+          First Name*
+        </InputLabel>
+        <TextField
+          fullWidth
+          id="first-name"
+          variant="outlined"
+          required
+          type="text"
+          size="small"
+          color="secondary"
+          margin="none"
+          value={firstName}
+          onChange={(event) => {
+            setFirstName(event.currentTarget.value);
           }}
-          mt={1}
-          mr="2rem"
-          src={previewImage}
-          alt="uploaded photo"
         />
-      )}
 
-      {/* save functionality */}
-      <Button
-        sx={{
-          mt: '1.5rem',
-          mb: '2rem',
-          float: 'right',
-        }}
-        variant="contained"
-        disableElevation
-        onClick={async () => {
-          await createPersonalInformationFromApi();
-        }}
-      >
-        Save
-      </Button>
+        {/* input for personal information */}
+        <InputLabel htmlFor="personal-information" sx={{ color: '#000' }}>
+          Personal Information*
+        </InputLabel>
+        <TextField
+          fullWidth
+          multiline
+          placeholder="You could write about your hobbies, why you started with the cooking lessons, what you like to cook..."
+          id="personal-information"
+          variant="outlined"
+          inputProps={{
+            maxLength: characterLimitPersonalInformation,
+          }}
+          required
+          type="text"
+          size="small"
+          color="secondary"
+          margin="none"
+          value={personalInformation}
+          onChange={(event) => {
+            setPersonalInformation(event.currentTarget.value);
+          }}
+        />
+        <FormHelperText id="maximum-500-characters" sx={{ color: '#000' }}>
+          {`${personalInformation.length}/${characterLimitPersonalInformation}`}
+        </FormHelperText>
+
+        {/* Photo upload */}
+        <Typography>Photo*</Typography>
+        <Grid container>
+          <Grid>
+            <Button variant="contained" disableElevation>
+              <InputLabel htmlFor="choose-photo" sx={{ color: '#000' }}>
+                <AddAPhotoIcon fontSize="small" />
+                <input
+                  type="file"
+                  id="choose-photo"
+                  style={{ display: 'none' }}
+                  onChange={selectImage}
+                  required
+                />
+              </InputLabel>
+            </Button>
+            <Button
+              sx={{ ml: 1.5 }}
+              variant="contained"
+              disableElevation
+              onClick={uploadImage}
+            >
+              <FileUploadIcon /> UPLOAD
+            </Button>
+          </Grid>
+        </Grid>
+        {/* condition whether there are photo url's available*/}
+        {!previewImage ? (
+          <div> </div>
+        ) : (
+          <Box
+            component="img"
+            sx={{
+              height: 60,
+              borderRadius: '5px',
+            }}
+            mt={1}
+            mr="2rem"
+            src={previewImage}
+            alt="uploaded photo"
+          />
+        )}
+
+        {/* save functionality */}
+        <Button
+          sx={{
+            mt: '1.5rem',
+            mb: '2rem',
+            float: 'right',
+          }}
+          variant="contained"
+          disableElevation
+          type="submit"
+        >
+          Save
+        </Button>
+      </form>
     </div>
   );
 }

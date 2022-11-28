@@ -102,7 +102,7 @@ export default function AddPersonalInformation(props: Props) {
   return (
     <div>
       <Head>
-        <title>Personal Information</title>
+        <title>Edit personal information</title>
         <meta
           name="description"
           content="Fill out the form to give more information about you"
