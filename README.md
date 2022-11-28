@@ -40,7 +40,7 @@ A fully responsive application to offer as well as look for cooking lessons in V
 
 ### Account Page
 
-![Screenshot of the hosts' account](./accountpage.png 'Screenshot of the hosts' account')
+![Screenshot of the hosts account](./accountpage.png 'Screenshot of the hosts account')
 
 ## Screenshots of further tools used for the planning process
 
