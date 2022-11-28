@@ -101,6 +101,7 @@ export default function Experiences(props: Props) {
               defaultValue={cuisine}
               onChange={handleChangeCuisine}
             >
+              <MenuItem value="">-- Choose Cuisine --</MenuItem>
               {props.cuisines.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
                   {option.cuisine}
@@ -132,6 +133,7 @@ export default function Experiences(props: Props) {
               defaultValue={language}
               onChange={handleChangeLanguages}
             >
+              <MenuItem value="">-- Choose Language --</MenuItem>
               {props.languages.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
                   {option.language}
@@ -164,6 +166,7 @@ export default function Experiences(props: Props) {
               defaultValue={postalCode}
               onChange={handleChangePostalCode}
             >
+              <MenuItem value="">-- Choose Postal Code --</MenuItem>
               {props.postalCodes.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
                   {option.postalCode}
